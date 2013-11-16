@@ -1,4 +1,4 @@
-studip-aufgaben
-===============
+Stud.IP - Aufgaben
+==================
 
-Ein einfaches Plugin für zeitgesteuerte Aufgaben mit Text- und Dateiabgabe in Stud.IP
+Ein einfaches Plugin für zeitgesteuerte Aufgaben mit Text- und Dateiabgabe in Stud.IP.
