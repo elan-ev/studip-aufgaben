@@ -10,3 +10,5 @@ Was kann es?
 * Teilnehmende können Antworttexte eingeben und bequem Dateien einreichen.
 * Es kann Feedback ebenfalls in Textform oder mittels Dateien erfolgen.
 * Der spezielle Uploader erlaubt das Hochladen von beliebig vielen Dateien auf einen Knopfdruck!
+ 
+Weitere Infos auf der HP unter http://tgloeggl.github.io/studip-aufgaben/
