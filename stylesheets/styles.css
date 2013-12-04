@@ -223,6 +223,7 @@ header {
 	padding: 34px 25px 22px 50px;
 	margin: 30px 25px 0 0;
 	-webkit-font-smoothing: antialiased;
+	z-index: 5;
 }
 
 p.header {
@@ -376,7 +377,7 @@ footer {
   header ul {
     position:absolute;
     right: 130px;
-    top: 130px;
+    top: 70px;
   }
 
 }
