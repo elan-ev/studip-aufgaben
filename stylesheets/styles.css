@@ -30,7 +30,7 @@ body {
   font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	color: #232323;
-	background-color: #FBFAF7;
+	background-color: #3D362D;
 	margin: 0;
 	line-height: 1.8em;
 	-webkit-font-smoothing: antialiased;
@@ -144,6 +144,7 @@ img {
   position: relative;
   margin: 0 auto;
   max-width: 650px;
+  width: 100%;
 }
 
 
@@ -195,7 +196,12 @@ td {
 
 /* Wrapper */
 .wrapper {
+	background-color: #FBFAF7;
   width:960px;
+  margin: -15px auto 0 auto;
+  padding-right: 10px;
+  -webkit-box-shadow: 1px 1px 20px 3px #222222;
+  box-shadow: 1px 1px 20px 3px #222222; 
 }
 
 
@@ -331,9 +337,15 @@ footer {
 
 @media print, screen and (max-width: 960px) {
 
+	body {
+		background-color: #FBFAF7;
+	}
+
   div.wrapper {
     width:auto;
     margin:0;
+  	-webkit-box-shadow: none;
+  	box-shadow: none;
   }
 
   header, section, footer {
@@ -363,8 +375,8 @@ footer {
 
   header ul {
     position:absolute;
-    right:130px;
-    top:40px;
+    right: 130px;
+    top: 130px;
   }
 
 }
