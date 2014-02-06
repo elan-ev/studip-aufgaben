@@ -37,9 +37,13 @@
         <? $task_user = $task->task_users->findOneBy('user_id', $GLOBALS['user']->id) ?>
         <tr class="<?= $task->getStatus() ?>">
             <td>
+                <? if ($task->startdate <= time()) : ?>
                 <a href="<?= $controller->url_for('/index/view_student/' . $task['id']) ?>" title="<?= _('Diese Aufgabe anzeigen') ?>">
                     <?= htmlReady($task['title']) ?>
                 </a>
+                <? else : ?>
+                <?= htmlReady($task['title']) ?>
+                <? endif ?>
             </td>
             <td>
                 <?= strftime($timeformat, $task['startdate']) ?>

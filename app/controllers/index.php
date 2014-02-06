@@ -260,6 +260,25 @@ class IndexController extends EPPluginStudipController
         $this->redirect('index/view_student/' . $task_id);
     }
     
+    function set_ready_action($task_id)
+    {
+        $task = new EPP\Tasks($task_id);
+
+        if ($task->startdate > time() || $task->enddate < time()) {
+            throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
+        }
+
+        if ($task->seminar_id != $this->seminar_id) {
+            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+        }        
+        
+        $task_user = reset(\EPP\TaskUsers::findBySQL('user_id = ? AND ep_tasks_id = ?', array($GLOBALS['user']->id, $task->getId())));
+        $task_user->ready = 1;
+        $task_user->store();
+        
+        $this->redirect('index/view_student/' . $task->getId());
+    }
+    
     function remove_file_action($file_id)
     {
         $file = new \EPP\TaskUserFiles($file_id);

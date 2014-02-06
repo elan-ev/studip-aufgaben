@@ -14,12 +14,17 @@
  * @category    Stud.IP
  */
 
-$infobox_content[] = array(
-    'kategorie' => _('Aktionen'),
-    'eintrag'   => array(
-    )
-);
-
+if ($task_user->ready) {
+    $infobox_content[] = array(
+        'kategorie' => _('Informationen'),
+        'eintrag'   => array(
+            array(
+                'icon' => 'icons/16/green/accept.png',
+                'text' => 'Aufgabe ist als fertig markiert.'
+            )
+        )
+    );    
+}
 $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_content);
 ?>
 

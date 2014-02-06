@@ -3,6 +3,7 @@
         <tr>
             <th><?= _('TeilnehmerIn') ?></th>
             <th colspan="2" style="width: 10%; text-align: center"><?= _('in Arbeit') ?></th>
+            <th style="width: 2%">Fertig?</th>
             <th style="width: 10%"><?= _('letzte Aktivität') ?></th>
             <th colspan="2" style="width: 10%; text-align: center"><?= _('Feedback') ?></th>
             <th><?= _('Hinweis') ?></th>
@@ -39,6 +40,10 @@
                 <?= Assets::img('icons/16/black/file-generic.png', array(
                     'title' => _('Hochgeladene Dateien')
                 )) ?>
+            </td>
+            
+            <td>
+                <?= Assets::img('icons/16/'. ($task_user->ready ? 'green/accept.png' : 'red/decline.png')) ?>
             </td>
 
             <td>
