@@ -14,12 +14,13 @@
 
 // load legacy code for older Stud.IP-Versions
 if (version_compare($GLOBALS['SOFTWARE_VERSION'], "2.4", '<=')) {
-    require_once 'compat/'. $GLOBALS['SOFTWARE_VERSION'] .'/StudipArrayObject.php';
-    require_once 'compat/'. $GLOBALS['SOFTWARE_VERSION'] .'/EPP_SimpleCollection.php';
-    require_once 'compat/'. $GLOBALS['SOFTWARE_VERSION'] .'/EPP_SimpleORMapCollection.php';
-    require_once 'compat/'. $GLOBALS['SOFTWARE_VERSION'] .'/EPP_SimpleORMap.php';
-    require_once 'compat/'. $GLOBALS['SOFTWARE_VERSION'] .'/EPP_StudipDocument.php';
-    require_once 'compat/'. $GLOBALS['SOFTWARE_VERSION'] .'/CourseMember.php';
+    $main_version = substr($GLOBALS['SOFTWARE_VERSION'], 0, 3);
+    require_once 'compat/'. $main_version .'/StudipArrayObject.php';
+    require_once 'compat/'. $main_version .'/EPP_SimpleCollection.php';
+    require_once 'compat/'. $main_version .'/EPP_SimpleORMapCollection.php';
+    require_once 'compat/'. $main_version .'/EPP_SimpleORMap.php';
+    require_once 'compat/'. $main_version .'/EPP_StudipDocument.php';
+    require_once 'compat/'. $main_version .'/CourseMember.php';
 } else {
     // for version starting from 2.5 use the same stub
     require_once 'compat/2.5/EPP_SimpleCollection.php';
