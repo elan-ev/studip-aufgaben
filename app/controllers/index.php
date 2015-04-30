@@ -284,7 +284,7 @@ class IndexController extends EPPluginStudipController
         $file = new \EPP\TaskUserFiles($file_id);
 
         if (($file->task_user->task->startdate > time() || $file->task_user->task->enddate < time())
-                && !$GLOBALS['perm']->have_studip_perm('dozent', $this->seminar_id)) {
+                && !$GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)) {
             throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
         }
 
@@ -302,7 +302,7 @@ class IndexController extends EPPluginStudipController
         $task_user = new \EPP\TaskUsers($task_user_id);
         $task      = new \EPP\Tasks($task_user->ep_tasks_id);
 
-        if (($task->startdate > time() || $task->enddate < time()) && !$GLOBALS['perm']->have_studip_perm('dozent', $this->seminar_id)) {
+        if (($task->startdate > time() || $task->enddate < time()) && !$GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)) {
             throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
         }
 
@@ -313,7 +313,7 @@ class IndexController extends EPPluginStudipController
         // user adds file(s) to its solution of the task
         if ($task_user->user_id == $GLOBALS['user']->id && $GLOBALS['perm']->have_studip_perm('autor', $this->seminar_id)) {
             $type = 'answer';
-        } else if ($GLOBALS['perm']->have_studip_perm('dozent', $this->seminar_id)) {    // dozent adds feedback for the user
+        } else if ($GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)) {    // dozent adds feedback for the user
             $type = 'feedback';
         } else { // not author/tutor nor dozent, so access is denied
             throw new AccessDeniedException(_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe'));

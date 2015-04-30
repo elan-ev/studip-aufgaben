@@ -69,7 +69,7 @@ STUDIP.epp = {
     fileTemplate: null,
     uploadedFileTemplate: null,
     errorTemplate: null,
-	questionTemplate: null,
+    questionTemplate: null,
     file_id: 0,
 
     addFile: function(e, data) {
@@ -125,7 +125,7 @@ STUDIP.epp = {
     },
             
     removeFile: function(seminar_id, id) {
-        jQuery.ajax(STUDIP.ABSOLUTE_URI_STUDIP + "plugins.php/epplugin/index"
+        jQuery.ajax(STUDIP.ABSOLUTE_URI_STUDIP + "plugins.php/aufgabenplugin/index"
                 + "/remove_file/" + id + "?cid=" + seminar_id, {
             dataType: 'json',
             success : function() {
@@ -158,14 +158,14 @@ STUDIP.epp = {
         STUDIP.epp.file_id = 0;
     },
 
-	createQuestion: function(question, link) {
-		var questionTemplateData = {
-			question: question,
-			confirm: link
-		}
+    createQuestion: function(question, link) {
+        var questionTemplateData = {
+            question: question,
+            confirm: link
+        }
 
-		jQuery('#epp').append(STUDIP.epp.questionTemplate(questionTemplateData));
-	},
+        jQuery('#epp').append(STUDIP.epp.questionTemplate(questionTemplateData));
+    },
 
     closeQuestion: function() {
         jQuery('#epp .modaloverlay').remove();
