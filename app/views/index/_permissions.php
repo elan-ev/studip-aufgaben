@@ -21,7 +21,8 @@
                 <option value="<?= $perm ?>"><?= $name ?></option>
                 <? endforeach ?>
             </select>
-            <?= tooltipIcon(_('Kommilitone/in: Kann die komplette Aufgabe einsehen und ändern')) ?>
+            <?= tooltipIcon(_('Kommilitone/in: Kann die komplette Aufgabe einsehen, den Antworttext ändern und Dateien hochladen.'
+                    . ' Nur selbst hochgeladene Dateien können wieder gelöscht werden.')) ?>
         </div>
 
         <div>
