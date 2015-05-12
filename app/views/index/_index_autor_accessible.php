@@ -6,19 +6,24 @@
                     <?= _('Aufgabe') ?>
                 </a>
             </th>
-            
+
+            <th>
+                <?= _('Besitzer') ?>
+            </th>
+
+
             <th <?= $sort == 'startdate' ? 'class="sort' . $order .'"': '' ?> style="width: 120px;">
                 <a href="<?= $controller->url_for('index/index?sort_by=startdate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
                     <?= _('Start') ?>
                 </a>
             </th>
-            
+
             <th <?= $sort == 'enddate' ? 'class="sort' . $order .'"': '' ?> style="width: 120px;">
                 <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
                     <?= _('Ende') ?>
                 </a>
             </th>
-            
+
             <th <?= $sort == 'enddate' ? 'class="sort' . $order .'"': '' ?> style="width: 80px;">
                 <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
                     <?= _('Status') ?>
@@ -33,26 +38,30 @@
         </tr>
     </thead>
     <tbody>
-        <? foreach ($tasks as $task) : ?>
-        <? $task_user = $task->task_users->findOneBy('user_id', $GLOBALS['user']->id) ?>
-        <tr class="<?= $task->getStatus() ?>">
+        <? foreach ($tasks as $task_user) : ?>
+        <tr class="<?= $task_user->task->getStatus() ?>">
             <td>
-                <? if ($task->startdate <= time()) : ?>
-                <a href="<?= $controller->url_for('/index/view_student/' . $task['id']) ?>" title="<?= _('Diese Aufgabe anzeigen') ?>">
-                    <?= htmlReady($task['title']) ?>
+                <? if ($task_user->task->startdate <= time()) : ?>
+                <a href="<?= $controller->url_for('/index/view_student/' . $task_user->task['id'] .'?task_user_id='. $task_user->id) ?>" title="<?= _('Diese Aufgabe anzeigen') ?>">
+                    <?= htmlReady($task_user->task['title']) ?>
                 </a>
                 <? else : ?>
-                <?= htmlReady($task['title']) ?>
+                <?= htmlReady($task_user->task['title']) ?>
                 <? endif ?>
             </td>
+
             <td>
-                <?= strftime($timeformat, $task['startdate']) ?>
+                <?= htmlReady(get_fullname($task_user->user_id)) ?>
+            </td>
+
+            <td>
+                <?= strftime($timeformat, $task_user->task['startdate']) ?>
             </td>
             <td>
-                <?= strftime($timeformat, $task['enddate']) ?>
+                <?= strftime($timeformat, $task_user->task['enddate']) ?>
             </td>
             <td>
-                <?= $task->getStatusText() ?>
+                <?= $task_user->task->getStatusText() ?>
             </td>
             <td style="width: 50px; text-align: right">
                 <?= (!$task_user || $task_user->answer === null) ? '0' : strlen($task_user->answer) ?>

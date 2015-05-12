@@ -55,6 +55,8 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
     )) ?>
 <? endif ?>
 
+<br>
+<?= $this->render_partial('index/_permissions') ?>
 
 <? if ($task->startdate <= time()) : ?>
 
@@ -96,3 +98,16 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
     )) ?>
 
 <? endif ?>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        <? foreach ($task_user->perms as $perm) : ?>
+        STUDIP.Aufgaben.Permissions.addTemplate({
+            user: '<?= get_username($perm->user_id) ?>',
+            fullname: '<?= get_fullname($perm->user_id) ?>',
+            perm: '<?= $perm->role ?>',
+            permission: '<?= $permissions[$perm->role] ?>'
+        });
+        <? endforeach ?>
+    });
+</script>

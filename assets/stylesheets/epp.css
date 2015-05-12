@@ -1,77 +1,25 @@
-#epp span.label {
-  font-weight: bold;
-  display: block;
-}
-#epp .visibility {
-  font-weight: bold;
-}
-#epp .visibility div:nth-child(1) {
-  float: left;
-}
-#epp .visibility div:nth-child(2) {
-  float: left;
-  margin-left: 20px;
-}
-#epp .task {
-  margin-bottom: 1em;
-}
-#epp .task textarea {
-  width: 99%;
-  height: 20em;
-}
-#epp .task input[name=title] {
-  width: 99%;
-}
-#epp label {
-  display: block;
-  padding-left: 15px;
-  text-indent: -15px;
-  margin-top: 5px;
-}
-#epp label input {
-  width: 13px;
-  height: 13px;
-  padding: 0;
-  margin: 0;
-  vertical-align: bottom;
-  position: relative;
-  top: -1px;
-  *overflow: hidden;
-}
-#epp .buttons {
-  text-align: center;
-}
-#epp table tr.running {
-  background-color: #CCCCFF;
-}
-#epp #files_to_upload {
-  min-width: 500px;
-  width: auto;
-}
-#epp #files_to_upload tr td:nth-child(1) {
-  width: 100px;
-}
-#epp #files_to_upload tr td:nth-child(1) img {
-  max-width: 90px;
-  max-height: 60px;
-}
-#epp #files_to_upload tr td:nth-child(2) {
-  padding: 3px 10px;
-}
-#epp #files_to_upload tr td:nth-child(3) {
-  padding: 3px 10px;
-  width: 100px;
-}
-#epp #files_to_upload span.file_error {
-  display: block;
-  background-color: #FFCCCC;
-  padding: 2px;
-}
-#epp span.empty_text {
-  color: grey;
-  font-style: italic;
-}
-#epp div.mark {
-  background-color: #DEE2E8;
-  padding: 5px;
-}
+#epp span.label { font-weight: bold; display: block; }
+#epp .visibility { font-weight: bold; }
+#epp .visibility div:nth-child(1) { float: left; }
+#epp .visibility div:nth-child(2) { float: left; margin-left: 20px; }
+#epp .task { margin-bottom: 1em; }
+#epp .task textarea { width: 99%; height: 20em; }
+#epp .task input[name=title] { width: 99%; }
+#epp label { display: block; padding-left: 15px; text-indent: -15px; margin-top: 5px; }
+#epp label input { width: 13px; height: 13px; padding: 0; margin: 0; vertical-align: bottom; position: relative; top: -1px; *overflow: hidden; }
+#epp .buttons { text-align: center; }
+#epp table tr.running { background-color: #CCCCFF; }
+#epp #files_to_upload { min-width: 500px; width: auto; }
+#epp #files_to_upload tr td:nth-child(1) { width: 100px; }
+#epp #files_to_upload tr td:nth-child(1) img { max-width: 90px; max-height: 60px; }
+#epp #files_to_upload tr td:nth-child(2) { padding: 3px 10px; }
+#epp #files_to_upload tr td:nth-child(3) { padding: 3px 10px; width: 100px; }
+#epp #files_to_upload span.file_error { display: block; background-color: #FFCCCC; padding: 2px; }
+#epp span.empty_text { color: grey; font-style: italic; }
+#epp div.mark { background-color: #DEE2E8; padding: 5px; }
+#epp .three-columns { width: 80%; }
+#epp .three-columns > div { width: 33%; float: left; }
+#epp .three-columns a.button { margin: 0px; }
+#epp label > span { font-weight: bold; }
+
+/*# sourceMappingURL=epp.css.map */

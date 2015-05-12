@@ -19,6 +19,8 @@ require_once $this->trails_root .'/models/Tasks.php';
 require_once $this->trails_root .'/models/TaskUsers.php';
 require_once $this->trails_root .'/models/TaskUserFiles.php';
 require_once $this->trails_root .'/models/Perm.php';
+require_once $this->trails_root .'/models/Permissions.php';
+require_once $this->trails_root .'/models/Helper.php';
     
 class IndexController extends EPPluginStudipController
 {
@@ -33,9 +35,10 @@ class IndexController extends EPPluginStudipController
         Navigation::activateItem('course/aufgabenplugin');
         
         $this->seminar_id = $this->getSeminarId();
-        
-        // #TODO: remove the following line from production code
-        SimpleORMap::expireTableScheme();
+
+        $this->permissions = array(
+            'student'        => _('Kommilitone/in'),
+        );
     }
 
     function index_action()
@@ -74,6 +77,8 @@ class IndexController extends EPPluginStudipController
                 $this->tasks = $new_order;
             }
         }
+
+        $this->accessible_tasks = EPP\Helper::getForeignTasksForUser($GLOBALS['user']->id);
     }
     
     function new_task_action()
@@ -215,14 +220,20 @@ class IndexController extends EPPluginStudipController
         if ($edit_field) {
             $this->edit[$edit_field] = true;
         }
-        
+
         $this->task = new EPP\Tasks($id);
-        
+
         if ($this->task->startdate > time() || $this->task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
-                
-        $this->task_user = $this->task->task_users->findOneBy('user_id', $GLOBALS['user']->id);
+
+        if ($task_user_id = Request::get('task_user_id')) {
+
+            $this->task_user = EPP\TaskUsers::find($task_user_id);
+            $this->task_user_id = $task_user_id;
+        } else {
+            $this->task_user = $this->task->task_users->findOneBy('user_id', $GLOBALS['user']->id);
+        }
 
         if (!$this->task_user) {
             $data = array(
@@ -233,6 +244,11 @@ class IndexController extends EPPluginStudipController
             $this->task_user = EPP\TaskUsers::create($data);
         }
 
+        $this->perms = EPP\Perm::get($GLOBALS['user']->id, $this->task_user);
+
+        if (!$this->perms['edit_answer']) {
+            throw new AccessDeniedException(_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe.'));
+        }
     }
     
     function update_student_action($task_id, $task_user_id)
@@ -249,15 +265,18 @@ class IndexController extends EPPluginStudipController
 
         $data = array(
             'ep_tasks_id' => $task_id,
-            'user_id'     => $GLOBALS['user']->id,
             'answer'      => Request::get('answer')
         );
 
         $task_user = new EPP\TaskUsers($task_user_id);
         $task_user->setData($data);
         $task_user->store();
-        
-        $this->redirect('index/view_student/' . $task_id);
+
+        if ($task_user->user_id != $GLOBALS['user']->id) {
+            $this->redirect('index/view_student/' . $task_id .'?task_user_id=' . $task_user_id);
+        } else {
+            $this->redirect('index/view_student/' . $task_id);
+        }
     }
     
     function set_ready_action($task_id)
@@ -316,7 +335,17 @@ class IndexController extends EPPluginStudipController
         } else if ($GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)) {    // dozent adds feedback for the user
             $type = 'feedback';
         } else { // not author/tutor nor dozent, so access is denied
-            throw new AccessDeniedException(_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe'));
+            $perms = EPP\Perm::get($GLOBALS['user']->id, $task_user);
+
+            $type = 'answer';
+
+            if (!$task->allow_files) {
+                throw new AccessDeniedException(_('Für diese Aufgabe dürfen keine Dateien hochgeladen werden.'));
+            }
+
+            if ($task_user->user_id != $GLOBALS['user']->id && !$perms['edit_answer']) {
+                throw new AccessDeniedException(_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe.'));
+            }
         }
 
         if (!Request::isPost()
@@ -342,11 +371,11 @@ class IndexController extends EPPluginStudipController
                 $document['name'] = $document['filename'] = studip_utf8decode(strtolower($file['name']));
                 $document['user_id'] = $GLOBALS['user']->id;
                 $document['author_name'] = get_fullname();
-                $document['seminar_id'] = $GLOBALS['user']->id; // use the user_id here, prevents showing 
+                $document['seminar_id'] = $task_user->user_id; // use the user_id here, prevents showing
                                                                 // the file under "all files" while preserving downloadibility
                 $document['range_id'] = $this->seminar_id;
                 $document['filesize'] = $file['size'];
-                
+
                 $data = array(
                     'ep_task_users_id' => $task_user_id,
                     'dokument_id'      => $dokument_id,
@@ -357,12 +386,14 @@ class IndexController extends EPPluginStudipController
                 
                 if ($newfile = StudipDocument::createWithFile($file['tmp_name'], $document)) {
                     $output[] = array(
-                        'url'        => GetDownloadLink($newfile->getId(), $newfile['filename']),
+                        'url'        => studip_utf8encode(GetDownloadLink($newfile->getId(), $newfile['filename'])),
                         'id'         => $taskfile->getId(),
-                        'name'       => $newfile->name,
-                        'date'       => strftime($this->timeformat, time()),
+                        'name'       => studip_utf8encode($newfile->name),
+                        'date'       => studip_utf8encode(strftime($this->timeformat, time())),
                         'size'       => $newfile->filesize,
-                        'seminar_id' => $this->seminar_id
+                        'seminar_id' => $this->seminar_id,
+                        'user_url'   => studip_utf8encode(URLHelper::getLink('dispatch.php/profile?username='. get_username($GLOBALS['user']->id))),
+                        'user_name'  => studip_utf8encode(get_fullname($GLOBALS['user']->id))
                     );
                 }
             }
@@ -370,4 +401,82 @@ class IndexController extends EPPluginStudipController
 
         $this->render_json($output);
     }
+
+
+    /**
+     * add a permission for an user-instance of a task
+     *
+     * @param int $task_user_id
+     */
+    function add_permission_action($task_user_id)
+    {
+        $this->render_nothing();
+
+        $current_user_id = $GLOBALS['user']->id;
+        ## $task_user = EPP\TaskUsers::find($task_user_id);
+        $task_user = new \EPP\TaskUsers($task_user_id);
+
+        $perms = EPP\Perm::get($current_user_id, $task_user);
+        if (!$perms['edit_settings']) {
+            throw new AccessDeniedException();
+        }
+
+
+        $perm = new EPP\Permissions();
+
+        $user_id = get_userid(Request::get('user'));
+
+        // the user ist not allowed to store a perm for himself
+        if ($user_id == $current_user_id) {
+            $this->response->set_status(400, _('Sie dürfen sich nicht selbst für eine Berechtigung eintragen!'));
+            return;
+        }
+
+        // check that the submitted user has not another perm already
+        foreach ($task_user->perms as $key => $perm) {
+            if ($perm->user_id == $user_id) {
+                $this->response->set_status(400, _('Für diesen Nutzer existiert bereits eine andere Berechtigung!'));
+            }
+            return;
+        }
+
+        // add new permission entry
+        $perm->setData(array(
+            'user_id' => $user_id,
+            'role'    => Request::option('perm')
+        ));
+
+        $task_user->perms[] = $perm;
+
+        $task_user->store();
+    }
+
+    /**
+     * delete a permission for an user-instance of a task
+     *
+     * @param int $task_user_id
+     */
+    function delete_permission_action($task_user_id)
+    {
+        $current_user_id = $GLOBALS['user']->id;
+        $task_user = EPP\TaskUsers::find($task_user_id);
+
+        $perms = EPP\Perm::get($current_user_id, $task_user);
+        if (!$perms['edit_settings']) {
+            throw new AccessDeniedException();
+        }
+
+        $user_id = get_userid(Request::get('user'));
+
+        foreach ($task_user->perms as $key => $perm) {
+            if ($perm->user_id == $user_id) {
+                unset($task_user->perms[$key]);
+            }
+        }
+
+        $task_user->store();
+
+        $this->render_nothing();
+    }
+
 }

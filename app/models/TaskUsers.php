@@ -35,6 +35,14 @@ class TaskUsers extends \EPP_SimpleORMap
             'foreign_key' => 'ep_tasks_id',
         );
 
+        $this->has_many['perms'] = array(
+            'class_name'        => 'EPP\Permissions',
+            'assoc_foreign_key' => 'ep_task_users_id',
+            'on_delete'      => 'delete',
+            'on_store'       => 'store'
+
+        );
+
         parent::__construct($id);
         
         // on initial creation, clear chdate and mkdate, since the student did not touch the task (yet)

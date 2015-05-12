@@ -35,6 +35,10 @@ class EPPluginStudipController extends StudipController
         PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/jquery.iframe-transport.js');
         PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/jquery.fileupload.js');
         PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/jquery-ui-timepicker-1.1.1.js');
+
+        PageLayout::addStylesheet($this->getPluginURL().'/assets/javascripts/vendor/select2-3.5.1/select2.min.css');
+        PageLayout::addScript($this->getPluginURL().'/assets/javascripts/vendor/select2-3.5.1/select2.min.js');
+        PageLayout::addScript($this->getPluginURL().'/assets/javascripts/vendor/select2-3.5.1/select2_locale_de.js');
     }
 
     /**

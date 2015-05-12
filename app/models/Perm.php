@@ -83,4 +83,81 @@ class Perm
             );
         }
     }
+
+    /**
+     * get permissions for passed user for the passed task
+     * returns a permission matrix of the following style:
+     *  array(
+     *     'edit_task' =>
+     *     'edit_answer']   =>
+     *     'edit_feedback'] =>
+     *     'edit_goal']     =>
+     *     'close_task']    =>
+     *     'view_answer']   =>
+     *     'view_feedback'] =>
+     *     'view_goal']     =>
+     * )
+     *
+     * @param string $user_id
+     * @param object $task
+     *
+     * @return array
+     */
+    static function get($user_id, $task_user) {
+        $perms = array(
+            'edit_task'     => false,
+            'edit_settings' => true,
+            'edit_answer'   => true,
+            'edit_feedback' => false,
+            'edit_goal'     => false,
+            'close_task'    => false,
+            'view_answer'   => true,
+            'view_feedback' => true,
+            'view_goal'     => true
+        );
+
+         // as owner of a task, one may administer the task, but not the feedback
+        if ($user_id == $task->user_id) {
+            $perms['edit_task'] = true;
+
+        // for non-owners get role-specific perms
+        } else {
+            $perms['edit_task'] = false;
+
+            foreach($task_user->perms as $perm) {
+                if ($perm->user_id == $user_id) {
+                    switch($perm->role) {
+                        /*
+                        case 'tutor':
+                            $perms['edit_settings'] = false;
+                            $perms['edit_answer']   = false;
+                            $perms['edit_feedback'] = true;
+                            $perms['view_answer']   = true;
+                            $perms['view_feedback'] = true;
+                        break;
+
+                        case 'followup-tutor':
+                            $perms['edit_settings'] = false;
+                            $perms['edit_answer']   = false;
+                            $perms['edit_feedback'] = false;
+                            $perms['view_answer']   = false;
+                            $perms['view_feedback'] = false;
+                        break;
+                         * 
+                         */
+
+                        case 'student':
+                            $perms['edit_settings'] = false;
+                            $perms['edit_answer']   = true;
+                            $perms['edit_feedback'] = false;
+                            $perms['view_answer']   = true;
+                            $perms['view_feedback'] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $perms;
+    }
 }

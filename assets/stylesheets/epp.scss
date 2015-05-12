@@ -98,4 +98,21 @@
         background-color: #DEE2E8;
         padding: 5px;
     }
+
+    .three-columns {
+        width: 80%;
+
+        & > div {
+            width: 33%;
+            float: left;
+        }
+
+        a.button {
+            margin: 0px;
+        }
+    }
+    
+    label > span {
+        font-weight: bold;
+    }
 }

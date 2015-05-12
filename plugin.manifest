@@ -1,5 +1,5 @@
 pluginclassname=AufgabenPlugin
 pluginname=AufgabenPlugin
 origin=elan-ev
-version=1.1.2
+version=1.2.0
 studipMinVersion=2.3.x

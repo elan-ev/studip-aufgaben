@@ -28,7 +28,8 @@
 
     <div class="buttons">
         <div class="button-group">
-            <?= \Studip\LinkButton::createEdit(_('Bearbeiten'), $controller->url_for($cancel_route .'/'. $field .'#jumpto_'. $field)) ?>
+            <?= \Studip\LinkButton::createEdit(_('Bearbeiten'), $controller->url_for($cancel_route .'/'. $field 
+                    . ($task_user_id ? '?task_user_id='. $task_user_id : '') . '#jumpto_'. $field)) ?>
             <? /* <?= $delete_route ? \Studip\LinkButton::createDelete(_('Löschen'), $controller->url_for($delete)) : '' */ ?>
         </div>
     </div>    

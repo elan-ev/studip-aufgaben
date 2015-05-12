@@ -33,6 +33,7 @@
     </td>
     <td><%- size %> kb</td>
     <td><%- date %></td>
+    <td><a href="<%- user_url %>"><%- user_name %></a></td>
     <td>
         <a href="javascript:STUDIP.epp.removeFile('<%- seminar %>', '<%- id %>')">
             <?= Assets::img('icons/16/blue/trash.png') ?>
@@ -62,4 +63,18 @@
         </div>
     </div>    
 </div>
+</script>
+
+<script type="text/template" class="permission">
+    <div class="three-columns" style="margin: 5px" data-user="<%- user %>">
+        <div><%- fullname %></div>
+        <div><%- permission %></div>
+        <div>
+            <?= Assets::img('icons/16/blue/trash.png', array(
+                'title' => _('Berechtigung entfernen'),
+                'class' => 'link'
+            )) ?>
+        </div>
+        <br style="clear: both">
+    </div>
 </script>

@@ -2,9 +2,10 @@
 <table class="default zebra">
     <thead>
         <tr>
-            <th style="width:60%"><?= _('Datei') ?></th>
+            <th style="width:40%"><?= _('Datei') ?></th>
             <th style="width:10%"><?= _('Größe') ?></th>
             <th style="width:20%"><?= _('Datum') ?></th>
+            <th style="width:20%"><?= _('Besitzer') ?></th>
             <? if ($edit) : ?>
             <th style="width:10%"><?= _('Aktionen') ?></th>
             <? endif ?>
@@ -20,6 +21,12 @@
         </td>
         <td><?= round((($file->document->filesize / 1024) * 100) / 100, 2) ?> kb</td>
         <td><?= strftime($timeformat, $file->document->mkdate) ?></td>
+
+        <td>
+            <a href="<?= URLHelper::getLink('dispatch.php/profile?username='. get_username($file->document->user_id)) ?>">
+                <?= get_fullname($file->document->user_id) ?>
+            </a>
+        </td>
         
         <? if ($edit) : ?>
         <td>

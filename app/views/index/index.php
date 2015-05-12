@@ -42,15 +42,15 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
 
 <? if (empty($tasks)) : ?>
     <? if (EPP\Perm::has('new_task', $seminar_id)) : ?>
-    <?= MessageBox::info(sprintf(_('Sie haben noch keine Aufgaben angelegt. %sNeue Aufgabe anlegen.%s'),
-        '<a href="'. $controller->url_for('index/new_task') .'">', '</a>')); ?>
+        <?= MessageBox::info(sprintf(_('Sie haben noch keine Aufgaben angelegt. %sNeue Aufgabe anlegen.%s'),
+            '<a href="'. $controller->url_for('index/new_task') .'">', '</a>')); ?>
     <? else : ?>
-    <?= MessageBox::info(_('Es sind noch keine Aufgaben sichtbar/vorhanden')) ?>
+        <?= MessageBox::info(_('Es sind noch keine Aufgaben sichtbar/vorhanden')) ?>
     <? endif ?>
 <br><br><br><br><br><br><br>
 <? else : ?>
     <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview'))) ?>
-    <h2>Aufgaben</h2>
+    <h2><?= _('Aufgaben') ?></h2>
     <? if (EPP\Perm::has('new_task', $seminar_id)) : ?>
         <?= $this->render_partial('index/_index_dozent'); ?>
 
@@ -59,3 +59,8 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
         <?= $this->render_partial('index/_index_autor'); ?>
     <? endif; ?>
 <? endif ?>
+
+<? if(!empty($accessible_tasks)) : ?>
+    <h2><?= _('Für mich freigegebene Aufgaben') ?></h2>
+    <?= $this->render_partial('index/_index_autor_accessible', array('tasks' => $accessible_tasks)); ?>
+<? endif; ?>

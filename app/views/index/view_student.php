@@ -41,6 +41,18 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
 
 <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', $task['title']))) ?>
 
+<? if ($task_user->user_id != $GLOBALS['user']->id): ?>
+    <br><br>
+    <span>
+        <?= sprintf(_('Diese Aufgabe gehört: %s'),
+            '<a href="'. URLHelper::getLink('dispatch.php/profile?username='
+                . get_username($task_user->user_id)) .'">'
+                . get_fullname($task_user->user_id) . '</a>'
+        ) ?>
+    </span>
+    <br>
+<? endif ?>
+
 <?= $this->render_partial('index/_task_details') ?>
 
 <? if ($task_user['hint']) : ?>
