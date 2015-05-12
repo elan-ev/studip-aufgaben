@@ -64,7 +64,10 @@ class IndexController extends EPPluginStudipController
                 foreach ($this->tasks as $task) {
                     $reorder[$task->getStatus()][] = $task;
                 }
-                $reorder['running'] = array_reverse($reorder['running']);
+
+                if (is_array($reorder['running'])) {
+                    $reorder['running'] = array_reverse($reorder['running']);
+                }
 
                 $new_order = array();
 
