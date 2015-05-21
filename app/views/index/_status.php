@@ -17,8 +17,8 @@
         <? if (!$task_user) :  // create missing entries on the fly
             $task_user = EPP\TaskUsers::create(array(
                 'user_id' => $user->user_id,
-                'chdate' => 1, 
-                'mkdate' => 1,
+                'chdate' => 0,
+                'mkdate' => 0,
                 'ep_tasks_id' => $task->getId()
             ));
         endif ?>
