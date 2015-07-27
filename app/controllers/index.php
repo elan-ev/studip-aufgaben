@@ -371,7 +371,7 @@ class IndexController extends EPPluginStudipController
                 $dokument_id = md5(uniqid());
 
                 $document['dokument_id'] = $dokument_id;
-                $document['name'] = $document['filename'] = studip_utf8decode(strtolower($file['name']));
+                $document['name'] = $document['filename'] = studip_utf8decode($file['name']);
                 $document['user_id'] = $GLOBALS['user']->id;
                 $document['author_name'] = get_fullname();
                 $document['seminar_id'] = $task_user->user_id; // use the user_id here, prevents showing
