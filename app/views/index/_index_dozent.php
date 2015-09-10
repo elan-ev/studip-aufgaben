@@ -24,7 +24,7 @@
                     <?= _('Status') ?>
                 </a>
             </th>
-            <th style="width: 50px"><?= _('Aktionen') ?></th>
+            <th style="width: 80px"><?= _('Aktionen') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -47,6 +47,16 @@
             <td>
                 <a href="<?= $controller->url_for('/index/edit_task/' . $task['id']) ?>" title="<?= _('Diese Aufgabe bearbeiten') ?>">
                     <?= Assets::img('icons/16/blue/edit.png') ?>
+                </a>
+
+                <a href="<?= $controller->url_for('/index/zip/' . $task['id']) ?>" title="<?= _('Dokumente aller Aufgabenabgaben als Zip-Datei herunterladen') ?>">
+                    <?= Assets::img('icons/16/blue/download.png') ?>
+                </a>
+
+
+                <a href="javascript:STUDIP.epp.createQuestion('<?= _('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?') ?>',
+                        '<?= $controller->url_for('index/delete_task/' . $task['id']) ?>')" title="<?= _('Diese Aufgabe löschen') ?>" style="margin-left: 10px">
+                    <?= Assets::img('icons/16/blue/trash.png') ?>
                 </a>
             </td>
         </tr>

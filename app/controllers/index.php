@@ -482,4 +482,34 @@ class IndexController extends EPPluginStudipController
         $this->render_nothing();
     }
 
+    /**
+     * create a zip from all files attached to the solutions of the submitted task
+     * 
+     * @param int $task_id
+     */
+    function zip_action($task_id)
+    {
+        // get all file_ids
+        $task = new EPP\Tasks($task_id);
+
+        // create zip
+        $file_ids = array();
+
+        foreach ($task->task_users as $tu) {
+            foreach($tu->files as $file) {
+                $file_ids[] = $file->document->id;
+            }
+        }
+
+        $zip_file_id = createSelectedZip($file_ids, false, false);
+
+        if($zip_file_id){
+            $zip_name = prepareFilename($task->title .'-'. _('Abgaben der Studierenden').'.zip');
+            header('Location: ' . getDownloadLink($zip_file_id, $zip_name, 4));
+            page_close();
+            die;
+        }
+
+        throw new Exception('could not create zip file');
+    }
 }
