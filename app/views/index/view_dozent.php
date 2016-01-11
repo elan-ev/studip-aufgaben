@@ -14,6 +14,8 @@
  * @category    Stud.IP
  */
 
+$infobox_content[] = array();
+
 if ($task_user->ready) {
     $infobox_content[] = array(
         'kategorie' => _('Informationen'),
