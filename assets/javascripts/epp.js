@@ -13,7 +13,7 @@ jQuery(document).ready(function() {
             },
             done: function (e, data) {
                 var files = data.result;
-                
+
                 if (typeof files.errors === "object") {
                     var errorTemplateData = {
                         message: json.errors.join("\n")
@@ -39,7 +39,7 @@ jQuery(document).ready(function() {
                     });
                 }
             },
-                    
+
             progress: function (e, data) {
                 var kbs = parseInt(data._progress.bitrate / 8 / 1024);
                 var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -55,19 +55,19 @@ jQuery(document).ready(function() {
                 jQuery('#files_to_upload tr[data-fileid=' + id + '] td:nth-child(4)').html('');
                 jQuery('#files_to_upload tr[data-fileid=' + id + '] td:nth-child(5)').html('');
                 jQuery('#files_to_upload tr[data-fileid=' + id + '] td:nth-child(6)').html('');
-                    
+
                 jQuery('#files_to_upload').append(jQuery('#files_to_upload tr[data-fileid=' + id + ']').remove());
             }
         });
-        
+
         STUDIP.Aufgaben.Permissions.initialize();
-    });    
-    
+    });
+
     // load templates
     STUDIP.epp.fileTemplate         = _.template(jQuery("script.file_template").html());
-    STUDIP.epp.uploadedFileTemplate = _.template(jQuery("script.uploaded_file_template").html());        
-    STUDIP.epp.errorTemplate        = _.template(jQuery("script.error_template").html());        
-    STUDIP.epp.questionTemplate     = _.template(jQuery("script.confirm_dialog").html());        
+    STUDIP.epp.uploadedFileTemplate = _.template(jQuery("script.uploaded_file_template").html());
+    STUDIP.epp.errorTemplate        = _.template(jQuery("script.error_template").html());
+    STUDIP.epp.questionTemplate     = _.template(jQuery("script.confirm_dialog").html());
 });
 
 
@@ -191,9 +191,9 @@ STUDIP.epp = {
         if (STUDIP.epp.file_id == 1) {
             jQuery('#files_to_upload').html('');
         }
-        
+
         jQuery('#upload_button').removeClass('disabled');
-        
+
         var file = data.files[0];
         STUDIP.epp.files[data.id] = data;
 
@@ -207,8 +207,8 @@ STUDIP.epp = {
         jQuery('#files_to_upload').append(STUDIP.epp.fileTemplate(templateData));
 
         if(file.type == 'image/png'
-            || file.type == 'image/jpg' 
-            || file.type == 'image/gif' 
+            || file.type == 'image/jpg'
+            || file.type == 'image/gif'
             || file.type == 'image/jpeg') {
 
             var img = new Image();
@@ -224,24 +224,23 @@ STUDIP.epp = {
             jQuery('#files_to_upload tr:last-child td:first-child').append(img);
         }
     },
-            
+
     removeUploadFile: function(id) {
         var files = STUDIP.epp.files[id];
         delete STUDIP.epp.files[id];
 
         _.each(files, function(file) {
             if (file.jqXHR) {
-                file.jqXHR.abort();    
+                file.jqXHR.abort();
             }
         });
-        
+
         jQuery('#files_to_upload tr[data-fileid=' + id + ']').remove();
     },
-            
+
     removeFile: function(seminar_id, id) {
         jQuery.ajax(STUDIP.ABSOLUTE_URI_STUDIP + "plugins.php/aufgabenplugin/index"
                 + "/remove_file/" + id + "?cid=" + seminar_id, {
-            dataType: 'json',
             success : function() {
                 jQuery('#uploaded_files tr[data-fileid=' + id + ']').remove();
             },
@@ -257,7 +256,7 @@ STUDIP.epp = {
         if (jQuery('upload_button').hasClass('disabled')) {
             return;
         }
-        
+
         // set upload as disabled
         jQuery('#upload_button').addClass('disabled');
 
