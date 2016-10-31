@@ -21,19 +21,19 @@ require_once $this->trails_root .'/models/TaskUserFiles.php';
 require_once $this->trails_root .'/models/Perm.php';
 require_once $this->trails_root .'/models/Permissions.php';
 require_once $this->trails_root .'/models/Helper.php';
-    
+
 class IndexController extends EPPluginStudipController
 {
     function before_filter(&$action, &$args) {
         parent::before_filter($action, $args);
-        
+
         // set default layout
         $this->set_layout('layouts/layout');
-        
+
         $nav = Navigation::getItem('course/aufgabenplugin');
         $nav->setImage('icons/16/black/assessment.png');
         Navigation::activateItem('course/aufgabenplugin');
-        
+
         $this->seminar_id = $this->getSeminarId();
 
         $this->permissions = array(
@@ -43,7 +43,7 @@ class IndexController extends EPPluginStudipController
 
     function index_action()
     {
-        if (!Request::option('sort_by') 
+        if (!Request::option('sort_by')
             || in_array(Request::option('sort_by'), words('title startdate enddate')) === false) {
             $this->sort  = 'enddate';
             $this->order = 'desc';
@@ -51,9 +51,9 @@ class IndexController extends EPPluginStudipController
             $this->sort  = Request::option('sort_by');
             $this->order = Request::option('asc') ? 'asc' : 'desc';
         }
-        
+
         if (EPP\Perm::has('new_task', $this->seminar_id)) {
-            $this->tasks = EPP\Tasks::findBySQL("seminar_id = ? 
+            $this->tasks = EPP\Tasks::findBySQL("seminar_id = ?
                 ORDER BY {$this->sort} {$this->order}, startdate DESC", array($this->seminar_id));
         } else {
             $this->tasks = EPP\Tasks::findBySQL("seminar_id = ? /* AND startdate <= UNIX_TIMESTAMP() */
@@ -83,12 +83,12 @@ class IndexController extends EPPluginStudipController
 
         $this->accessible_tasks = EPP\Helper::getForeignTasksForUser($GLOBALS['user']->id);
     }
-    
+
     function new_task_action()
     {
         EPP\Perm::check('new_task', $this->seminar_id);
     }
-    
+
     function add_task_action()
     {
         EPP\Perm::check('new_task', $this->seminar_id);
@@ -106,20 +106,20 @@ class IndexController extends EPPluginStudipController
         );
 
         $task = \EPP\Tasks::create($data);
-        
+
         $this->redirect('index/index');
     }
-    
+
     function update_task_action($id)
     {
         EPP\Perm::check('new_task', $this->seminar_id);
-        
+
         $task = new EPP\Tasks($id);
 
         if ($task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
-        
+
         $data = array(
             'seminar_id'  => $this->seminar_id,
             'user_id'     => $GLOBALS['user']->id,
@@ -134,36 +134,36 @@ class IndexController extends EPPluginStudipController
 
         $task->setData($data);
         $task->store();
-        
+
         $this->redirect('index/view_task/' . $id);
     }
-    
+
     function delete_task_action($id)
     {
         EPP\Perm::check('new_task', $this->seminar_id);
-        
+
         $task = new EPP\Tasks($id);
-        
+
         if ($task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         $task->delete();
-        
+
         $this->redirect('index/index');
     }
-    
+
     function edit_task_action($id)
     {
         EPP\Perm::check('new_task', $this->seminar_id);
 
         $this->task = new EPP\Tasks($id);
-        
+
         if ($this->task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
     }
-    
+
     function view_dozent_action($task_user_id, $edit_field = null)
     {
         EPP\Perm::check('new_task', $this->seminar_id);
@@ -172,26 +172,26 @@ class IndexController extends EPPluginStudipController
         if ($edit_field) {
             $this->edit[$edit_field] = true;
         }
-        
+
         $this->task_user = new \EPP\TaskUsers($task_user_id);
         $this->task      = new \EPP\Tasks($this->task_user->ep_tasks_id);
-        
+
         if ($this->task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
-        }        
+        }
     }
-    
+
     function update_dozent_action($task_user_id)
     {
         EPP\Perm::check('new_task', $this->seminar_id);
 
         $task_user = new \EPP\TaskUsers($task_user_id);
         $task      = new \EPP\Tasks($task_user->ep_tasks_id);
-        
+
         if ($task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
-        
+
         if (Request::get('feedback') !== null && $task->startdate <= time()) {
             $task_user->feedback = Request::get('feedback');
             $task_user->store();
@@ -199,24 +199,24 @@ class IndexController extends EPPluginStudipController
             $task_user->hint = Request::get('hint');
             $task_user->store();
         }
-        
+
         $this->redirect('index/view_dozent/' . $task_user_id);
     }
-    
-    
+
+
     function view_task_action($id)
     {
         EPP\Perm::check('new_task', $this->seminar_id);
 
         $this->task = new EPP\Tasks($id);
         $this->participants = CourseMember::findByCourse($this->seminar_id);
-        
+
         if ($this->task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
 
     }
-    
+
     function view_student_action($id, $edit_field = null)
     {
         // if the second parameter is present, the passed field shall be edited
@@ -253,7 +253,7 @@ class IndexController extends EPPluginStudipController
             throw new AccessDeniedException(_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe.'));
         }
     }
-    
+
     function update_student_action($task_id, $task_user_id)
     {
         $task = new EPP\Tasks($task_id);
@@ -281,7 +281,7 @@ class IndexController extends EPPluginStudipController
             $this->redirect('index/view_student/' . $task_id);
         }
     }
-    
+
     function set_ready_action($task_id)
     {
         $task = new EPP\Tasks($task_id);
@@ -292,15 +292,15 @@ class IndexController extends EPPluginStudipController
 
         if ($task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
-        }        
-        
+        }
+
         $task_user = reset(\EPP\TaskUsers::findBySQL('user_id = ? AND ep_tasks_id = ?', array($GLOBALS['user']->id, $task->getId())));
         $task_user->ready = 1;
         $task_user->store();
-        
+
         $this->redirect('index/view_student/' . $task->getId());
     }
-    
+
     function remove_file_action($file_id)
     {
         $file = new \EPP\TaskUserFiles($file_id);
@@ -315,10 +315,10 @@ class IndexController extends EPPluginStudipController
             delete_document($file->document->getId());
             $file->delete();
         }
-            
+
         $this->render_nothing();
     }
-    
+
     function post_files_action($task_user_id, $type)
     {
         $task_user = new \EPP\TaskUsers($task_user_id);
@@ -331,7 +331,7 @@ class IndexController extends EPPluginStudipController
         if ($task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
         }
-        
+
         // user adds file(s) to its solution of the task
         if ($task_user->user_id == $GLOBALS['user']->id && $GLOBALS['perm']->have_studip_perm('autor', $this->seminar_id)) {
             $type = 'answer';
@@ -355,7 +355,7 @@ class IndexController extends EPPluginStudipController
                 || !$GLOBALS['perm']->have_studip_perm("autor", $this->seminar_id)) {
             throw new AccessDeniedException("Kein Zugriff");
         }
-        
+
         $output = array();
 
         foreach ($_FILES as $file) {
@@ -384,9 +384,9 @@ class IndexController extends EPPluginStudipController
                     'dokument_id'      => $dokument_id,
                     'type'             => $type
                 );
-                
+
                 $taskfile = \EPP\TaskUserFiles::create($data);
-                
+
                 if ($newfile = StudipDocument::createWithFile($file['tmp_name'], $document)) {
                     $output[] = array(
                         'url'        => studip_utf8encode(GetDownloadLink($newfile->getId(), $newfile['filename'])),
@@ -424,9 +424,6 @@ class IndexController extends EPPluginStudipController
             throw new AccessDeniedException();
         }
 
-
-        $perm = new EPP\Permissions();
-
         $user_id = get_userid(Request::get('user'));
 
         // the user ist not allowed to store a perm for himself
@@ -439,9 +436,11 @@ class IndexController extends EPPluginStudipController
         foreach ($task_user->perms as $key => $perm) {
             if ($perm->user_id == $user_id) {
                 $this->response->set_status(400, _('Für diesen Nutzer existiert bereits eine andere Berechtigung!'));
+                return;
             }
-            return;
         }
+
+        $perm = new EPP\Permissions();
 
         // add new permission entry
         $perm->setData(array(
@@ -484,7 +483,7 @@ class IndexController extends EPPluginStudipController
 
     /**
      * create a zip from all files attached to the solutions of the submitted task
-     * 
+     *
      * @param int $task_id
      */
     function zip_action($task_id)
