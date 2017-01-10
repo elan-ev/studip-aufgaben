@@ -385,9 +385,9 @@ class IndexController extends EPPluginStudipController
                     'type'             => $type
                 );
 
-                $taskfile = \EPP\TaskUserFiles::create($data);
-
                 if ($newfile = StudipDocument::createWithFile($file['tmp_name'], $document)) {
+                    $taskfile = \EPP\TaskUserFiles::create($data);
+
                     $output[] = array(
                         'url'        => studip_utf8encode(GetDownloadLink($newfile->getId(), $newfile['filename'])),
                         'id'         => $taskfile->getId(),
@@ -398,6 +398,8 @@ class IndexController extends EPPluginStudipController
                         'user_url'   => studip_utf8encode(URLHelper::getLink('dispatch.php/profile?username='. get_username($GLOBALS['user']->id))),
                         'user_name'  => studip_utf8encode(get_fullname($GLOBALS['user']->id))
                     );
+                } else {
+                    throw new Exception(_("Konnte Datei nicht erstellen!"));
                 }
             }
         }
