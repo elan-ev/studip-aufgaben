@@ -13,5 +13,8 @@ Weitere Infos auf der HP unter http://tgloeggl.github.io/studip-aufgaben/
 
 # Changelog
 
+## 1.3.4
+* Serverseitig fehlgeschlagener Dateiupload führte zu Inkonsistenzen in der Datenbank
+
 ## 1.3.3
 * Es konnte nur eine einzige Berechtigung pro Aufgabe gespeichert werden, das ist nun behoben
