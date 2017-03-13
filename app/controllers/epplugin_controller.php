@@ -47,8 +47,8 @@ class EPPluginStudipController extends StudipController
 
     /**
      * a wrapper to allow retrieving the plugin-url in the controllers
-     * 
-     * @return string 
+     *
+     * @return string
      */
     function getPluginURL()
     {
@@ -57,11 +57,11 @@ class EPPluginStudipController extends StudipController
 
     /**
      * overwrite the default url_for to enable to it work in plugins
-     * 
+     *
      * @param type $to
      * @return type
      */
-    function url_for($to)
+    function url_for($to = '')
     {
         $args = func_get_args();
 
@@ -81,7 +81,7 @@ class EPPluginStudipController extends StudipController
     /**
      * Throw an array at this function and it will call render_text to output
      * the json-version of that array while setting an appropriate http-header
-     * 
+     *
      * @param array $data
      */
     function render_json($data)
@@ -93,7 +93,7 @@ class EPPluginStudipController extends StudipController
 
     /**
      * Return the Content-Type of the HTTP request.
-     * 
+     *
      * @return string the content type
      */
     function contentType()
@@ -103,10 +103,10 @@ class EPPluginStudipController extends StudipController
         }
         return null;
     }
-    
+
     /**
      * checks all possible locations of a valid seminar_id and retuns it if found
-     * 
+     *
      * @return string the found seminar_id
      */
     public function getSeminarId()
