@@ -71,13 +71,16 @@ class IndexController extends \EPP\Controller
 
         $this->accessible_tasks = EPP\Helper::getForeignTasksForUser($GLOBALS['user']->id);
 
-        $actions = new ActionsWidget();
-        $actions->addLink(
-            _('Neue Aufgabe anlegen'),
-            $this->url_for('index/new_task'),
-            Icon::create('add')
-        )->asDialog('size=50%');
-        Sidebar::Get()->addWidget($actions);
+        if (EPP\Perm::has('new_task', $this->seminar_id)) {
+            $actions = new ActionsWidget();
+            $actions->addLink(
+                _('Neue Aufgabe anlegen'),
+                $this->url_for('index/new_task'),
+                Icon::create('add')
+            )->asDialog('size=50%');
+
+            Sidebar::Get()->addWidget($actions);
+        }
     }
 
     public function new_task_action()
