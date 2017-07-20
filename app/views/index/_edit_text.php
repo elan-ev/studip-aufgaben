@@ -1,37 +1,35 @@
 <a name="jumpto_<?= $field ?>"></a>
 
-<? if ($edit[$field]) : ?>
+<section class="contentbox">
+    <header>
+        <h1><?= $name ?></h1>
+    </header>
 
-<form action="<?= $controller->url_for($form_route) ?>" method="post">
-    <b><?= $name ?>:</b><br>
-    <br>
-    <textarea name="<?= $field ?>" class="add_toolbar" style="width: 100%; height: 400px;"><?= htmlReady($text) ?></textarea>
-    <br>
+    <? if ($edit[$field]) : ?>
+        <section>
+            <form action="<?= $controller->url_for($form_route) ?>" method="post">
+                <?= CSRFProtection::tokenTag() ?>
+                <textarea name="<?= $field ?>" class="add_toolbar" aria-labelledby="<?= $name ?>"
+                          style="width: 100%; height: 400px;"><?= htmlReady($text) ?></textarea>
+                <footer>
+                    <?= \Studip\Button::createAccept(_('Speichern')) ?>
+                    <?= \Studip\LinkButton::createCancel(_('Abbrechen'), $controller->url_for($cancel_route . '#jumpto_' . $field)) ?>
+                </footer>
+            </form>
 
-    <div class="buttons">
-        <div class="button-group">
-            <?= \Studip\Button::createAccept(_('Speichern')) ?>
-            <?= \Studip\LinkButton::createCancel(_('Abbrechen'), $controller->url_for($cancel_route .'#jumpto_'. $field)) ?>
-        </div>
-    </div>
-</form>
-
-<? else : ?>
-
-    <b><?= $name ?>:</b><br>
-    <? if ($text) : ?>
-    <br>
-    <?= formatReady($text) ?><br>
+        </section>
     <? else : ?>
-    <span class="empty_text"><?= _('Es wurde noch kein Text eingegeben') ?></span>
-    <? endif ?>
 
-    <div class="buttons">
-        <div class="button-group">
-            <?= \Studip\LinkButton::createEdit(_('Bearbeiten'), $controller->url_for($cancel_route .'/'. $field 
-                    . ($task_user_id ? '?task_user_id='. $task_user_id : '') . '#jumpto_'. $field)) ?>
-            <? /* <?= $delete_route ? \Studip\LinkButton::createDelete(_('Löschen'), $controller->url_for($delete)) : '' */ ?>
-        </div>
-    </div>    
-
-<? endif; ?>
+        <section>
+            <? if ($text) : ?>
+                <?= formatReady($text) ?>
+            <? else : ?>
+                <p style="text-align: center"><?= _('Es wurde noch kein Text eingegeben') ?></p>
+            <? endif ?>
+        </section>
+        <footer>
+            <?= \Studip\LinkButton::createEdit(_('Bearbeiten'), $controller->url_for($cancel_route . '/' . $field
+                . ($task_user_id ? '?task_user_id=' . $task_user_id : '') . '#jumpto_' . $field)) ?>
+        </footer>
+    <? endif; ?>
+</section>

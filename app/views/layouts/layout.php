@@ -1,4 +1,8 @@
-<? $this->set_layout($GLOBALS['template_factory']->open('layouts/base')); ?>
+<?
+$layout = Request::isXhr() ? 'dialog' : 'base';
+$this->set_layout($GLOBALS['template_factory']->open('layouts/' . $layout));
+
+?>
 
 <div id="epp">
     <?= $this->render_partial('index/_js_templates') ?>

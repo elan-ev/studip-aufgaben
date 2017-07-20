@@ -14,7 +14,7 @@ namespace EPP;
 
 class Helper
 {
-    static function getForeignTasksForUser($user_id)
+    public static function getForeignTasksForUser($user_id)
     {
         $task_users = array();
 

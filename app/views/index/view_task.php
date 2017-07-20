@@ -13,30 +13,17 @@
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
  */
-
-$infobox_content[] = array(
-    'kategorie' => _('Aktionen'),
-    'eintrag'   => array(
-    )
-);
-
-$infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_content);
 ?>
 
 <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', $task['title']))) ?>
 
 <?= $this->render_partial('index/_task_details') ?>
 
-<br>
-<b><?= strftime($timeformat, $task['startdate']) ?> - <?= strftime($timeformat, $task['enddate']) ?></b>
-
-<div class="buttons">
-    <div class="button-group">
-        <?= \Studip\LinkButton::createEdit(_('Bearbeiten'), $controller->url_for('index/edit_task/' . $task['id'])) ?>
-        <?= \Studip\LinkButton::createDelete(_('Löschen'), 'javascript:STUDIP.epp.createQuestion("'. 
-            _('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?') .'",
-            "'. $controller->url_for('index/delete_task/' . $task['id']) .'");') ?>
-    </div>
-</div>
-
-<?= $this->render_partial('index/_status.php', compact('participants')) ?>
+<section class="contentbox">
+    <header>
+        <h1>
+            <?= strftime($timeformat, $task['startdate']) ?> - <?= strftime($timeformat, $task['enddate']) ?>
+        </h1>
+    </header>
+    <?= $this->render_partial('index/_status.php', compact('participants')) ?>
+</section>

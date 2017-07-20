@@ -26,15 +26,6 @@ foreach ($path as $step) :
                 $breadcrumb[] = '<a href="'. $controller->url_for('index/index') .'">'
                               . _('Übersicht') . '</a>';
             break;
-
-            case 'new_task':
-                $breadcrumb[] = _('Neue Aufgabe anlegen');
-            break;
-
-            case 'edit_task':
-                $breadcrumb[] = _('Aufgabe bearbeiten');
-            break;
-
             case 'view_dozent':
                 $breadcrumb[] = $step;
             break;

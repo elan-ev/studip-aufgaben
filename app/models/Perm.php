@@ -27,7 +27,7 @@ class Perm
      * @param string $user_id     the user to check for
      * @return boolean  true, if the user has the perms, false otherwise
      */
-    static function has($perm, $seminar_id, $user_id = null)
+    public static function has($perm, $seminar_id, $user_id = null)
     {
         static $permissions = array();
         
@@ -74,7 +74,7 @@ class Perm
      * 
      * @throws AccessDeniedException
      */
-    function check($perm, $seminar_id)
+    public function check($perm, $seminar_id)
     {
         if (!self::has($perm, $seminar_id)) {
             throw new \AccessDeniedException(sprintf(
@@ -103,7 +103,7 @@ class Perm
      *
      * @return array
      */
-    static function get($user_id, $task_user) {
+    public static function get($user_id, $task_user) {
         $perms = array(
             'edit_task'     => false,
             'edit_settings' => true,
@@ -117,7 +117,7 @@ class Perm
         );
 
          // as owner of a task, one may administer the task, but not the feedback
-        if ($user_id == $task->user_id) {
+        if ($user_id == $task_user->user_id) {
             $perms['edit_task'] = true;
 
         // for non-owners get role-specific perms
@@ -127,25 +127,6 @@ class Perm
             foreach($task_user->perms as $perm) {
                 if ($perm->user_id == $user_id) {
                     switch($perm->role) {
-                        /*
-                        case 'tutor':
-                            $perms['edit_settings'] = false;
-                            $perms['edit_answer']   = false;
-                            $perms['edit_feedback'] = true;
-                            $perms['view_answer']   = true;
-                            $perms['view_feedback'] = true;
-                        break;
-
-                        case 'followup-tutor':
-                            $perms['edit_settings'] = false;
-                            $perms['edit_answer']   = false;
-                            $perms['edit_feedback'] = false;
-                            $perms['view_answer']   = false;
-                            $perms['view_feedback'] = false;
-                        break;
-                         * 
-                         */
-
                         case 'student':
                             $perms['edit_settings'] = false;
                             $perms['edit_answer']   = true;

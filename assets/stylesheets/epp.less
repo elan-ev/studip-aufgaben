@@ -1,0 +1,59 @@
+#epp {
+    table {
+        tr.running {
+            background-color: @yellow;
+        }
+        tr.future {
+            background-color: @orange-40;
+        }
+    }
+
+    #files_to_upload {
+        min-width: 500px;
+        width: auto;
+        tr {
+            td:nth-child(1) {
+                width: 100px;
+
+                img {
+                    max-width: 90px;
+                    max-height: 60px;
+                }
+            }
+
+            td:nth-child(2) {
+                padding: 3px 10px;
+            }
+
+            td:nth-child(3) {
+                padding: 3px 10px;
+                width: 100px;
+            }
+        }
+    }
+
+    span.file_error, span.error {
+        display: block;
+        background-color: @red-80;
+        padding: 5px;
+        white-space:nowrap;
+        position: absolute;
+        width: auto;
+        top: auto;
+        font-size: 1em;
+    }
+
+    .three-columns {
+        .flex();
+        .flex-wrap(wrap);
+        width: 100%;
+
+        & > div {
+            .flex-item(0,0, 33%);
+        }
+
+        a.button {
+            margin: 0px;
+        }
+    }
+}

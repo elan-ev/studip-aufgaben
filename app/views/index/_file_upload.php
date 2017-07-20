@@ -27,6 +27,5 @@ $max = $GLOBALS['UPLOAD_TYPES'][$art]["file_sizes"][$GLOBALS['perm']->get_studip
 
 <table class="default zebra">
     <tbody id="files_to_upload">
-        
     </tbody>
 </table>
