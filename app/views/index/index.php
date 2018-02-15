@@ -1,9 +1,9 @@
 <? if (empty($tasks)) : ?>
     <? if (EPP\Perm::has('new_task', $seminar_id)) : ?>
-        <?= MessageBox::info(sprintf(_('Sie haben noch keine Aufgaben angelegt. %sNeue Aufgabe anlegen.%s'),
+        <?= MessageBox::info(sprintf($_('Sie haben noch keine Aufgaben angelegt. %sNeue Aufgabe anlegen.%s'),
             '<a href="' . $controller->url_for('index/new_task') . '" data-dialog="size=50%">', '</a>')); ?>
     <? else : ?>
-        <?= MessageBox::info(_('Es sind noch keine Aufgaben sichtbar/vorhanden')) ?>
+        <?= MessageBox::info($_('Es sind noch keine Aufgaben sichtbar/vorhanden')) ?>
     <? endif ?>
 <? else : ?>
     <?= $this->render_partial('index/_breadcrumb', ['path' => ['overview']]) ?>

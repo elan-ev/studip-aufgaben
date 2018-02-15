@@ -1,35 +1,39 @@
 <table class="default zebra tablesorter" id="ep_tasks">
+<<<<<<< HEAD
     <caption><?= _('Für mich freigegebene Aufgaben') ?></caption>
+=======
+    <caption><?= $_('Für mich freigegebene Aufgaben') ?></caption>
+>>>>>>> origin/master
     <thead>
         <tr class="sortable">
             <th <?= $sort == 'title' ? 'class="sort' . $order . '"' : '' ?> style="width: auto">
                 <a href="<?= $controller->url_for('index/index?sort_by=title' . ($order == 'desc' ? '&asc=1' : '')) ?>">
-                    <?= _('Aufgabe') ?>
+                    <?= $_('Aufgabe') ?>
                 </a>
             </th>
             <th>
-                <?= _('Besitzer') ?>
+                <?= $_('Besitzer') ?>
             </th>
             <th <?= $sort == 'startdate' ? 'class="sort' . $order . '"' : '' ?> style="width: 120px;">
                 <a href="<?= $controller->url_for('index/index?sort_by=startdate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
-                    <?= _('Start') ?>
+                    <?= $_('Start') ?>
                 </a>
             </th>
             <th <?= $sort == 'enddate' ? 'class="sort' . $order . '"' : '' ?> style="width: 120px;">
                 <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
-                    <?= _('Ende') ?>
+                    <?= $_('Ende') ?>
                 </a>
             </th>
             <th <?= $sort == 'enddate' ? 'class="sort' . $order . '"' : '' ?> style="width: 80px;">
                 <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
-                    <?= _('Status') ?>
+                    <?= $_('Status') ?>
                 </a>
             </th>
             <th colspan="2" style="text-align: center">
-                <?= _('Arbeit') ?>
+                <?= $_('Arbeit') ?>
             </th>
             <th colspan="2" style="text-align: center">
-                <?= _('Feedback') ?>
+                <?= $_('Feedback') ?>
             </th>
         </tr>
     </thead>
@@ -39,7 +43,11 @@
                 <td>
                     <? if ($task_user->task->startdate <= time()) : ?>
                         <a href="<?= $controller->url_for('/index/view_student/' . $task_user->task['id'] . '?task_user_id=' . $task_user->id) ?>"
+<<<<<<< HEAD
                            title="<?= _('Diese Aufgabe anzeigen') ?>">
+=======
+                           title="<?= $_('Diese Aufgabe anzeigen') ?>">
+>>>>>>> origin/master
                             <?= htmlReady($task_user->task['title']) ?>
                         </a>
                     <? else : ?>
@@ -61,6 +69,7 @@
                 </td>
                 <td style="width: 50px; text-align: right">
                     <?= (!$task_user || $task_user->answer === null) ? '0' : strlen($task_user->answer) ?>
+<<<<<<< HEAD
                     <?= Icon::create('file-text', 'info', tooltip2(_('Antworttext'))) ?>
                 </td>
                 <td style="width: 40px">
@@ -74,6 +83,21 @@
                 <td style="width: 40px">
                     <?= $task_user ? sizeof($task_user->files->findBy('type', 'feedback')) : 0 ?>
                     <?= Icon::create('file-generic', 'info', tooltip2(_('Hochgeladene Dateien'))) ?>
+=======
+                    <?= Icon::create('file-text', 'info', tooltip2($_('Antworttext'))) ?>
+                </td>
+                <td style="width: 40px">
+                    <?= $task_user ? sizeof($task_user->files->findBy('type', 'answer')) : 0 ?>
+                    <?= Icon::create('file-generic', 'info', tooltip2($_('Hochgeladene Dateien'))) ?>
+                </td>
+                <td style="width:50px; text-align: right">
+                    <?= (!$task_user || $task_user->feedback === null) ? '0' : strlen($task_user->feedback) ?>
+                    <?= Icon::create('file-text', 'info', tooltip2($_('Antworttext'))) ?>
+                </td>
+                <td style="width: 40px">
+                    <?= $task_user ? sizeof($task_user->files->findBy('type', 'feedback')) : 0 ?>
+                    <?= Icon::create('file-generic', 'info', tooltip2($_('Hochgeladene Dateien'))) ?>
+>>>>>>> origin/master
                 </td>
             </tr>
         <? endforeach ?>

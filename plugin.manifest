@@ -1,8 +1,10 @@
 pluginclassname=AufgabenPlugin
 pluginname=Aufgaben
 origin=elan-ev
-version=1.4
+version=1.5
 studipMinVersion=3.5
+studipMaxVersion=3.5.99
+
 description=Erstellung und Bereitstellung zeitgesteuerter Aufgaben für Studierende
 
 screenshot = assets/images/screenshots/Aufgabenuebersicht.png
@@ -10,7 +12,7 @@ screenshot = assets/images/screenshots/Aufgabe_erstellen.png
 screenshot = assets/images/screenshots/Aufgabendetails.png
 screenshot = assets/images/screenshots/Dateien_Hochladen.png
 
-icon = ../../../assets/images/icons/16/black/assessment.png
+icon = ../../../assets/images/icons/black/assessment.svg
 
 category = Inhalte und Aufgabenstellungen
 displayname = Aufgaben

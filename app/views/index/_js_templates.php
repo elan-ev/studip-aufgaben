@@ -6,7 +6,7 @@
     </td>
     <td style="width: 25%">
         <% if (error) { %>
-        <span class="file_error"><?= _('Datei zu groß!') ?></span>
+        <span class="file_error"><?= $_('Datei zu groß!') ?></span>
         <% } else { %>
         <progress value="0" max="100" style="width: 100%"></progress>
         <% } %>
@@ -58,10 +58,10 @@
             <%- question %>
         </div>
         <div class="buttons">
-            <a class="accept button" href="<%- confirm %>"><?= _('Ja') ?></a>
-            <?= Studip\LinkButton::createCancel(_('Nein'), 'javascript:STUDIP.epp.closeQuestion()') ?>
+            <a class="accept button" href="<%- confirm %>"><?= $_('Ja') ?></a>
+            <?= Studip\LinkButton::createCancel($_('Nein'), 'javascript:STUDIP.epp.closeQuestion()') ?>
         </div>
-    </div>    
+    </div>
 </div>
 </script>
 
@@ -71,7 +71,7 @@
         <div><%- permission %></div>
         <div>
             <?= Assets::img('icons/16/blue/trash.png', array(
-                'title' => _('Berechtigung entfernen'),
+                'title' => $_('Berechtigung entfernen'),
                 'class' => 'link'
             )) ?>
         </div>

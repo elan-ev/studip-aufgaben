@@ -15,7 +15,7 @@
  */
 
 $infobox_content[] = array(
-    'kategorie' => _('Aktionen'),
+    'kategorie' => $_('Aktionen'),
     'eintrag'   => array(
     )
 );
@@ -25,37 +25,37 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
 
 <?= $this->render_partial('index/_breadcrumb', array('path' => array('overview', 'new_task'))) ?>
 
-<h2><?= _('Neue Aufgabe anlegen') ?></h2>
+<h2><?= $_('Neue Aufgabe anlegen') ?></h2>
 
 <form action="<?= $controller->url_for('index/add_task') ?>" method="post">
     <div class="task">
-        <span class="label"><?= _('Titel') ?></span>
+        <span class="label"><?= $_('Titel') ?></span>
         <input type="text" name="title" required><br>
         <br>
 
-        <span class="label"><?= _('Aufgabenbeschreibung') ?></span>
+        <span class="label"><?= $_('Aufgabenbeschreibung') ?></span>
         <textarea name="content" required></textarea><br>
 
         <label>
             <input type="checkbox" name="allow_text" value="1">
-            <?= _('Texteingabe erlauben') ?>
+            <?= $_('Texteingabe erlauben') ?>
         </label>
 
         <label>
             <input type="checkbox" name="allow_files" value="1">
-            <?= _('Dateiupload erlauben') ?>
+            <?= $_('Dateiupload erlauben') ?>
         </label>
     </div>
 
     <div class="visibility">
         <div>
-            <?= _('Sichtbar und bearbeitbar ab') ?>:<br>
-            <input type="datetime" name="startdate" placeholder="<?= _('tt.mm.jjjj ss:mm') ?>" required>
+            <?= $_('Sichtbar und bearbeitbar ab') ?>:<br>
+            <input type="datetime" name="startdate" placeholder="<?= $_('tt.mm.jjjj ss:mm') ?>" required>
         </div>
 
         <div>
-            <?= _('Bearbeitbar bis') ?>:<br>
-            <input type="datetime" name="enddate" placeholder="<?= _('tt.mm.jjjj ss:mm') ?>" required>
+            <?= $_('Bearbeitbar bis') ?>:<br>
+            <input type="datetime" name="enddate" placeholder="<?= $_('tt.mm.jjjj ss:mm') ?>" required>
         </div>
 
 
@@ -65,14 +65,14 @@ $infobox = array('picture' => 'infobox/schedules.jpg', 'content' => $infobox_con
     <? /*
     <label>
         <input type="checkbox" name="send_mail" value="1">
-        <?= _('Mail an alle sobald sichtbar') ?>
+        <?= $_('Mail an alle sobald sichtbar') ?>
     </label>
     */ ?>
 
     <div class="buttons">
         <div class="button-group">
-            <?= \Studip\Button::createAccept(_('Anlegen')) ?>
-            <?= \Studip\LinkButton::createCancel(_('Abbrechen'), $controller->url_for('index/index')) ?>
+            <?= \Studip\Button::createAccept($_('Anlegen')) ?>
+            <?= \Studip\LinkButton::createCancel($_('Abbrechen'), $controller->url_for('index/index')) ?>
         </div>
     </div>
 </form>

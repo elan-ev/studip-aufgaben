@@ -14,6 +14,8 @@ require_once 'bootstrap.php';
 
 class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
 {
+    const GETTEXT_DOMAIN = 'aufgaben';
+
     /**
      * Does nothing if plugin is not activated in the current course.
      * In Stud.IP versions prior 2.5 navigation is built here
@@ -27,15 +29,74 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
             return;
         }
 
+        bindtextdomain(static::GETTEXT_DOMAIN, $this->getPluginPath() . '/locale');
+        bind_textdomain_codeset(static::GETTEXT_DOMAIN, 'ISO-8859-1');
+
         $GLOBALS['epplugin_path'] = $this->getPluginURL();
         if (Navigation::hasItem('/course') && version_compare($GLOBALS['SOFTWARE_VERSION'], '2.3', '>=')) {
-            $navigation = new Navigation(_('Aufgaben'), PluginEngine::getLink('aufgabenplugin/index'));
+            $navigation = new Navigation($this->_('Aufgaben'), PluginEngine::getLink('aufgabenplugin/index'));
             $navigation->setImage(Icon::create('assessment'));
             Navigation::addItem('/course/aufgabenplugin', $navigation);
 
-            $navigation = new Navigation(_('Übersicht'), PluginEngine::getLink('aufgabenplugin/index'));
+            $navigation = new Navigation($this->_('Übersicht'), PluginEngine::getLink('aufgabenplugin/index'));
             Navigation::addItem('/course/aufgabenplugin/overview', $navigation);
         }
+    }
+
+    /**
+     * Plugin localization for a single string.
+     * This method supports sprintf()-like execution if you pass additional
+     * parameters.
+     *
+     * @param String $string String to translate
+     * @return translated string
+     */
+    public function _($string)
+    {
+        $result = static::GETTEXT_DOMAIN === null
+                ? $string
+                : dcgettext(static::GETTEXT_DOMAIN, $string, LC_MESSAGES);
+        if ($result === $string) {
+            $result = _($string);
+        }
+
+        if (func_num_args() > 1) {
+            $arguments = array_slice(func_get_args(), 1);
+            $result = vsprintf($result, $arguments);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Plugin localization for plural strings.
+     * This method supports sprintf()-like execution if you pass additional
+     * parameters.
+     *
+     * @param String $string0 String to translate (singular)
+     * @param String $string1 String to translate (plural)
+     * @param mixed  $n       Quantity factor (may be an array or array-like)
+     * @return translated string
+     */
+    public function _n($string0, $string1, $n)
+    {
+        if (is_array($n)) {
+            $n = count($n);
+        }
+
+        $result = static::GETTEXT_DOMAIN === null
+                ? $string0
+                : dngettext(static::GETTEXT_DOMAIN, $string0, $string1, $n);
+        if ($result === $string0 || $result === $string1) {
+            $result = ngettext($string0, $string1, $n);
+        }
+
+        if (func_num_args() > 3) {
+            $arguments = array_slice(func_get_args(), 3);
+            $result = vsprintf($result, $arguments);
+        }
+
+        return $result;
     }
 
     /**
@@ -63,7 +124,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
 
         $navigation = new Navigation('aufgabenplugin', PluginEngine::getLink('aufgabenplugin/index'));
         $navigation->setImage(Icon::create('assessment', 'inactive'), [
-            'title' => _('Es gibt nichts neues seit Ihrem letzten Besuch.')
+            'title' => $this->_('Es gibt nichts neues seit Ihrem letzten Besuch.')
         ]);
 
         // for lecturers show the number of new activites from their students
@@ -80,7 +141,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
 
             if ($act_num > 0) {
                 $navigation->setImage(Icon::create('assessment', 'attention'), [
-                    'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es %s neue Aktivitäten'), $act_num)
+                    'title' => sprintf($this->_('Seit Ihrem letzten Besuch gibt es %s neue Aktivitäten'), $act_num)
                 ]);
             }
         } else {    // for students show the number of new, visible, tasks
@@ -90,7 +151,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
 
             if (sizeof($tasks) > 0) {
                 $navigation->setImage(Icon::create('assessment', 'attention'), [
-                    'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es %s neue Aufgaben.'), sizeof($tasks))
+                    'title' => sprintf($this->_('Seit Ihrem letzten Besuch gibt es %s neue Aufgaben.'), sizeof($tasks))
                 ]);
             }
         }
@@ -131,7 +192,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
         $dispatcher         = new Trails_Dispatcher($trails_root,
             rtrim(PluginEngine::getURL($this, null, ''), '/'),
             self::DEFAULT_CONTROLLER);
-        $dispatcher->plugin = $this;
+        $dispatcher->current_plugin = $this;
         $dispatcher->dispatch($unconsumed_path);
     }
 

@@ -1,17 +1,17 @@
 <section class="contentbox">
     <header>
-        <h1><?= _('Dateien') ?></h1>
+        <h1><?= $_('Dateien') ?></h1>
     </header>
     <!-- files already there -->
     <table class="default zebra">
         <thead>
             <tr>
-                <th style="width:40%"><?= _('Datei') ?></th>
-                <th style="width:10%"><?= _('Größe') ?></th>
-                <th style="width:20%"><?= _('Datum') ?></th>
-                <th style="width:20%"><?= _('Besitzer') ?></th>
+                <th style="width:40%"><?= $_('Datei') ?></th>
+                <th style="width:10%"><?= $_('Größe') ?></th>
+                <th style="width:20%"><?= $_('Datum') ?></th>
+                <th style="width:20%"><?= $_('Besitzer') ?></th>
                 <? if ($edit) : ?>
-                    <th style="width:10%"><?= _('Aktionen') ?></th>
+                    <th style="width:10%"><?= $_('Aktionen') ?></th>
                 <? endif ?>
             </tr>
         </thead>
@@ -47,7 +47,7 @@
             <? else : ?>
                 <tr>
                     <td colspan="<?= $edit ? 5 : 4 ?>" style="text-align: center">
-                        <?= _('Bisher wurden keine Dokumente hochgeladen') ?>
+                        <?= $_('Bisher wurden keine Dokumente hochgeladen') ?>
                     </td>
                 </tr>
             <? endif ?>
@@ -59,5 +59,4 @@
             <?= $this->render_partial('index/_file_upload', compact('task_user')) ?>
         </footer>
     <? endif ?>
-
 </section>

@@ -31,12 +31,44 @@ class Controller extends StudipController
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
-        $this->plugin = $this->dispatcher->plugin;
+        $this->plugin = $this->dispatcher->current_plugin;
         // default timeformat for all dates
         $this->timeformat = '%d.%m.%Y, %H:%M:%S';
         $this->flash = Trails_Flash::instance();
+
+        // Localization
+        $this->_ = function ($string) {
+            return call_user_func_array(
+                [$this->plugin, '_'],
+                func_get_args()
+            );
+        };
+
+        $this->_n = function ($string0, $tring1, $n) {
+            return call_user_func_array(
+                [$this->plugin, '_n'],
+                func_get_args()
+            );
+        };
     }
 
+    /**
+     * Intercepts all non-resolvable method calls in order to correctly handle
+     * calls to _ and _n.
+     *
+     * @param string $method
+     * @param array  $arguments
+     * @return mixed
+     * @throws RuntimeException when method is not found
+     */
+    public function __call($method, $arguments)
+    {
+        $variables = get_object_vars($this);
+        if (isset($variables[$method]) && is_callable($variables[$method])) {
+            return call_user_func_array($variables[$method], $arguments);
+        }
+        throw new RuntimeException("Method {$method} does not exist");
+    }
 
     /**
      * overwrite the default url_for to enable to it work in plugins
@@ -57,7 +89,7 @@ class Controller extends StudipController
         $args    = array_map('urlencode', $args);
         $args[0] = $to;
 
-        return PluginEngine::getURL($this->dispatcher->plugin, $params, join('/', $args));
+        return PluginEngine::getURL($this->plugin, $params, join('/', $args));
     }
 
     /**
