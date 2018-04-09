@@ -6,7 +6,7 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
- * @author      Till Glöggler <tgloeggl@uos.de>
+ * @author      Till GlÃ¶ggler <tgloeggl@uos.de>
  * @author      Ramus Fuhse <fuhse@data-quest.de>
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
@@ -237,10 +237,10 @@ class IndexController extends \EPP\Controller
             Icon::create('edit')
         )->asDialog('size=50%');
         $actions->addLink(
-            _('Aufgabe Löschen'),
+            _('Aufgabe LÃ¶schen'),
             $this->url_for('index/delete_task/' . $id),
             Icon::create('trash'),
-            ['data-confirm' => _('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?')]
+            ['data-confirm' => _('Sind Sie sicher, dass Sie die komplette Aufgabe lÃ¶schen mÃ¶chten?')]
         );
 
         Sidebar::Get()->addWidget($actions);
@@ -315,7 +315,7 @@ class IndexController extends \EPP\Controller
         $task = new EPP\Tasks($task_id);
 
         if ($task->startdate > time() || $task->enddate < time()) {
-            throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
+            throw new AccessDeniedException(_('Sie dÃ¼rfen diese Aufgabe nicht bearbeiten!'));
         }
 
         if ($task->seminar_id != $this->seminar_id) {
@@ -343,7 +343,7 @@ class IndexController extends \EPP\Controller
         $task = new EPP\Tasks($task_id);
 
         if ($task->startdate > time() || $task->enddate < time()) {
-            throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
+            throw new AccessDeniedException(_('Sie dÃ¼rfen diese Aufgabe nicht bearbeiten!'));
         }
 
         if ($task->seminar_id != $this->seminar_id) {
@@ -364,7 +364,7 @@ class IndexController extends \EPP\Controller
         if (($file->task_user->task->startdate > time() || $file->task_user->task->enddate < time())
             && !$GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)
         ) {
-            throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
+            throw new AccessDeniedException(_('Sie dÃ¼rfen diese Aufgabe nicht bearbeiten!'));
         }
 
         // only delete file, if it belongs to the current user
@@ -382,7 +382,7 @@ class IndexController extends \EPP\Controller
         $task      = new \EPP\Tasks($task_user->ep_tasks_id);
 
         if (($task->startdate > time() || $task->enddate < time()) && !$GLOBALS['perm']->have_studip_perm('tutor', $this->seminar_id)) {
-            throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
+            throw new AccessDeniedException(_('Sie dÃ¼rfen diese Aufgabe nicht bearbeiten!'));
         }
 
         if ($task->seminar_id != $this->seminar_id) {
@@ -400,7 +400,7 @@ class IndexController extends \EPP\Controller
             $type = 'answer';
 
             if (!$task->allow_files) {
-                throw new AccessDeniedException(_('Für diese Aufgabe dürfen keine Dateien hochgeladen werden.'));
+                throw new AccessDeniedException(_('FÃ¼r diese Aufgabe dÃ¼rfen keine Dateien hochgeladen werden.'));
             }
 
             if ($task_user->user_id != $GLOBALS['user']->id && !$perms['edit_answer']) {
@@ -487,14 +487,14 @@ class IndexController extends \EPP\Controller
 
         // the user ist not allowed to store a perm for himself
         if ($user_id == $current_user_id) {
-            $this->response->set_status(400, _('Sie dürfen sich nicht selbst für eine Berechtigung eintragen!'));
+            $this->response->set_status(400, _('Sie dÃ¼rfen sich nicht selbst fÃ¼r eine Berechtigung eintragen!'));
             return;
         }
 
         // check that the submitted user has not another perm already
         foreach ($task_user->perms as $key => $perm) {
             if ($perm->user_id == $user_id) {
-                $this->response->set_status(400, _('Für diesen Nutzer existiert bereits eine andere Berechtigung!'));
+                $this->response->set_status(400, _('FÃ¼r diesen Nutzer existiert bereits eine andere Berechtigung!'));
                 return;
             }
         }

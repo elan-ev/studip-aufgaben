@@ -6,7 +6,7 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
- * @author      Till Glöggler <tgloeggl@uos.de>
+ * @author      Till GlÃ¶ggler <tgloeggl@uos.de>
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
  */
@@ -22,7 +22,7 @@
     <? if ($task_user->hint) : ?>
         <section class="contentbox">
             <header>
-                <h1><?= _('Hinweis für diese(n) Teilnehmer(in)') ?><?= tooltipIcon(_('Sie können den Hinweistext nicht mehr verändern, da die Aufgabe bereits gestartet ist!'), true) ?></h1>
+                <h1><?= _('Hinweis fÃ¼r diese(n) Teilnehmer(in)') ?><?= tooltipIcon(_('Sie kÃ¶nnen den Hinweistext nicht mehr verÃ¤ndern, da die Aufgabe bereits gestartet ist!'), true) ?></h1>
             </header>
             <section>
                 <?= formatReady($task_user->hint) ?>
@@ -33,7 +33,7 @@
     <?= $this->render_partial('index/_edit_text', [
         'form_route'   => 'index/update_dozent/' . $task_user->getId(),
         'cancel_route' => 'index/view_dozent/' . $task_user->getId(),
-        'name'         => _('Hinweis für diese(n) Teilnehmer(in)'),
+        'name'         => _('Hinweis fÃ¼r diese(n) Teilnehmer(in)'),
         'field'        => 'hint',
         'text'         => $task_user->hint
     ]) ?>

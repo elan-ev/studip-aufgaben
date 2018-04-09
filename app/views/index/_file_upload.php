@@ -12,7 +12,7 @@ $max = $GLOBALS['UPLOAD_TYPES'][$art]["file_sizes"][$GLOBALS['perm']->get_studip
 
 <div style="position: relative; display: inline-block;">
     <a class="button" style="overflow: hidden; position: relative;">
-        <?= _('Datei(en) hinzufügen') ?>
+        <?= _('Datei(en) hinzufÃ¼gen') ?>
         <input id="fileupload" type="file" multiple name="file" 
             data-url="<?= $controller->url_for('index/post_files/' . $task_user->id .'/'. $type) ?>"
             data-sequential-uploads="true"
@@ -23,7 +23,7 @@ $max = $GLOBALS['UPLOAD_TYPES'][$art]["file_sizes"][$GLOBALS['perm']->get_studip
 <?= \Studip\LinkButton::create(_('Datei(en) hochladen'), "javascript:STUDIP.epp.upload()", 
         array('id' => 'upload_button', 'class' => 'disabled')) ?>
 
-<b><?= _('Maximal erlaubte Größe pro Datei') ?>: <?= round($max / 1024 / 1024, 2) ?> MB</b><br>
+<b><?= _('Maximal erlaubte GrÃ¶ÃŸe pro Datei') ?>: <?= round($max / 1024 / 1024, 2) ?> MB</b><br>
 
 <table class="default zebra">
     <tbody id="files_to_upload">

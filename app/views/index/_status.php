@@ -3,7 +3,7 @@
         <tr>
             <th><?= _('TeilnehmerIn') ?></th>
             <th colspan="2" style="width: 10%; text-align: center"><?= _('in Arbeit') ?></th>
-            <th style="width: 10%"><?= _('letzte Aktivität') ?></th>
+            <th style="width: 10%"><?= _('letzte AktivitÃ¤t') ?></th>
             <th colspan="2" style="width: 10%; text-align: center"><?= _('Feedback') ?></th>
             <th><?= _('Hinweis') ?></th>
             <th style="width: 2%"><?= _('Fertig?') ?></th>
@@ -52,7 +52,7 @@
                     <td>
                         <?= ($task_user && $task_user->hint)
                             ? Assets::img('icons/16/black/file-text.png', [
-                                'title' => _('Für diese Aufgabe wurden Hinweise für sie hinterlegt!')
+                                'title' => _('FÃ¼r diese Aufgabe wurden Hinweise fÃ¼r sie hinterlegt!')
                             ]) : '-' ?>
                     </td>
                     <td>
@@ -64,7 +64,7 @@
                     </td>
                     <td class="actions">
                         <a href="<?= $controller->url_for("index/view_dozent/" . $task_user->id) ?>">
-                            <?= Icon::create('edit', 'clickable', tooltip2(_('Diese Aufgabe für diesen Nutzer bearbeiten'))) ?>
+                            <?= Icon::create('edit', 'clickable', tooltip2(_('Diese Aufgabe fÃ¼r diesen Nutzer bearbeiten'))) ?>
                         </a>
                     </td>
                 </tr>

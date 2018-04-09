@@ -5,7 +5,7 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
- * @author      Till Glˆggler <tgloeggl@uos.de>
+ * @author      Till Gl√∂ggler <tgloeggl@uos.de>
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
  */
@@ -55,7 +55,7 @@ class Tasks extends \SimpleORMap
     {
         switch ($this->getStatus()) {
             case 'running':
-                return _('l‰uft');
+                return _('l√§uft');
                 break;
 
             case 'past':
@@ -63,7 +63,7 @@ class Tasks extends \SimpleORMap
                 break;
 
             case 'future':
-                return _('l‰uft noch nicht');
+                return _('l√§uft noch nicht');
                 break;
         }
     }

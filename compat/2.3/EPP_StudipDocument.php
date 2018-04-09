@@ -5,7 +5,7 @@
 // +---------------------------------------------------------------------------+
 // This file is part of Stud.IP
 //
-// Copyright (C) 2005 André Noack <noack@data-quest>,
+// Copyright (C) 2005 AndrÃ© Noack <noack@data-quest>,
 // Suchi & Berg GmbH <info@data-quest.de>
 // +---------------------------------------------------------------------------+
 // This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
  * give access to the table dokumente
  *
  *
- * @author   André Noack <noack@data-quest>, Suchi & Berg GmbH <info@data-quest.de>
+ * @author   AndrÃ© Noack <noack@data-quest>, Suchi & Berg GmbH <info@data-quest.de>
  * @access   public
  * 
  * @property string dokument_id database column
@@ -137,7 +137,7 @@ class EPP_StudipDocument extends EPP_SimpleORMap {
             $message_user = $st->fetchAll(PDO::FETCH_COLUMN);
             if (count($message_user)) {
                 $access = in_array($user_id, $message_user);
-            } else { //Blubberdatei aus persönlichem Blubb
+            } else { //Blubberdatei aus persÃ¶nlichem Blubb
                 $access = $GLOBALS['perm']->have_perm('user', $user_id);
             }
         }

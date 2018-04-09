@@ -73,9 +73,9 @@
 
                     $actions->addLink(
                         $controller->url_for('index/delete_task/' . $task['id']),
-                        _('Aufgabe löschen'),
+                        _('Aufgabe lÃ¶schen'),
                         Icon::create('trash'),
-                        ['data-confirm' => _('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?')]
+                        ['data-confirm' => _('Sind Sie sicher, dass Sie die komplette Aufgabe lÃ¶schen mÃ¶chten?')]
                     )
                     ?>
                     <?= $actions ?>

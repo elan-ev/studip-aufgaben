@@ -10,7 +10,7 @@ if (!defined('SORT_FLAG_CASE')) define('SORT_FLAG_CASE', 8);
  * published by the Free Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
  *
- * @author      AndrÈ Noack <noack@data-quest.de>
+ * @author      Andr√© Noack <noack@data-quest.de>
  * @copyright   2013 Stud.IP Core-Group
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP
@@ -186,18 +186,18 @@ class EPP_SimpleCollection extends StudipArrayObject
         if (!preg_match('/[\200-\377]/', $text)) {
             return $text;
         }
-        $text = str_replace(array('‰','A','ˆ','÷','¸','‹','ﬂ'), array('a','A','o','O','u','U','s'), $text);
-        $text = str_replace(array('¿','¡','¬','√','≈','∆'), 'A' , $text);
-        $text = str_replace(array('‡','·','‚','„','Â','Ê'), 'a' , $text);
-        $text = str_replace(array('»','…',' ','À'), 'E' , $text);
-        $text = str_replace(array('Ë','È','Í','Î'), 'e' , $text);
-        $text = str_replace(array('Ã','Õ','Œ','œ'), 'I' , $text);
-        $text = str_replace(array('Ï','Ì','Ó','Ô'), 'i' , $text);
-        $text = str_replace(array('“','”','’','‘','ÿ'), 'O' , $text);
-        $text = str_replace(array('Ú','Û','Ù','ı','¯'), 'o' , $text);
-        $text = str_replace(array('Ÿ','⁄','€'), 'U' , $text);
-        $text = str_replace(array('˘','˙','˚'), 'u' , $text);
-        $text = str_replace(array('«','Á','–','—','›','Ò','˝','ˇ'), array('C','c','D','N','Y','n','y','y') , $text);
+        $text = str_replace(array('√§','A','√∂','√ñ','√º','√ú','√ü'), array('a','A','o','O','u','U','s'), $text);
+        $text = str_replace(array('√Ä','√Å','√Ç','√É','√Ö','√Ü'), 'A' , $text);
+        $text = str_replace(array('√†','√°','√¢','√£','√•','√¶'), 'a' , $text);
+        $text = str_replace(array('√à','√â','√ä','√ã'), 'E' , $text);
+        $text = str_replace(array('√®','√©','√™','√´'), 'e' , $text);
+        $text = str_replace(array('√å','√ç','√é','√è'), 'I' , $text);
+        $text = str_replace(array('√¨','√≠','√Æ','√Ø'), 'i' , $text);
+        $text = str_replace(array('√í','√ì','√ï','√î','√ò'), 'O' , $text);
+        $text = str_replace(array('√≤','√≥','√¥','√µ','√∏'), 'o' , $text);
+        $text = str_replace(array('√ô','√ö','√õ'), 'U' , $text);
+        $text = str_replace(array('√π','√∫','√ª'), 'u' , $text);
+        $text = str_replace(array('√á','√ß','√ê','√ë','√ù','√±','√Ω','√ø'), array('C','c','D','N','Y','n','y','y') , $text);
         return $text;
     }
 

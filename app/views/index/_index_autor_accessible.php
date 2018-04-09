@@ -1,5 +1,5 @@
 <table class="default zebra tablesorter" id="ep_tasks">
-    <caption><?= _('Für mich freigegebene Aufgaben') ?></caption>
+    <caption><?= _('FÃ¼r mich freigegebene Aufgaben') ?></caption>
     <thead>
         <tr class="sortable">
             <th <?= $sort == 'title' ? 'class="sort' . $order . '"' : '' ?> style="width: auto">

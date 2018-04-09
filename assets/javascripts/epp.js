@@ -125,7 +125,7 @@ STUDIP.Aufgaben.Permissions = {
 
         if (data_user === undefined || data_user === null || data_user.id === "") {
             $('#permissions .error').hide()
-                .html('Bitte suchen Sie zuerst nach einem/r Nutzer/in, dem/der eine Berechtigung einger‰umt werden soll!'.toLocaleString())
+                .html('Bitte suchen Sie zuerst nach einem/r Nutzer/in, dem/der eine Berechtigung einger√§umt werden soll!'.toLocaleString())
                 .show('highlight');
             return;
         }

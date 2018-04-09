@@ -7,7 +7,7 @@
         <thead>
             <tr>
                 <th style="width:40%"><?= _('Datei') ?></th>
-                <th style="width:10%"><?= _('Größe') ?></th>
+                <th style="width:10%"><?= _('GrÃ¶ÃŸe') ?></th>
                 <th style="width:20%"><?= _('Datum') ?></th>
                 <th style="width:20%"><?= _('Besitzer') ?></th>
                 <? if ($edit) : ?>

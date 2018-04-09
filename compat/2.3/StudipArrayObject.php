@@ -6,7 +6,7 @@
  * issues with php's implementation of ArrayObject regarding cyclic references
  * based on Zend\Stdlib\ArrayObject\PhpReferenceCompatibility
  *
- * @author      André Noack <noack@data-quest.de>
+ * @author      AndrÃ© Noack <noack@data-quest.de>
  *
  * Zend Framework (http://framework.zend.com/)
  *

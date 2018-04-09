@@ -5,7 +5,7 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
- * @author      Till Glöggler <tgloeggl@uos.de>
+ * @author      Till GlÃ¶ggler <tgloeggl@uos.de>
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
  */
@@ -33,7 +33,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
             $navigation->setImage(Icon::create('assessment'));
             Navigation::addItem('/course/aufgabenplugin', $navigation);
 
-            $navigation = new Navigation(_('Übersicht'), PluginEngine::getLink('aufgabenplugin/index'));
+            $navigation = new Navigation(_('Ãœbersicht'), PluginEngine::getLink('aufgabenplugin/index'));
             Navigation::addItem('/course/aufgabenplugin/overview', $navigation);
         }
     }
@@ -80,7 +80,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
 
             if ($act_num > 0) {
                 $navigation->setImage(Icon::create('assessment', 'attention'), [
-                    'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es %s neue Aktivitäten'), $act_num)
+                    'title' => sprintf(_('Seit Ihrem letzten Besuch gibt es %s neue AktivitÃ¤ten'), $act_num)
                 ]);
             }
         } else {    // for students show the number of new, visible, tasks

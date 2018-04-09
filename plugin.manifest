@@ -3,7 +3,7 @@ pluginname=Aufgaben
 origin=elan-ev
 version=1.4
 studipMinVersion=3.5
-description=Erstellung und Bereitstellung zeitgesteuerter Aufgaben für Studierende
+description=Erstellung und Bereitstellung zeitgesteuerter Aufgaben fÃ¼r Studierende
 
 screenshot = assets/images/screenshots/Aufgabenuebersicht.png
 screenshot = assets/images/screenshots/Aufgabe_erstellen.png
@@ -14,8 +14,8 @@ icon = ../../../assets/images/icons/16/black/assessment.png
 
 category = Inhalte und Aufgabenstellungen
 displayname = Aufgaben
-descriptionshort = Erstellung und Bereitstellung zeitgesteuerter Aufgaben für Studierende
+descriptionshort = Erstellung und Bereitstellung zeitgesteuerter Aufgaben fÃ¼r Studierende
 
-descriptionlong = Studierende können Antworttexte eingeben und Dateien bis zum vom Lehrenden eingestellten Datum einreichen. Das Feedback der Lehrenden kann ebenfalls in Textform oder mittels Dateien erfolgen. Der spezielle Uploader erlaubt das Hochladen von beliebig vielen Dateien auf Knopfdruck.
+descriptionlong = Studierende kÃ¶nnen Antworttexte eingeben und Dateien bis zum vom Lehrenden eingestellten Datum einreichen. Das Feedback der Lehrenden kann ebenfalls in Textform oder mittels Dateien erfolgen. Der spezielle Uploader erlaubt das Hochladen von beliebig vielen Dateien auf Knopfdruck.
 
-keywords =  Einstieg in die Erstellung von E-Learningeinheiten;Übersichtliche Funktionen;Anzeige, wer welche Aufgaben bearbeitet hat;Anzeige, wer eine Frage gestellt oder bereits ein Feedback erhalten hat;Individuelles Feedback der Lehrenden pro Studierender/m möglich und erwünscht;Spezieller Dateiuploader für mehrere Dateien in einem Schritt
+keywords =  Einstieg in die Erstellung von E-Learningeinheiten;Ãœbersichtliche Funktionen;Anzeige, wer welche Aufgaben bearbeitet hat;Anzeige, wer eine Frage gestellt oder bereits ein Feedback erhalten hat;Individuelles Feedback der Lehrenden pro Studierender/m mÃ¶glich und erwÃ¼nscht;Spezieller Dateiuploader fÃ¼r mehrere Dateien in einem Schritt

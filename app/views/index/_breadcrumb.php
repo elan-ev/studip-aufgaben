@@ -9,7 +9,7 @@
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
  *
- * @author      Till Glöggler <tgloeggl@uos.de>
+ * @author      Till GlÃ¶ggler <tgloeggl@uos.de>
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
  */
@@ -24,7 +24,7 @@ foreach ($path as $step) :
         switch ($step) :
             case 'overview':
                 $breadcrumb[] = '<a href="'. $controller->url_for('index/index') .'">'
-                              . _('Übersicht') . '</a>';
+                              . _('Ãœbersicht') . '</a>';
             break;
             case 'view_dozent':
                 $breadcrumb[] = $step;
