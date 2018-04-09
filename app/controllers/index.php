@@ -19,13 +19,17 @@ class IndexController extends \EPP\Controller
 
         // set default layout
         $this->set_layout('layouts/layout');
-        Navigation::activateItem('/course/aufgabenplugin/overview');
+        Navigation::activateItem('/course/aufgaben');
 
         $this->seminar_id = $this->getSeminarId();
 
         $this->permissions = [
             'student' => _('Kommilitone/in'),
         ];
+
+        // set up hidden folder for files to store (if not already present)
+        #$folder = \Folder::findTopFolder($this->seminar_id);
+        #var_dump($folder);
     }
 
     public function index_action()
@@ -89,7 +93,16 @@ class IndexController extends \EPP\Controller
         EPP\Perm::check('new_task', $this->seminar_id);
 
         $this->destination = 'index/add_task';
-        $this->render_template('index/edit_task', null);
+
+        if (Request::isXHR()) {
+            $this->render_template('index/edit_task', null);
+        } else {
+            $this->render_template(
+                'index/edit_task',
+                $GLOBALS['template_factory']->open('layouts/base')
+            );
+        }
+
     }
 
     public function add_task_action()

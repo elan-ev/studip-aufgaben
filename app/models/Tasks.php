@@ -15,19 +15,18 @@ namespace EPP;
 class Tasks extends \SimpleORMap
 {
     /**
-     * creates new task, sets up relations
-     * @param string $id
+     * *@inherit
      */
-    public function __construct($id = null)
+    protected static function configure($config = array())
     {
-        $this->db_table = 'ep_tasks';
+        $config['db_table'] = 'ep_tasks';
 
-        $this->has_many['task_users'] = [
+        $config['has_many']['task_users'] = [
             'class_name'        => 'EPP\TaskUsers',
             'assoc_foreign_key' => 'ep_tasks_id'
         ];
 
-        parent::__construct($id);
+        parent::configure($config);
     }
 
     /**

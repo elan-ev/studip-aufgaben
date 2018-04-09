@@ -111,15 +111,6 @@ class EPPluginStudipController extends StudipController
      */
     public function getSeminarId()
     {
-        if (!Request::option('cid')) {
-            if ($GLOBALS['SessionSeminar']) {
-                URLHelper::bindLinkParam('cid', $GLOBALS['SessionSeminar']);
-                return $GLOBALS['SessionSeminar'];
-            }
-
-            return false;
-        }
-
-        return Request::option('cid');
+        return Context::getId();
     }
 }

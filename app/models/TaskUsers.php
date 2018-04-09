@@ -15,32 +15,31 @@ namespace EPP;
 class TaskUsers extends \SimpleORMap
 {
     /**
-     * creates new task_user, sets up relations
-     * @param string $id
+     * *@inherit
      */
-    public function __construct($id = null)
+    protected static function configure($config = array())
     {
-        $this->db_table = 'ep_task_users';
+        $config['db_table'] = 'ep_task_users';
 
-        $this->has_many['files'] = [
-            'class_name'        => 'EPP\TaskUserFiles',
-            'assoc_foreign_key' => 'ep_task_users_id',
+        $config['has_many'] = [
+            'files' => [
+                'class_name'        => 'EPP\TaskUserFiles',
+                'assoc_foreign_key' => 'ep_task_users_id',
+            ],
+            'perms' => [
+                'class_name'        => 'EPP\Permissions',
+                'assoc_foreign_key' => 'ep_task_users_id',
+                'on_delete'         => 'delete',
+                'on_store'          => 'store'
+            ]
         ];
 
-        $this->belongs_to['task'] = [
+        $config['belongs_to']['task'] = [
             'class_name'  => 'EPP\Tasks',
             'foreign_key' => 'ep_tasks_id',
         ];
 
-        $this->has_many['perms'] = [
-            'class_name'        => 'EPP\Permissions',
-            'assoc_foreign_key' => 'ep_task_users_id',
-            'on_delete'         => 'delete',
-            'on_store'          => 'store'
-
-        ];
-
-        parent::__construct($id);
+        parent::configure($config);
     }
 
     /**

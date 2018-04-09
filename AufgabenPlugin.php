@@ -23,19 +23,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
     {
         parent::__construct();
 
-        if (!$this->isActivated()) {
-            return;
-        }
-
         $GLOBALS['epplugin_path'] = $this->getPluginURL();
-        if (Navigation::hasItem('/course') && version_compare($GLOBALS['SOFTWARE_VERSION'], '2.3', '>=')) {
-            $navigation = new Navigation(_('Aufgaben'), PluginEngine::getLink('aufgabenplugin/index'));
-            $navigation->setImage(Icon::create('assessment'));
-            Navigation::addItem('/course/aufgabenplugin', $navigation);
-
-            $navigation = new Navigation(_('Übersicht'), PluginEngine::getLink('aufgabenplugin/index'));
-            Navigation::addItem('/course/aufgabenplugin/overview', $navigation);
-        }
     }
 
     /**
@@ -45,8 +33,13 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
      */
     public function getTabNavigation($course_id)
     {
-        return null;
+        $navigation = new Navigation(_('Aufgaben'), PluginEngine::getLink('aufgabenplugin/index'));
+        $navigation->setImage(Icon::create('assessment'));
+        return [
+            'aufgaben' => $navigation
+        ];
     }
+
 
     /**
      * returns the navigation-icon for the course-overview

@@ -16,18 +16,17 @@ namespace EPP;
 class Permissions extends \SimpleORMap
 {
     /**
-     * creates new permissions, sets up relations
-     * @param string $id
+     * *@inherit
      */
-    public function __construct($id = null)
+    protected static function configure($config = array())
     {
-        $this->db_table = 'ep_permissions';
+        $config['db_table'] = 'ep_permissions';
 
-        $this->belongs_to['task_user'] = [
+        $config['belongs_to']['task_user'] = [
             'class_name'  => 'EPP\TaskUsers',
             'foreign_key' => 'ep_task_users_id',
         ];
 
-        parent::__construct($id);
+        parent::configure($config);
     }
 }

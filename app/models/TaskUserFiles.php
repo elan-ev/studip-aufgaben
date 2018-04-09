@@ -16,24 +16,23 @@ namespace EPP;
 class TaskUserFiles extends \SimpleORMap
 {
     /**
-     * creates new task_user_file, sets up relations
-     * @param string $id
+     * *@inherit
      */
-    public function __construct($id = null)
+    protected static function configure($config = array())
     {
-        $this->db_table = 'ep_task_user_files';
+        $config['db_table'] = 'ep_task_user_files';
 
-        $this->has_one['document'] = [
+        $config['has_one']['document'] = [
             'class_name'        => 'StudipDocument',
             'foreign_key'       => 'dokument_id',
             'assoc_foreign_key' => 'dokument_id'
         ];
 
-        $this->belongs_to['task_user'] = [
+        $config['belongs_to']['task_user'] = [
             'class_name'  => 'EPP\TaskUsers',
             'foreign_key' => 'ep_task_users_id',
         ];
 
-        parent::__construct($id);
+        parent::configure($config);
     }
 }
