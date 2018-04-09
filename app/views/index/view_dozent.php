@@ -60,11 +60,11 @@
 
 
     <? if ($task['allow_files']) : ?>
-        <? $files = $task_user->files->findBy('type', 'answer') ?>
-        <? if (sizeof($files)) : ?>
-            <?= $this->render_partial('index/_file_list', compact('files')) ?>
-        <? endif ?>
+        <?= $this->render_partial('index/_file_list', [
+            'type'  => 'answer'
+        ]) ?>
     <? endif ?>
+
 
     <?= $this->render_partial('index/_edit_text', [
         'form_route'   => 'index/update_dozent/' . $task_user->getId(),
@@ -74,10 +74,12 @@
         'text'         => $task_user->feedback
     ]) ?>
 
-    <?= $this->render_partial('index/_file_list', [
-        'files' => $task_user->files->findBy('type', 'feedback'),
-        'edit'  => true
-    ]) ?>
+    <? if ($task['allow_files']) : ?>
+        <?= $this->render_partial('index/_file_list', [
+            'type'  => 'feedback',
+            'edit'  => true
+        ]) ?>
+    <? endif ?>
 
 <? endif ?>
 

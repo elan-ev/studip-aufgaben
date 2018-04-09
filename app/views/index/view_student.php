@@ -89,7 +89,7 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
 
 <? if ($task['allow_files']) : ?>
     <?= $this->render_partial('index/_file_list', [
-        'files' => $task_user->files->findBy('type', 'answer'),
+        'type'  => 'answer',
         'edit'  => ($task->enddate >= time())
     ]) ?>
 <? endif ?>
@@ -110,7 +110,8 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
 </section>
 
 
-<? $files = $task_user->files->findBy('type', 'feedback') ?>
-<? if (sizeof($files)) : ?>
-    <?= $this->render_partial('index/_file_list', compact('files')) ?>
+<? if ($task['allow_files']) : ?>
+    <?= $this->render_partial('index/_file_list', [
+        'type'  => 'feedback',
+    ]) ?>
 <? endif ?>

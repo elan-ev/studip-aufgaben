@@ -12,7 +12,7 @@
 
 require_once 'bootstrap.php';
 
-class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
+class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugin
 {
     /**
      * Does nothing if plugin is not activated in the current course.
@@ -113,12 +113,6 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin
     {
         $this->addStylesheet('assets/stylesheets/epp.less');
         PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/epp.js');
-        PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/jquery.ui.widget.js');
-
-        if (!Config::get()->WYSIWYG) {
-            PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/jquery.iframe-transport.js');
-            PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/jquery.fileupload.js');
-        }
 
         $trails_root        = $this->getPluginPath() . '/app';
         $dispatcher         = new Trails_Dispatcher($trails_root,

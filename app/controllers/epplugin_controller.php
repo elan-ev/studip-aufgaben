@@ -111,6 +111,6 @@ class EPPluginStudipController extends StudipController
      */
     public function getSeminarId()
     {
-        return Context::getId();
+        return \Context::getId();
     }
 }

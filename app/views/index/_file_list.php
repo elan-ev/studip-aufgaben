@@ -1,63 +1,118 @@
+<?
+/* create folder(s) for current task */
+// TODO: move to better suited location
+
+// Aufgabenordner
+$task_folder = null;
+
+foreach ($folder->subfolders as $subfolder) {
+    if ($subfolder['data_content']['task_id'] == $task->id) {
+        $task_folder = $subfolder;
+    }
+}
+
+if (!$task_folder) {
+    $task_folder = \Folder::create([
+        'parent_id'    => $folder->getId(),
+        'range_id'     => Context::getId(),
+        'range_type'   => Context::getType(),
+        'description'  => 'Aufgabenordner',
+        'name'         => 'Aufgabenordner: ' . $task->title,
+        'data_content' => ['task_id' => $task->id],
+        'folder_type'  => 'TaskFolder',
+        'user_id'      => $this->seminar_id
+    ]);
+
+    $folder->subfolders[] = $task_folder;
+}
+
+// Nutzerordner für eine Aufgabe
+$user_folder = null;
+foreach ($task_folder->subfolders as $subfolder) {
+    if ($subfolder['data_content']['task_user'] == $task_user->user_id) {
+        $user_folder = $subfolder;
+    }
+}
+
+if (!$user_folder) {
+    $user_folder = \Folder::create([
+        'parent_id'    => $task_folder->getId(),
+        'range_id'     => Context::getId(),
+        'range_type'   => Context::getType(),
+        'description'  => 'Nutzerordner',
+        'name'         => get_fullname($task_user->user_id),
+        'data_content' => ['task_user' => $task_user->user_id],
+        'folder_type'  => 'TaskFolder',
+        'user_id'      => $task_user->user_id
+    ]);
+
+    $task_folder->subfolders[] = $user_folder;
+}
+
+// Ordner für die Art der Datei
+$type_folder = null;
+foreach ($user_folder->subfolders as $subfolder) {
+    if ($subfolder['data_content']['task_type'] == $type) {
+        $type_folder = $subfolder;
+    }
+}
+
+if (!$type_folder) {
+    $type_folder = \Folder::create([
+        'parent_id'    => $user_folder->getId(),
+        'range_id'     => Context::getId(),
+        'range_type'   => Context::getType(),
+        'description'  => '',
+        'name'         => ucfirst($type),
+        'data_content' => [
+            'task_type' => $type,
+            'task_user' => $task_user->user_id
+        ],
+        'folder_type'  => 'TaskFolder',
+        'user_id'      => $task_user->user_id
+    ]);
+
+    $user_folder->subfolders[] = $type_folder;
+}
+$type_folder = $type_folder->getTypedFolder();
+?>
+
 <section class="contentbox">
     <header>
         <h1><?= _('Dateien') ?></h1>
     </header>
     <!-- files already there -->
-    <table class="default zebra">
-        <thead>
-            <tr>
-                <th style="width:40%"><?= _('Datei') ?></th>
-                <th style="width:10%"><?= _('Größe') ?></th>
-                <th style="width:20%"><?= _('Datum') ?></th>
-                <th style="width:20%"><?= _('Besitzer') ?></th>
-                <? if ($edit) : ?>
-                    <th style="width:10%"><?= _('Aktionen') ?></th>
-                <? endif ?>
-            </tr>
-        </thead>
-        <tbody <?= $edit ? 'id="uploaded_files"' : '' ?>>
-            <? if (count($files)) : ?>
-                <? foreach ($files as $file) : ?>
-                    <tr data-fileid="<?= $file->getId() ?>">
-                        <td>
-                            <a href="<?= GetDownloadLink($file->document->getId(), $file->document->name) ?>"
-                               target="_blank">
-                                <?= $file->document->name ?>
-                            </a>
-                        </td>
-                        <td><?= round((($file->document->filesize / 1024) * 100) / 100, 2) ?> kb</td>
-                        <td><?= strftime($timeformat, $file->document->mkdate) ?></td>
-                        <td>
-                            <a href="<?= URLHelper::getLink('dispatch.php/profile?username=' . get_username($file->document->user_id)) ?>">
-                                <?= get_fullname($file->document->user_id) ?>
-                            </a>
-                        </td>
-
-                        <? if ($edit) : ?>
-                            <td>
-                                <? if ($GLOBALS['user']->id == $file->document->user_id) : ?>
-                                    <a href="javascript:STUDIP.epp.removeFile('<?= $seminar_id ?>', '<?= $file->getId() ?>')">
-                                        <?= Icon::create('trash') ?>
-                                    </a>
-                                <? endif ?>
-                            </td>
-                        <? endif ?>
-                    </tr>
-                <? endforeach ?>
-            <? else : ?>
-                <tr>
-                    <td colspan="<?= $edit ? 5 : 4 ?>" style="text-align: center">
-                        <?= _('Bisher wurden keine Dokumente hochgeladen') ?>
-                    </td>
-                </tr>
-            <? endif ?>
+    <table class="default zebra" data-folder-id="<?= $user_folder->id ?>">
+        <tbody>
+        <? if (count($type_folder->getFiles())) : ?>
+            <? foreach ($type_folder->getFiles() as $file_ref) : ?>
+                <?= $this->render_partial('index/_file', [
+                    'current_folder' => $type_folder,
+                    'file_ref'       => $file_ref,
+                ]) ?>
+            <? endforeach; ?>
+        <? endif; ?>
         </tbody>
     </table>
 
     <? if ($edit) : ?>
         <footer>
-            <?= $this->render_partial('index/_file_upload', compact('task_user')) ?>
+        <?= \Studip\LinkButton::create(
+            _('Datei hinzufügen'), '#',
+            [
+                'onClick' => "STUDIP.epp.refresh_enabled = true; STUDIP.Files.openAddFilesWindow('". $type_folder->getId() ."'); return false;"
+            ]
+        ) ?>
         </footer>
     <? endif ?>
-
 </section>
+
+<script>
+$(function() {
+    $(document).on('refresh-handlers', function() {
+        if (STUDIP.epp.refresh_enabled) {
+            window.location.reload();
+        }
+    })
+})
+</script>
