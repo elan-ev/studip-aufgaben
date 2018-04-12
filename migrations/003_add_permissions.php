@@ -18,6 +18,8 @@ class AddPermissions extends Migration
     {
         $db = DBManager::get();
 
+        $db->exec('DELETE FROM schema_version WHERE domain="AufgabenPlugin"');
+
         $db->exec("
             CREATE  TABLE IF NOT EXISTS `ep_permissions` (
               `ep_task_users_id` INT NOT NULL ,
@@ -29,9 +31,11 @@ class AddPermissions extends Migration
 
         SimpleORMap::expireTableScheme();
     }
-    
+
     function down()
     {
         DBManager::get()->exec("DROP TABLE `ep_permissions`");
+
+        SimpleORMap::expireTableScheme();
     }
 }

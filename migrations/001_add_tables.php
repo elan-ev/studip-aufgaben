@@ -47,7 +47,7 @@ class AddTables extends Migration
               PRIMARY KEY (`id`) ,
               INDEX `fk_ep_tasks_users_ep_tasks_idx` (`ep_tasks_id` ASC) )
         ");
-        
+
 
         DBManager::get()->exec("
             CREATE TABLE IF NOT EXISTS `ep_task_user_files` (
@@ -58,12 +58,16 @@ class AddTables extends Migration
               PRIMARY KEY (`id`)
             )
         ");
+
+        SimpleORMap::expireTableScheme();
     }
-    
+
     function down()
     {
         DBManager::get()->exec("DROP TABLE ep_tasks");
         DBManager::get()->exec("DROP TABLE ep_task_users");
         DBManager::get()->exec("DROP TABLE ep_task_user_files");
+
+        SimpleORMap::expireTableScheme();
     }
 }

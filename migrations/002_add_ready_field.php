@@ -16,13 +16,22 @@ class AddReadyField extends Migration
 {
     function up()
     {
+        $version = DBManager::get()->query('SELECT version FROM schema_version
+                WHERE domain = "AufgabenPlugin"')->fetchColumn();
+
+        if ($version > 2) return;
+
         DBManager::get()->exec("
-            ALTER TABLE `ep_task_users` ADD `ready` BOOLEAN NOT NULL DEFAULT FALSE 
+            ALTER TABLE `ep_task_users` ADD `ready` BOOLEAN NOT NULL DEFAULT FALSE
         ");
+
+        SimpleORMap::expireTableScheme();
     }
-    
+
     function down()
     {
         DBManager::get()->exec("ALTER TABLE `ep_task_users` ADD `ready`");
+
+        SimpleORMap::expireTableScheme();
     }
 }
