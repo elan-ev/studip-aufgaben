@@ -75,7 +75,19 @@ class TaskFolder extends StandardFolder
     public function isReadable($user_id)
     {
 
-        return true;
+        if ($perm->have_studip_perm('tutor', $this->range_id, $user_id)) {
+            return true;
+        }
+
+        if ($this->data_content['task_user'] == $user_id) {
+            return true;
+        }
+
+        if ($parent = $this->getParent() && $parent>data_content['task_user'] == $user_id) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
