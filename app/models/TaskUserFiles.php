@@ -1,5 +1,7 @@
 <?php
 /**
+ * @deprecated This class only exists to allow easy migration
+ *
  * filename - Short description for file
  * Long description for file (if any)...
  * This program is free software; you can redistribute it and/or
@@ -21,12 +23,6 @@ class TaskUserFiles extends \SimpleORMap
     protected static function configure($config = array())
     {
         $config['db_table'] = 'ep_task_user_files';
-
-        $config['has_one']['document'] = [
-            'class_name'        => 'StudipDocument',
-            'foreign_key'       => 'dokument_id',
-            'assoc_foreign_key' => 'dokument_id'
-        ];
 
         $config['belongs_to']['task_user'] = [
             'class_name'  => 'EPP\TaskUsers',

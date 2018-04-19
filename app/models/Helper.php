@@ -46,7 +46,7 @@ class Helper
                 'name'         => 'Aufgabenordner: ' . $task->title,
                 'data_content' => ['task_id' => $task->id],
                 'folder_type'  => 'TaskFolder',
-                'user_id'      => $this->seminar_id
+                'user_id'      => \Context::getId()
             ]);
 
             $folder->subfolders[] = $task_folder;

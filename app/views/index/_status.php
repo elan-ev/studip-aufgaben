@@ -34,7 +34,8 @@
                         <?= Icon::create('file-text', 'info', tooltip2(_('Antworttext'))) ?>
                     </td>
                     <td>
-                        <?= $task_user ? sizeof($task_user->files->findBy('type', 'answer')) : 0 ?>
+                        <? $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer'); ?>
+                        <?= $type_folder ? count($type_folder->getFiles()) : 0 ?>
                         <?= Icon::create('file-generic', 'info', tooltip2(_('Hochgeladene Dateien'))) ?>
                     </td>
                     <td>
@@ -46,7 +47,8 @@
                         <?= Icon::create('file-text', 'info', tooltip2(_('Antworttext'))) ?>
                     </td>
                     <td>
-                        <?= $task_user ? sizeof($task_user->files->findBy('type', 'feedback')) : 0 ?>
+                        <? $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'feedback'); ?>
+                        <?= $type_folder ? count($type_folder->getFiles()) : 0 ?>
                         <?= Icon::create('file-generic', 'info', tooltip2(_('Hochgeladene Dateien'))) ?>
                     </td>
                     <td>
