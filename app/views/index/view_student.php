@@ -82,7 +82,9 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
             'cancel_route' => 'index/view_student/' . $task->getId(),
             'name'         => _('Antworttext'),
             'field'        => 'answer',
-            'text'         => $task_user->answer
+            'text'         => $task_user->answer,
+            'edit'         => ($task->enddate >= time()),
+            'type_folder'  => \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer')
         ]) ?>
     <? endif ?>
 <? endif ?>
@@ -90,7 +92,6 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
 <? if ($task['allow_files']) : ?>
     <?= $this->render_partial('index/_file_list', [
         'type'  => 'answer',
-        'edit'  => ($task->enddate >= time())
     ]) ?>
 <? endif ?>
 

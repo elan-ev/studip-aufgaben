@@ -94,7 +94,8 @@ class TaskFolder extends StandardFolder
     /**
      * @inherit
      */
-    public function isVisible($user_id) {
-        return false;
+    public function isVisible($user_id)
+    {
+        return $this->isReadable($user_id);
     }
 }

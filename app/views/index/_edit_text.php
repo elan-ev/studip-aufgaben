@@ -30,6 +30,15 @@
         <footer>
             <?= \Studip\LinkButton::createEdit(_('Bearbeiten'), $controller->url_for($cancel_route . '/' . $field
                 . ($task_user_id ? '?task_user_id=' . $task_user_id : '') . '#jumpto_' . $field)) ?>
+
+            <? if ($edit && $task['allow_files']) : ?>
+                <?= \Studip\LinkButton::create(
+                    _('Datei hinzufügen'), '#',
+                    [
+                        'onClick' => "STUDIP.epp.refresh_enabled = true; STUDIP.Files.openAddFilesWindow('". $type_folder->getId() ."'); return false;"
+                    ]
+                ) ?>
+            <? endif ?>
         </footer>
     <? endif; ?>
 </section>

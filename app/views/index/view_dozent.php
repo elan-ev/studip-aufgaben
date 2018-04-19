@@ -35,7 +35,8 @@
         'cancel_route' => 'index/view_dozent/' . $task_user->getId(),
         'name'         => _('Hinweis für diese(n) Teilnehmer(in)'),
         'field'        => 'hint',
-        'text'         => $task_user->hint
+        'text'         => $task_user->hint,
+        'type_folder'  => \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer')
     ]) ?>
 <? endif ?>
 
@@ -46,7 +47,7 @@
     <? if ($task['allow_text']) : ?>
         <section class="contentbox">
             <header>
-                <h1><?= _('Antworttext') ?></h1>
+                <h1><?= _('Antwort / Abgabe') ?></h1>
             </header>
             <section>
                 <? if ($task_user->answer) : ?>
@@ -71,13 +72,14 @@
         'cancel_route' => 'index/view_dozent/' . $task_user->getId(),
         'name'         => _('Feedback'),
         'field'        => 'feedback',
-        'text'         => $task_user->feedback
+        'text'         => $task_user->feedback,
+        'edit'         => true,
+        'type_folder'  => \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'feedback')
     ]) ?>
 
     <? if ($task['allow_files']) : ?>
         <?= $this->render_partial('index/_file_list', [
             'type'  => 'feedback',
-            'edit'  => true
         ]) ?>
     <? endif ?>
 
