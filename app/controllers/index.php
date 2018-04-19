@@ -512,24 +512,35 @@ class IndexController extends \EPP\Controller
     public function zip_action($task_id)
     {
         $task = new EPP\Tasks($task_id);
-        // create zip
-        $file_ids = [];
 
-        foreach ($task->task_users as $tu) {
-            foreach ($tu->files as $file) {
-                $file_ids[] = $file->document->id;
+        $archive_file_name = $task->title . '-' . _('Abgaben_der_Studierenden') .'-'. date('Ymds-Hi') . '.zip';
+        $archive_path      = $GLOBALS['TMP_PATH'] . '/' . $archive_file_name;
+
+        $task_folder = null;
+
+        foreach ($this->folder->subfolders as $subfolder) {
+            if ($subfolder['data_content']['task_id'] == $task_id) {
+                $task_folder = $subfolder;
             }
         }
 
-        $zip_file_id = createSelectedZip($file_ids, false, false);
+        if ($task_folder) {
+            $result = FileArchiveManager::createArchiveFromFolder(
+                $task_folder->getTypedFolder(),
+                User::findCurrent(),
+                $archive_path,
+                false,
+                true
+            );
 
-        if ($zip_file_id) {
-            $zip_name = prepareFilename($task->title . '-' . _('Abgaben der Studierenden') . '.zip');
-            header('Location: ' . getDownloadLink($zip_file_id, $zip_name, 4));
-            page_close();
-            die;
+            $archive_download_link = FileManager::getDownloadURLForTemporaryFile(
+                $archive_path,
+                $archive_file_name
+            );
+
+            $this->redirect($archive_download_link);
+        } else {
+            $this->redirect('index/index');
         }
-
-        throw new Exception('could not create zip file');
     }
 }
