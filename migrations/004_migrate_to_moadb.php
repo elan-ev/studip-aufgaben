@@ -48,143 +48,148 @@ class MigrateToMoadb extends Migration
             // set up hidden folder for files to store (if not already present)
             $aufgaben_folder = null;
 
-            $root_folder = \Folder::findTopFolder($seminar_id)->getTypedFolder();
-            foreach ($root_folder->subfolders as $folder) {
-                if ($folder['data_content']['aufgabenplugin']) {
-                    $aufgaben_folder = $folder;
-                }
-            }
+            $r_folder = \Folder::findTopFolder($seminar_id);
 
-            if (!$aufgaben_folder) {
-                $aufgaben_folder = \Folder::create([
-                    'parent_id'    => $root_folder->getId(),
-                    'range_id'     => $seminar_id,
-                    'range_type'   => $context_type,
-                    'description'  => 'Dateiablage des Aufgabenplugins',
-                    'name'         => 'Aufgaben-Plugin',
-                    'data_content' => ['aufgabenplugin' => '1'],
-                    'folder_type'  => 'TaskFolder',
-                    'user_id'      => $seminar_id
+            if ($r_folder) {
+                $root_folder = $r_folder->getTypedFolder();
+
+                foreach ($root_folder->subfolders as $folder) {
+                    if ($folder['data_content']['aufgabenplugin']) {
+                        $aufgaben_folder = $folder;
+                    }
+                }
+
+                if (!$aufgaben_folder) {
+                    $aufgaben_folder = \Folder::create([
+                        'parent_id'    => $root_folder->getId(),
+                        'range_id'     => $seminar_id,
+                        'range_type'   => $context_type,
+                        'description'  => 'Dateiablage des Aufgabenplugins',
+                        'name'         => 'Aufgaben-Plugin',
+                        'data_content' => ['aufgabenplugin' => '1'],
+                        'folder_type'  => 'TaskFolder',
+                        'user_id'      => $seminar_id
+                    ]);
+                }
+
+                $folder = $aufgaben_folder->getTypedFolder();
+
+                // Aufgabenordner
+                $task_folder = null;
+
+                foreach ($folder->subfolders as $subfolder) {
+                    if ($subfolder['data_content']['task_id'] == $task->id) {
+                        $task_folder = $subfolder;
+                    }
+                }
+
+                if (!$task_folder) {
+                    $task_folder = \Folder::create([
+                        'parent_id'    => $folder->getId(),
+                        'range_id'     => $seminar_id,
+                        'range_type'   => $context_type,
+                        'description'  => 'Aufgabenordner',
+                        'name'         => 'Aufgabenordner: ' . $task->title,
+                        'data_content' => ['task_id' => $task->id],
+                        'folder_type'  => 'TaskFolder',
+                        'user_id'      => $seminar_id
+                    ]);
+
+                    $folder->subfolders[] = $task_folder;
+                }
+
+                // Nutzerordner für eine Aufgabe
+                $user_folder = null;
+                foreach ($task_folder->subfolders as $subfolder) {
+                    if ($subfolder['data_content']['task_user'] == $task_user->user_id) {
+                        $user_folder = $subfolder;
+                    }
+                }
+
+                if (!$user_folder) {
+                    $user_folder = \Folder::create([
+                        'parent_id'    => $task_folder->getId(),
+                        'range_id'     => $seminar_id,
+                        'range_type'   => $context_type,
+                        'description'  => 'Nutzerordner',
+                        'name'         => get_fullname($task_user->user_id),
+                        'data_content' => ['task_user' => $task_user->user_id],
+                        'folder_type'  => 'TaskFolder',
+                        'user_id'      => $task_user->user_id
+                    ]);
+
+                    $task_folder->subfolders[] = $user_folder;
+                }
+
+                // Ordner für die Art der Datei
+                $type_folder = null;
+                foreach ($user_folder->subfolders as $subfolder) {
+                    if ($subfolder['data_content']['task_type'] == $task_user_files->type) {
+                        $type_folder = $subfolder;
+                    }
+                }
+
+                if (!$type_folder) {
+                    $type_folder = \Folder::create([
+                        'parent_id'    => $user_folder->getId(),
+                        'range_id'     => $seminar_id,
+                        'range_type'   => $context_type,
+                        'description'  => '',
+                        'name'         => ucfirst($task_user_files->type),
+                        'data_content' => [
+                            'task_type' => $task_user_files->type,
+                            'task_user' => $task_user->user_id
+                        ],
+                        'folder_type'  => 'TaskFolder',
+                        'user_id'      => $task_user->user_id
+                    ]);
+
+                    $user_folder->subfolders[] = $type_folder;
+                }
+
+                $type_folder = $type_folder->getTypedFolder();
+
+                // set file-data, depending on existence of dokumente-table
+                $dok_metadata = [
+                    'mime_type' => 'application/octet-stream',
+                    'name'      => 'dokument_' . $task_user_files->getId(),
+                    'size'      => 0
+                ];
+
+                if ($dok_table) {
+                    $dok_stmt->execute([$task_user_files->dokument_id]);
+                    $data = $dok_stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($data) {
+                        $dok_metadata = [
+                            'mime_type' => get_mime_type($data['filename']),
+                            'name'      => $data['filename'],
+                            'size'      => $data['filesize']
+                        ];
+                    }
+                }
+
+                // create file in type_folder
+                $file = new \File();
+                $file->setData($data = [
+                    'id'        => $task_user_files->dokument_id,
+                    'user_id'   => $task_user->user_id,
+                    'mime_type' => $dok_metadata['mime_type'],
+                    'name'      => $dok_metadata['name'],
+                    'size'      => $dok_metadata['size'],
+                    'storage'   => 'disk',
                 ]);
-            }
+                $file->store();
 
-            $folder = $aufgaben_folder->getTypedFolder();
-
-            // Aufgabenordner
-            $task_folder = null;
-
-            foreach ($folder->subfolders as $subfolder) {
-                if ($subfolder['data_content']['task_id'] == $task->id) {
-                    $task_folder = $subfolder;
-                }
-            }
-
-            if (!$task_folder) {
-                $task_folder = \Folder::create([
-                    'parent_id'    => $folder->getId(),
-                    'range_id'     => $seminar_id,
-                    'range_type'   => $context_type,
-                    'description'  => 'Aufgabenordner',
-                    'name'         => 'Aufgabenordner: ' . $task->title,
-                    'data_content' => ['task_id' => $task->id],
-                    'folder_type'  => 'TaskFolder',
-                    'user_id'      => $seminar_id
+                $file_ref = new \FileRef();
+                $file_ref->setData($data = [
+                    'file_id'   => $task_user_files->dokument_id,
+                    'folder_id' => $type_folder->getId(),
+                    'user_id'   => $task_user->user_id,
+                    'name'      => $dok_metadata['name']
                 ]);
-
-                $folder->subfolders[] = $task_folder;
+                $file_ref->store();
             }
-
-            // Nutzerordner für eine Aufgabe
-            $user_folder = null;
-            foreach ($task_folder->subfolders as $subfolder) {
-                if ($subfolder['data_content']['task_user'] == $task_user->user_id) {
-                    $user_folder = $subfolder;
-                }
-            }
-
-            if (!$user_folder) {
-                $user_folder = \Folder::create([
-                    'parent_id'    => $task_folder->getId(),
-                    'range_id'     => $seminar_id,
-                    'range_type'   => $context_type,
-                    'description'  => 'Nutzerordner',
-                    'name'         => get_fullname($task_user->user_id),
-                    'data_content' => ['task_user' => $task_user->user_id],
-                    'folder_type'  => 'TaskFolder',
-                    'user_id'      => $task_user->user_id
-                ]);
-
-                $task_folder->subfolders[] = $user_folder;
-            }
-
-            // Ordner für die Art der Datei
-            $type_folder = null;
-            foreach ($user_folder->subfolders as $subfolder) {
-                if ($subfolder['data_content']['task_type'] == $task_user_files->type) {
-                    $type_folder = $subfolder;
-                }
-            }
-
-            if (!$type_folder) {
-                $type_folder = \Folder::create([
-                    'parent_id'    => $user_folder->getId(),
-                    'range_id'     => $seminar_id,
-                    'range_type'   => $context_type,
-                    'description'  => '',
-                    'name'         => ucfirst($task_user_files->type),
-                    'data_content' => [
-                        'task_type' => $task_user_files->type,
-                        'task_user' => $task_user->user_id
-                    ],
-                    'folder_type'  => 'TaskFolder',
-                    'user_id'      => $task_user->user_id
-                ]);
-
-                $user_folder->subfolders[] = $type_folder;
-            }
-
-            $type_folder = $type_folder->getTypedFolder();
-
-            // set file-data, depending on existence of dokumente-table
-            $dok_metadata = [
-                'mime_type' => 'application/octet-stream',
-                'name'      => 'dokument_' . $task_user_files->getId(),
-                'size'      => 0
-            ];
-
-            if ($dok_table) {
-                $dok_stmt->execute([$task_user_files->dokument_id]);
-                $data = $dok_stmt->fetch(PDO::FETCH_ASSOC);
-
-                if ($data) {
-                    $dok_metadata = [
-                        'mime_type' => get_mime_type($data['filename']),
-                        'name'      => $data['filename'],
-                        'size'      => $data['filesize']
-                    ];
-                }
-            }
-
-            // create file in type_folder
-            $file = new \File();
-            $file->setData($data = [
-                'id'        => $task_user_files->dokument_id,
-                'user_id'   => $task_user->user_id,
-                'mime_type' => $dok_metadata['mime_type'],
-                'name'      => $dok_metadata['name'],
-                'size'      => $dok_metadata['size'],
-                'storage'   => 'disk',
-            ]);
-            $file->store();
-
-            $file_ref = new \FileRef();
-            $file_ref->setData($data = [
-                'file_id'   => $task_user_files->dokument_id,
-                'folder_id' => $type_folder->getId(),
-                'user_id'   => $task_user->user_id,
-                'name'      => $dok_metadata['name']
-            ]);
-            $file_ref->store();
         }
 
         unset($task_user_files);
