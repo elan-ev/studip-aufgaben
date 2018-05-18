@@ -1,13 +1,13 @@
 <table class="default zebra">
     <thead>
         <tr>
-            <th><?= _('TeilnehmerIn') ?></th>
-            <th colspan="2" style="width: 10%; text-align: center"><?= _('in Arbeit') ?></th>
-            <th style="width: 10%"><?= _('letzte Aktivität') ?></th>
-            <th colspan="2" style="width: 10%; text-align: center"><?= _('Feedback') ?></th>
-            <th><?= _('Hinweis') ?></th>
-            <th style="width: 2%"><?= _('Fertig?') ?></th>
-            <th class="actions"><?= _('Aktionen') ?></th>
+            <th><?= $_('TeilnehmerIn') ?></th>
+            <th colspan="2" style="width: 10%; text-align: center"><?= $_('in Arbeit') ?></th>
+            <th style="width: 10%"><?= $_('letzte Aktivität') ?></th>
+            <th colspan="2" style="width: 10%; text-align: center"><?= $_('Feedback') ?></th>
+            <th><?= $_('Hinweis') ?></th>
+            <th style="width: 2%"><?= $_('Fertig?') ?></th>
+            <th class="actions"><?= $_('Aktionen') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -31,12 +31,12 @@
 
                     <td style="text-align: right">
                         <?= (!$task_user || $task_user->answer === null) ? '0' : strlen($task_user->answer) ?>
-                        <?= Icon::create('file-text', 'info', tooltip2(_('Antworttext'))) ?>
+                        <?= Icon::create('file-text', 'info', tooltip2($_('Antworttext'))) ?>
                     </td>
                     <td>
                         <? $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer'); ?>
                         <?= $type_folder ? count($type_folder->getFiles()) : 0 ?>
-                        <?= Icon::create('file-generic', 'info', tooltip2(_('Hochgeladene Dateien'))) ?>
+                        <?= Icon::create('file-generic', 'info', tooltip2($_('Hochgeladene Dateien'))) ?>
                     </td>
                     <td>
                         <?= ($task_user && $task_user->chdate) ? strftime($timeformat, $task_user->chdate) : '-' ?>
@@ -44,17 +44,17 @@
 
                     <td style="text-align: right">
                         <?= (!$task_user || $task_user->feedback === null) ? '0' : strlen($task_user->feedback) ?>
-                        <?= Icon::create('file-text', 'info', tooltip2(_('Antworttext'))) ?>
+                        <?= Icon::create('file-text', 'info', tooltip2($_('Antworttext'))) ?>
                     </td>
                     <td>
                         <? $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'feedback'); ?>
                         <?= $type_folder ? count($type_folder->getFiles()) : 0 ?>
-                        <?= Icon::create('file-generic', 'info', tooltip2(_('Hochgeladene Dateien'))) ?>
+                        <?= Icon::create('file-generic', 'info', tooltip2($_('Hochgeladene Dateien'))) ?>
                     </td>
                     <td>
                         <?= ($task_user && $task_user->hint)
                             ? Assets::img('icons/16/black/file-text.png', [
-                                'title' => _('Für diese Aufgabe wurden Hinweise für sie hinterlegt!')
+                                'title' =>$ _('Für diese Aufgabe wurden Hinweise für sie hinterlegt!')
                             ]) : '-' ?>
                     </td>
                     <td>
@@ -66,7 +66,7 @@
                     </td>
                     <td class="actions">
                         <a href="<?= $controller->url_for("index/view_dozent/" . $task_user->id) ?>">
-                            <?= Icon::create('edit', 'clickable', tooltip2(_('Diese Aufgabe für diesen Nutzer bearbeiten'))) ?>
+                            <?= Icon::create('edit', 'clickable', tooltip2($_('Diese Aufgabe für diesen Nutzer bearbeiten'))) ?>
                         </a>
                     </td>
                 </tr>

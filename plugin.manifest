@@ -10,7 +10,7 @@ screenshot = assets/images/screenshots/Aufgabe_erstellen.png
 screenshot = assets/images/screenshots/Aufgabendetails.png
 screenshot = assets/images/screenshots/Dateien_Hochladen.png
 
-icon = ../../../assets/images/icons/16/black/assessment.png
+icon = ../../../assets/images/icons/black/assessment.svg
 
 category = Inhalte und Aufgabenstellungen
 displayname = Aufgaben

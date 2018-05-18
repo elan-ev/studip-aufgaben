@@ -1,0 +1,446 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-15 13:12+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Jan-Hendrik Willms <tleilax@gmail.com>, 2017\n"
+"Language-Team: English (https://www.transifex.com/uol-it/teams/52597/en/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: AufgabenPlugin.php:37 app/views/index/_index_dozent.php:2
+msgid "Aufgaben"
+msgstr "Tasks"
+
+#: AufgabenPlugin.php:41 app/views/index/_breadcrumb.php:27
+msgid "Übersicht"
+msgstr "Overview"
+
+#: AufgabenPlugin.php:129
+msgid "Es gibt nichts neues seit Ihrem letzten Besuch."
+msgstr "There have been no changes since your last visit."
+
+#: AufgabenPlugin.php:146
+#, php-format
+msgid "Seit Ihrem letzten Besuch gibt es %s neue Aktivitäten"
+msgstr "Since your last visit, there are %s new activities"
+
+#: AufgabenPlugin.php:156
+#, php-format
+msgid "Seit Ihrem letzten Besuch gibt es %s neue Aufgaben."
+msgstr "Since your last visit, there are %s new tasks."
+
+#: app/models/Perm.php:85
+#, php-format
+msgid ""
+"Sie haben keine Berechtigung für diese Aktion! Benötigte Berechtigung: %s"
+msgstr "You are not authorized to perform this action. Permissions needed: %s"
+
+#: app/models/Tasks.php:60
+msgid "läuft"
+msgstr "Pending"
+
+#: app/models/Tasks.php:64
+msgid "beendet"
+msgstr "Complete"
+
+#: app/models/Tasks.php:68
+msgid "läuft noch nicht"
+msgstr "Not yet started"
+
+#: app/controllers/index.php:27
+msgid "Kommilitone/in"
+msgstr "Fellow student"
+
+#: app/controllers/index.php:77 app/controllers/index.php:88
+#: app/views/index/new_task.php:28
+msgid "Neue Aufgabe anlegen"
+msgstr "Create new task"
+
+#: app/controllers/index.php:112
+#, php-format
+msgid "Die Aufgabe %s wurde erfolgreich angelegt!"
+msgstr "The task %s has been created!"
+
+#: app/controllers/index.php:114
+msgid ""
+"Beim Anlegen der Aufgabe ist etwas schief gelaufen.\n"
+"            Versuchen Sie es noch einmal oder wenden Sie sich an einen Systemadministrator"
+msgstr ""
+"An error occured while creating the task.\n"
+"Please try again or contact a system administrator."
+
+#: app/controllers/index.php:128 app/controllers/index.php:161
+#: app/controllers/index.php:176 app/controllers/index.php:196
+#: app/controllers/index.php:208 app/controllers/index.php:231
+#: app/controllers/index.php:286 app/controllers/index.php:322
+#: app/controllers/index.php:350 app/controllers/index.php:389
+msgid "Die Aufgabe wurde nicht gefunden!"
+msgstr "The task was not found."
+
+#: app/controllers/index.php:145
+#, php-format
+msgid "Die Aufgabe %s wurde erfolgreich bearbeitet!"
+msgstr "The task %s has been edited!"
+
+#: app/controllers/index.php:147
+msgid ""
+"Beim Bearbeiten der Aufgabe ist etwas schief gelaufen.\n"
+"            Versuchen Sie es noch einmal oder wenden Sie sich an einen Systemadministrator"
+msgstr ""
+"An error occured while editing the task.\n"
+"Please try again or contact a system administrator."
+
+#: app/controllers/index.php:170 app/views/index/_index_dozent.php:62
+msgid "Aufgabe bearbeiten"
+msgstr "Edit task"
+
+#: app/controllers/index.php:235
+msgid "Aufgabe Bearbeiten"
+msgstr "Edit task"
+
+#: app/controllers/index.php:240
+msgid "Aufgabe Löschen"
+msgstr "Delete task"
+
+#: app/controllers/index.php:243 app/views/index/_index_dozent.php:78
+msgid "Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?"
+msgstr "Are you sure you want to delete the complete task?"
+
+#: app/controllers/index.php:249
+msgid "Legende"
+msgstr "Legend"
+
+#: app/controllers/index.php:252
+#, php-format
+msgid "Aufgabe bearbeitbar: <br>%s - %s Uhr"
+msgstr "Task may be edited:<br>%s - %s o'clock"
+
+#: app/controllers/index.php:261
+msgid "Texteingabe und Dateiupload erlaubt"
+msgstr "Text entry and file upload permitted"
+
+#: app/controllers/index.php:265
+msgid "Texteingabe erlaubt"
+msgstr "Text entry permitted"
+
+#: app/controllers/index.php:269
+msgid "Dateiupload erlaubt"
+msgstr "File upload permitted"
+
+#: app/controllers/index.php:309 app/controllers/index.php:407
+msgid "Sie haben keine Rechte zum Bearbeiten dieser Aufgabe."
+msgstr "You are not authorized to edit this task."
+
+#: app/controllers/index.php:318 app/controllers/index.php:346
+#: app/controllers/index.php:367 app/controllers/index.php:385
+msgid "Sie dürfen diese Aufgabe nicht bearbeiten!"
+msgstr "You are not authorized to edit this task."
+
+#: app/controllers/index.php:403
+msgid "Für diese Aufgabe dürfen keine Dateien hochgeladen werden."
+msgstr "File uploads are disabled for this task."
+
+#: app/controllers/index.php:460
+msgid "Konnte Datei nicht erstellen!"
+msgstr "Could not create file."
+
+#: app/controllers/index.php:490
+msgid "Sie dürfen sich nicht selbst für eine Berechtigung eintragen!"
+msgstr "You cannot assign permissions to yourself as user."
+
+#: app/controllers/index.php:497
+msgid "Für diesen Nutzer existiert bereits eine andere Berechtigung!"
+msgstr "This user already has other permissions."
+
+#: app/controllers/index.php:567 app/controllers/index.php:602
+msgid "Abgaben der Studierenden"
+msgstr "Students? submissions"
+
+#: app/views/index/_file_upload.php:15
+msgid "Datei(en) hinzufügen"
+msgstr "Add file(s)"
+
+#: app/views/index/_file_upload.php:23
+msgid "Datei(en) hochladen"
+msgstr "Upload file(s)"
+
+#: app/views/index/_file_upload.php:26
+msgid "Maximal erlaubte Größe pro Datei"
+msgstr "Maximum size per file"
+
+#: app/views/index/index.php:3
+#, php-format
+msgid "Sie haben noch keine Aufgaben angelegt. %sNeue Aufgabe anlegen.%s"
+msgstr "You have not created any tasks yet. %sCreate new task.%s"
+
+#: app/views/index/index.php:6
+msgid "Es sind noch keine Aufgaben sichtbar/vorhanden"
+msgstr "No tasks are available/visible."
+
+#: app/views/index/edit_task.php:5 app/views/index/new_task.php:32
+msgid "Titel"
+msgstr "Title"
+
+#: app/views/index/edit_task.php:12 app/views/index/new_task.php:36
+msgid "Aufgabenbeschreibung"
+msgstr "Task description"
+
+#: app/views/index/edit_task.php:17 app/views/index/new_task.php:52
+msgid "Sichtbar und bearbeitbar ab"
+msgstr "Can be viewed and edited from:"
+
+#: app/views/index/edit_task.php:18 app/views/index/edit_task.php:24
+#: app/views/index/new_task.php:53 app/views/index/new_task.php:58
+msgid "tt.mm.jjjj ss:mm"
+msgstr "dd.mm.yyyy ss:mm"
+
+#: app/views/index/edit_task.php:23 app/views/index/new_task.php:57
+msgid "Bearbeitbar bis"
+msgstr "Deadline:"
+
+#: app/views/index/edit_task.php:31 app/views/index/new_task.php:41
+msgid "Texteingabe erlauben"
+msgstr "Allow text entry"
+
+#: app/views/index/edit_task.php:36 app/views/index/new_task.php:46
+msgid "Dateiupload erlauben"
+msgstr "Allow file upload"
+
+#: app/views/index/edit_task.php:39 app/views/index/_edit_text.php:15
+msgid "Speichern"
+msgstr "Save"
+
+#: app/views/index/edit_task.php:40 app/views/index/new_task.php:75
+#: app/views/index/_edit_text.php:16
+msgid "Abbrechen"
+msgstr "Cancel"
+
+#: app/views/index/_file_list.php:3
+msgid "Dateien"
+msgstr "Files"
+
+#: app/views/index/_file_list.php:9
+msgid "Datei"
+msgstr "File"
+
+#: app/views/index/_file_list.php:10
+msgid "Größe"
+msgstr "Size"
+
+#: app/views/index/_file_list.php:11
+msgid "Datum"
+msgstr "Date"
+
+#: app/views/index/_file_list.php:12
+#: app/views/index/_index_autor_accessible.php:11
+msgid "Besitzer"
+msgstr "Owner"
+
+#: app/views/index/_file_list.php:14 app/views/index/new_task.php:18
+#: app/views/index/_index_dozent.php:35 app/views/index/_status.php:10
+#: app/views/index/view_student.php:26
+msgid "Aktionen"
+msgstr "Actions"
+
+#: app/views/index/_file_list.php:50
+msgid "Bisher wurden keine Dokumente hochgeladen"
+msgstr "No files were uploaded yet"
+
+#: app/views/index/view_dozent.php:25 app/views/index/view_dozent.php:36
+msgid "Hinweis für diese(n) Teilnehmer(in)"
+msgstr "Note for participant(s)"
+
+#: app/views/index/view_dozent.php:25
+msgid ""
+"Sie können den Hinweistext nicht mehr verändern, da die Aufgabe bereits "
+"gestartet ist!"
+msgstr "You cannot change the task notes since the task has already started!"
+
+#: app/views/index/view_dozent.php:49 app/views/index/_index_autor.php:67
+#: app/views/index/_index_autor.php:75 app/views/index/_status.php:34
+#: app/views/index/_status.php:46
+#: app/views/index/_index_autor_accessible.php:64
+#: app/views/index/_index_autor_accessible.php:72
+#: app/views/index/view_student.php:69 app/views/index/view_student.php:83
+msgid "Antworttext"
+msgstr "Response"
+
+#: app/views/index/view_dozent.php:55 app/views/index/view_student.php:75
+msgid "Es wurde keine Antwort eingegeben"
+msgstr "A response has not been entered."
+
+#: app/views/index/view_dozent.php:72 app/views/index/_index_autor.php:38
+#: app/views/index/_status.php:7
+#: app/views/index/_index_autor_accessible.php:32
+msgid "Feedback"
+msgstr "Feedback"
+
+#: app/views/index/new_task.php:74
+msgid "Anlegen"
+msgstr "Create"
+
+#: app/views/index/_index_autor.php:16 app/views/index/_index_dozent.php:14
+#: app/views/index/_index_autor_accessible.php:7
+msgid "Aufgabe"
+msgstr "Task"
+
+#: app/views/index/_index_autor.php:21 app/views/index/_index_dozent.php:20
+#: app/views/index/_index_autor_accessible.php:15
+msgid "Start"
+msgstr "Start"
+
+#: app/views/index/_index_autor.php:26 app/views/index/_index_dozent.php:26
+#: app/views/index/_index_autor_accessible.php:20
+msgid "Ende"
+msgstr "End"
+
+#: app/views/index/_index_autor.php:31 app/views/index/_index_dozent.php:32
+#: app/views/index/_index_autor_accessible.php:25
+msgid "Status"
+msgstr "Status"
+
+#: app/views/index/_index_autor.php:35
+#: app/views/index/_index_autor_accessible.php:29
+msgid "Arbeit"
+msgstr "Assignment"
+
+#: app/views/index/_index_autor.php:49 app/views/index/_index_dozent.php:43
+#: app/views/index/_index_autor_accessible.php:42
+msgid "Diese Aufgabe anzeigen"
+msgstr "Display this task"
+
+#: app/views/index/_index_autor.php:71 app/views/index/_index_autor.php:79
+#: app/views/index/_status.php:38 app/views/index/_status.php:50
+#: app/views/index/_index_autor_accessible.php:68
+#: app/views/index/_index_autor_accessible.php:76
+msgid "Hochgeladene Dateien"
+msgstr "Uploaded files"
+
+#: app/views/index/_index_dozent.php:67
+msgid "Hochgeladene Aufgabenabgaben herunterladen"
+msgstr "Download all tasks responses"
+
+#: app/views/index/_index_dozent.php:71
+msgid "Textantworten als PDF herunterladen"
+msgstr "Download text responses as PDF"
+
+#: app/views/index/_index_dozent.php:76
+msgid "Aufgabe löschen"
+msgstr "Delete task"
+
+#: app/views/index/_status.php:4
+msgid "TeilnehmerIn"
+msgstr "Participant"
+
+#: app/views/index/_status.php:5
+msgid "in Arbeit"
+msgstr "In progress"
+
+#: app/views/index/_status.php:6
+msgid "letzte Aktivität"
+msgstr "Last activity"
+
+#: app/views/index/_status.php:8
+msgid "Hinweis"
+msgstr "Note"
+
+#: app/views/index/_status.php:9
+msgid "Fertig?"
+msgstr "Complete?"
+
+#: app/views/index/_status.php:55
+msgid "Für diese Aufgabe wurden Hinweise für sie hinterlegt!"
+msgstr "Notes have been added to this task for your reference."
+
+#: app/views/index/_status.php:67
+msgid "Diese Aufgabe für diesen Nutzer bearbeiten"
+msgstr "Edit the task for this user"
+
+#: app/views/index/_index_autor_accessible.php:2
+msgid "Für mich freigegebene Aufgaben"
+msgstr "Tasks shared with me"
+
+#: app/views/index/_breadcrumb.php:40
+msgid "Sie befinden sich hier:"
+msgstr "You are here:"
+
+#: app/views/index/_edit_text.php:27
+msgid "Es wurde noch kein Text eingegeben"
+msgstr "No text has been entered yet."
+
+#: app/views/index/_edit_text.php:31
+msgid "Bearbeiten"
+msgstr "Edit"
+
+#: app/views/index/view_student.php:16
+msgid "Informationen"
+msgstr "Information"
+
+#: app/views/index/view_student.php:44
+#, php-format
+msgid "Diese Aufgabe gehört: %s"
+msgstr "This task includes: %s"
+
+#: app/views/index/view_student.php:58
+msgid "Hinweis Lehrender"
+msgstr "Notice from lecturer"
+
+#: app/views/index/view_student.php:101
+msgid "Feedback DozentIn"
+msgstr "Feedback from lecturer"
+
+#: app/views/index/view_student.php:107
+msgid "Noch kein Feedback vorhanden"
+msgstr "No feedback available yet"
+
+#: app/views/index/_js_templates.php:9
+msgid "Datei zu groß!"
+msgstr "File too large"
+
+#: app/views/index/_js_templates.php:61
+msgid "Ja"
+msgstr "Yes"
+
+#: app/views/index/_js_templates.php:62
+msgid "Nein"
+msgstr "No"
+
+#: app/views/index/_js_templates.php:74
+msgid "Berechtigung entfernen"
+msgstr "Remove permission"
+
+#: app/views/index/_permissions.php:3
+msgid "Zugriff gewähren"
+msgstr "Grant access"
+
+#: app/views/index/_permissions.php:12
+msgid "Nach Vorname und/oder Nachname suchen..."
+msgstr "Search by first name/last name..."
+
+#: app/views/index/_permissions.php:18
+msgid "Berechtigung wählen"
+msgstr "Select authorization"
+
+#: app/views/index/_permissions.php:23
+msgid ""
+"Kommilitone/in: Kann die komplette Aufgabe einsehen, den Antworttext ändern "
+"und Dateien hochladen. Nur selbst hochgeladene Dateien können wieder "
+"gelöscht werden."
+msgstr ""
+"Fellow student Can view the complete task, change the response text, and "
+"upload files. You can only delete files you have uploaded yourself."
+
+#: app/views/index/_permissions.php:28
+msgid "Berechtigung hinzufügen"
+msgstr "Add permission"

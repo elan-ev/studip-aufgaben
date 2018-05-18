@@ -1,5 +1,5 @@
 <table class="default zebra tablesorter">
-    <caption><?= _('Aufgaben') ?></caption>
+    <caption><?= $_('Aufgaben') ?></caption>
     <colgroup>
         <col style="width: 50%">
         <col>
@@ -11,28 +11,28 @@
         <tr class="sortable">
             <th style="width: 60%" <?= $sort == 'title' ? 'class="sort' . $order . '"' : '' ?>>
                 <a href="<?= $controller->url_for('index/index?sort_by=title' . ($order == 'desc' ? '&asc=1' : '')) ?>">
-                    <?= _('Aufgabe') ?>
+                    <?= $_('Aufgabe') ?>
                 </a>
             </th>
 
             <th <?= $sort == 'startdate' ? 'class="sort' . $order . '"' : '' ?>>
                 <a href="<?= $controller->url_for('index/index?sort_by=startdate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
-                    <?= _('Start') ?>
+                    <?= $_('Start') ?>
                 </a>
             </th>
 
             <th <?= $sort == 'enddate' ? 'class="sort' . $order . '"' : '' ?>>
                 <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
-                    <?= _('Ende') ?>
+                    <?= $_('Ende') ?>
                 </a>
             </th>
 
             <th <?= $sort == 'enddate' ? 'class="sort' . $order . '"' : '' ?>>
                 <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
-                    <?= _('Status') ?>
+                    <?= $_('Status') ?>
                 </a>
             </th>
-            <th class="actions"><?= _('Aktionen') ?></th>
+            <th class="actions"><?= $_('Aktionen') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -40,7 +40,7 @@
             <tr class="<?= $task->getStatus() ?>">
                 <td>
                     <a href="<?= $controller->url_for('/index/view_task/' . $task['id']) ?>"
-                       title="<?= _('Diese Aufgabe anzeigen') ?>">
+                       title="<?= $_('Diese Aufgabe anzeigen') ?>">
                         <?= htmlReady($task['title']) ?>
                     </a>
                 </td>
@@ -59,23 +59,23 @@
                     <?
                     $actions->addLink(
                         $controller->url_for('/index/edit_task/' . $task['id']),
-                        _('Aufgabe bearbeiten'),
+                        $_('Aufgabe bearbeiten'),
                         Icon::create('edit'),
                         ['data-dialog' => 'size=50%']);
                     $actions->addLink(
                         $controller->url_for('/index/zip/' . $task['id']),
-                        _('Hochgeladene Aufgabenabgaben herunterladen'),
+                        $_('Hochgeladene Aufgabenabgaben herunterladen'),
                         Icon::create('file-archive+move_down'));
                     $actions->addLink(
                         $controller->url_for('/index/pdf/' . $task['id']),
-                        _('Textantworten als PDF herunterladen'),
+                        $_('Textantworten als PDF herunterladen'),
                         Icon::create('file-pdf+move_down'));
 
                     $actions->addLink(
                         $controller->url_for('index/delete_task/' . $task['id']),
-                        _('Aufgabe löschen'),
+                        $_('Aufgabe löschen'),
                         Icon::create('trash'),
-                        ['data-confirm' => _('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?')]
+                        ['data-confirm' => $_('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?')]
                     )
                     ?>
                     <?= $actions ?>

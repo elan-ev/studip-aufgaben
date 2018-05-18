@@ -2,42 +2,42 @@
     <?= CSRFProtection::tokenTag() ?>
     <fieldset>
         <legend>
-            <?= $task ? _('Aufgabe bearbeiten') : _('Aufgabe anlegen') ?>
+            <?= $task ? $_('Aufgabe bearbeiten') : $_('Aufgabe anlegen') ?>
         </legend>
         <label>
             <span class="required">
-                <?= _('Titel') ?>
+                <?= $_('Titel') ?>
             </span>
             <input type="text" name="title" required value="<?= $task ? htmlReady($task['title']) : '' ?>">
         </label>
 
         <label>
 
-            <span class="required"><?= _('Aufgabenbeschreibung') ?></span>
+            <span class="required"><?= $_('Aufgabenbeschreibung') ?></span>
             <textarea name="content" required><?= $task ? htmlReady($task['content']) : '' ?></textarea>
         </label>
 
         <label>
-            <?= _('Sichtbar und bearbeitbar ab') ?>:<br>
-            <input type="text" data-datetime-picker name="startdate" placeholder="<?= _('tt.mm.jjjj ss:mm') ?>" required
+            <?= $_('Sichtbar und bearbeitbar ab') ?>:<br>
+            <input type="text" data-datetime-picker name="startdate" placeholder="<?= $_('tt.mm.jjjj ss:mm') ?>" required
                    class="size-s" value="<?= $task ? strftime('%d.%m.%Y %R', $task['startdate']) : '' ?>">
         </label>
 
         <label>
-            <?= _('Bearbeitbar bis') ?>:<br>
-            <input type="text" data-datetime-picker name="enddate" placeholder="<?= _('tt.mm.jjjj ss:mm') ?>" required
+            <?= $_('Bearbeitbar bis') ?>:<br>
+            <input type="text" data-datetime-picker name="enddate" placeholder="<?= $_('tt.mm.jjjj ss:mm') ?>" required
                    class="size-s" value="<?= $task ? strftime('%d.%m.%Y %R', $task['enddate']) : '' ?>">
         </label>
 
 
         <label>
             <input type="checkbox" name="allow_text" value="1" <?= $task &&  $task['allow_text'] ? 'checked="checked"' : '' ?>>
-            <?= _('Texteingabe erlauben') ?>
+            <?= $_('Texteingabe erlauben') ?>
         </label>
 
         <label>
             <input type="checkbox" name="allow_files" value="1" <?= $task && $task['allow_files'] ? 'checked="checked"' : '' ?>>
-            <?= _('Dateiupload erlauben') ?>
+            <?= $_('Dateiupload erlauben') ?>
         </label>
     </fieldset>
 
