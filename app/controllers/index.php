@@ -271,10 +271,10 @@ class IndexController extends \EPP\Controller
             Icon::create('edit')
         )->asDialog('size=50%');
         $actions->addLink(
-            $this->_('Aufgabe L�schen'),
+            $this->_('Aufgabe Löschen'),
             $this->url_for('index/delete_task/' . $id),
             Icon::create('trash'),
-            ['data-confirm' => $this->_('Sind Sie sicher, dass Sie die komplette Aufgabe l�schen m�chten?')]
+            ['data-confirm' => $this->_('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?')]
         );
 
         Sidebar::Get()->addWidget($actions);

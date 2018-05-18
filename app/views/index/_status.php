@@ -54,7 +54,7 @@
                     <td>
                         <?= ($task_user && $task_user->hint)
                             ? Assets::img('icons/16/black/file-text.png', [
-                                'title' =>$ _('Für diese Aufgabe wurden Hinweise für sie hinterlegt!')
+                                'title' => $_('Für diese Aufgabe wurden Hinweise für sie hinterlegt!')
                             ]) : '-' ?>
                     </td>
                     <td>
