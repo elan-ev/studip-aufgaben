@@ -13,7 +13,7 @@
 
 if ($task_user->ready) {
     $infobox_content[] = [
-        'kategorie' => _('Informationen'),
+        'kategorie' => $_('Informationen'),
         'eintrag'   => [
             [
                 'icon' => 'icons/16/green/accept.png',
@@ -23,7 +23,7 @@ if ($task_user->ready) {
     ];
 } else {
     $infobox_content[] = [
-        'kategorie' => _('Aktionen'),
+        'kategorie' => $_('Aktionen'),
         'eintrag'   => [
             [
                 'icon' => 'icons/16/blue/link-intern.png',
@@ -41,7 +41,7 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
 <? if ($task_user->user_id != $GLOBALS['user']->id): ?>
     <br><br>
     <span>
-        <?= sprintf(_('Diese Aufgabe gehört: %s'),
+        <?= sprintf($_('Diese Aufgabe gehört: %s'),
             '<a href="' . URLHelper::getLink('dispatch.php/profile?username='
                 . get_username($task_user->user_id)) . '">'
             . get_fullname($task_user->user_id) . '</a>'
@@ -55,7 +55,7 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
 <? if ($task_user['hint']) : ?>
     <section class="contentbox"></section>
     <header>
-        <h1><?= _('Hinweis Lehrender') ?></h1>
+        <h1><?= $_('Hinweis Lehrender') ?></h1>
     </header>
     <section>
         <?= formatReady($task_user->hint) ?>
@@ -66,13 +66,13 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
     <? if ($task->enddate < time()) : ?>
         <section class="contentbox">
             <header>
-                <h1><?= _('Antworttext') ?></h1>
+                <h1><?= $_('Antworttext') ?></h1>
             </header>
             <section>
                 <? if ($task_user->answer) : ?>
                     <?= formatReady($task_user->answer) ?>
                 <? else : ?>
-                    <p style="text-align: center"><?= _('Es wurde keine Antwort eingegeben') ?></p>
+                    <p style="text-align: center"><?= $_('Es wurde keine Antwort eingegeben') ?></p>
                 <? endif ?>
             </section>
         </section>
@@ -80,7 +80,7 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
         <?= $this->render_partial('index/_edit_text', [
             'form_route'   => 'index/update_student/' . $task->getId() . '/' . $task_user->getId(),
             'cancel_route' => 'index/view_student/' . $task->getId(),
-            'name'         => _('Antworttext'),
+            'name'         => $_('Antworttext'),
             'field'        => 'answer',
             'text'         => $task_user->answer,
             'edit'         => ($task->enddate >= time()),
@@ -99,13 +99,13 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
 
 <section class="contentbox">
     <header>
-        <h1><?= _('Feedback DozentIn') ?></h1>
+        <h1><?= $_('Feedback DozentIn') ?></h1>
     </header>
     <section>
         <? if ($task_user->feedback) : ?>
             <?= formatReady($task_user->feedback) ?>
         <? else : ?>
-            <p style="text-align: center"><?= _('Noch kein Feedback vorhanden') ?></p>
+            <p style="text-align: center"><?= $_('Noch kein Feedback vorhanden') ?></p>
         <? endif ?>
     </section>
 </section>

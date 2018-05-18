@@ -24,7 +24,7 @@ class IndexController extends \EPP\Controller
         $this->seminar_id = $this->getSeminarId();
 
         $this->permissions = [
-            'student' => _('Kommilitone/in'),
+            'student' => $this->_('Kommilitone/in'),
         ];
 
         // set up hidden folder for files to store (if not already present)
@@ -99,7 +99,7 @@ class IndexController extends \EPP\Controller
         if (EPP\Perm::has('new_task', $this->seminar_id)) {
             $actions = new ActionsWidget();
             $actions->addLink(
-                _('Neue Aufgabe anlegen'),
+                $this->_('Neue Aufgabe anlegen'),
                 $this->url_for('index/new_task'),
                 Icon::create('add')
             )->asDialog('size=50%');
@@ -110,7 +110,7 @@ class IndexController extends \EPP\Controller
 
     public function new_task_action()
     {
-        PageLayout::setTitle(_('Neue Aufgabe anlegen'));
+        PageLayout::setTitle($this->_('Neue Aufgabe anlegen'));
         EPP\Perm::check('new_task', $this->seminar_id);
 
         $this->destination = 'index/add_task';
@@ -143,9 +143,9 @@ class IndexController extends \EPP\Controller
         ];
 
         if (\EPP\Tasks::create($data)) {
-            PageLayout::postSuccess(sprintf(_('Die Aufgabe %s wurde erfolgreich angelegt!'), Request::get('title')));
+            PageLayout::postSuccess(sprintf($this->_('Die Aufgabe %s wurde erfolgreich angelegt!'), Request::get('title')));
         } else {
-            PageLayout::postError(_('Beim Anlegen der Aufgabe ist etwas schief gelaufen.
+            PageLayout::postError($this->_('Beim Anlegen der Aufgabe ist etwas schief gelaufen.
             Versuchen Sie es noch einmal oder wenden Sie sich an einen Systemadministrator'));
         }
 
@@ -159,7 +159,7 @@ class IndexController extends \EPP\Controller
         $task = new EPP\Tasks($id);
 
         if ($task->seminar_id != $this->seminar_id) {
-            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         $data = [
@@ -176,9 +176,9 @@ class IndexController extends \EPP\Controller
 
         $task->setData($data);
         if ($task->store()) {
-            PageLayout::postSuccess(sprintf(_('Die Aufgabe %s wurde erfolgreich bearbeitet!'), Request::get('title')));
+            PageLayout::postSuccess(sprintf($this->_('Die Aufgabe %s wurde erfolgreich bearbeitet!'), Request::get('title')));
         } else {
-            PageLayout::postError(_('Beim Bearbeiten der Aufgabe ist etwas schief gelaufen.
+            PageLayout::postError($this->_('Beim Bearbeiten der Aufgabe ist etwas schief gelaufen.
             Versuchen Sie es noch einmal oder wenden Sie sich an einen Systemadministrator'));
         }
 
@@ -192,7 +192,7 @@ class IndexController extends \EPP\Controller
         $task = new EPP\Tasks($id);
 
         if ($task->seminar_id != $this->seminar_id) {
-            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         $task->delete();
@@ -201,13 +201,13 @@ class IndexController extends \EPP\Controller
 
     public function edit_task_action($id)
     {
-        PageLayout::setTitle(_('Aufgabe bearbeiten'));
+        PageLayout::setTitle($this->_('Aufgabe bearbeiten'));
         EPP\Perm::check('new_task', $this->seminar_id);
 
         $this->task = new EPP\Tasks($id);
 
         if ($this->task->seminar_id != $this->seminar_id) {
-            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         $this->destination = 'index/update_task/' . $id;
@@ -227,7 +227,7 @@ class IndexController extends \EPP\Controller
         $this->task      = new \EPP\Tasks($this->task_user->ep_tasks_id);
 
         if ($this->task->seminar_id != $this->seminar_id) {
-            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
     }
 
@@ -239,7 +239,7 @@ class IndexController extends \EPP\Controller
         $task      = new \EPP\Tasks($task_user->ep_tasks_id);
 
         if ($task->seminar_id != $this->seminar_id) {
-            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         if (Request::get('feedback') !== null && $task->startdate <= time()) {
@@ -262,7 +262,46 @@ class IndexController extends \EPP\Controller
         $this->participants = CourseMember::findByCourse($this->seminar_id);
 
         if ($this->task->seminar_id != $this->seminar_id) {
-            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
+        }
+        $actions = new ActionsWidget();
+        $actions->addLink(
+            $this->_('Aufgabe Bearbeiten'),
+            $this->url_for('index/edit_task/' . $id),
+            Icon::create('edit')
+        )->asDialog('size=50%');
+        $actions->addLink(
+            $this->_('Aufgabe L�schen'),
+            $this->url_for('index/delete_task/' . $id),
+            Icon::create('trash'),
+            ['data-confirm' => $this->_('Sind Sie sicher, dass Sie die komplette Aufgabe l�schen m�chten?')]
+        );
+
+        Sidebar::Get()->addWidget($actions);
+
+        $infos = new SidebarWidget();
+        $infos->setTitle($this->_('Legende'));
+        $infos->addElement(
+            new WidgetElement(
+                sprintf('%s' . $this->_('Aufgabe bearbeitbar: <br>%s - %s Uhr'),
+                    Icon::create('date'),
+                    strftime($this->timeformat, $this->task['startdate']),
+                    strftime($this->timeformat, $this->task['enddate']))
+            )
+        );
+
+        if ($this->task->allow_text && $this->task->allow_files) {
+            $infos->addElement(
+                new WidgetElement(sprintf('<hr>%s %s', Icon::create('info-circle'), $this->_('Texteingabe und Dateiupload erlaubt')))
+            );
+        } else if ($this->task->allow_text) {
+            $infos->addElement(
+                new WidgetElement(sprintf('<hr>%s %s', Icon::create('file-text+add'), $this->_('Texteingabe erlaubt')))
+            );
+        } else if ($this->task->allow_files) {
+            $infos->addElement(
+                new WidgetElement(sprintf('<hr>%s %s', Icon::create('upload'), $this->_('Dateiupload erlaubt')))
+            );
         }
         $actions = new ActionsWidget();
         $actions->addLink(
@@ -292,15 +331,15 @@ class IndexController extends \EPP\Controller
 
         if ($this->task->allow_text && $this->task->allow_files) {
             $infos->addElement(
-                new WidgetElement(sprintf('<hr>%s %s', Icon::create('info-circle'), _('Texteingabe und Dateiupload erlaubt')))
+                new WidgetElement(sprintf('<hr>%s %s', Icon::create('info-circle'), $this->_('Texteingabe und Dateiupload erlaubt')))
             );
         } else if ($this->task->allow_text) {
             $infos->addElement(
-                new WidgetElement(sprintf('<hr>%s %s', Icon::create('file-text+add'), _('Texteingabe erlaubt')))
+                new WidgetElement(sprintf('<hr>%s %s', Icon::create('file-text+add'), $this->_('Texteingabe erlaubt')))
             );
         } else if ($this->task->allow_files) {
             $infos->addElement(
-                new WidgetElement(sprintf('<hr>%s %s', Icon::create('upload'), _('Dateiupload erlaubt')))
+                new WidgetElement(sprintf('<hr>%s %s', Icon::create('upload'), $this->_('Dateiupload erlaubt')))
             );
         }
 
@@ -317,7 +356,7 @@ class IndexController extends \EPP\Controller
         $this->task = new EPP\Tasks($id);
 
         if ($this->task->startdate > time() || $this->task->seminar_id != $this->seminar_id) {
-            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         if ($task_user_id = Request::get('task_user_id')) {
@@ -340,7 +379,7 @@ class IndexController extends \EPP\Controller
         $this->perms = EPP\Perm::get($GLOBALS['user']->id, $this->task_user);
 
         if (!$this->perms['edit_answer']) {
-            throw new AccessDeniedException(_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe.'));
+            throw new AccessDeniedException($this->_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe.'));
         }
     }
 
@@ -349,11 +388,11 @@ class IndexController extends \EPP\Controller
         $task = new EPP\Tasks($task_id);
 
         if ($task->startdate > time() || $task->enddate < time()) {
-            throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
+            throw new AccessDeniedException($this->_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
         }
 
         if ($task->seminar_id != $this->seminar_id) {
-            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         $data = [
@@ -377,11 +416,11 @@ class IndexController extends \EPP\Controller
         $task = new EPP\Tasks($task_id);
 
         if ($task->startdate > time() || $task->enddate < time()) {
-            throw new AccessDeniedException(_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
+            throw new AccessDeniedException($this->_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
         }
 
         if ($task->seminar_id != $this->seminar_id) {
-            throw new AccessDeniedException(_('Die Aufgabe wurde nicht gefunden!'));
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         $task_user        = reset(\EPP\TaskUsers::findBySQL('user_id = ? AND ep_tasks_id = ?', [$GLOBALS['user']->id, $task->getId()]));
@@ -412,14 +451,14 @@ class IndexController extends \EPP\Controller
 
         // the user ist not allowed to store a perm for himself
         if ($user_id == $current_user_id) {
-            $this->response->set_status(400, _('Sie dürfen sich nicht selbst für eine Berechtigung eintragen!'));
+            $this->response->set_status(400, $this->_('Sie dürfen sich nicht selbst für eine Berechtigung eintragen!'));
             return;
         }
 
         // check that the submitted user has not another perm already
         foreach ($task_user->perms as $key => $perm) {
             if ($perm->user_id == $user_id) {
-                $this->response->set_status(400, _('Für diesen Nutzer existiert bereits eine andere Berechtigung!'));
+                $this->response->set_status(400, $this->_('Für diesen Nutzer existiert bereits eine andere Berechtigung!'));
                 return;
             }
         }
@@ -489,7 +528,7 @@ class IndexController extends \EPP\Controller
                 $document->writeHTMLCell(0, 0, '', '', $content, 0, 1, 0, true, '', true);
             }
         }
-        $pdf_name = prepareFilename($task->title . '-' . _('Abgaben der Studierenden') . '.pdf');
+        $pdf_name = prepareFilename($task->title . '-' . $this->_('Abgaben der Studierenden') . '.pdf');
         $document->Output($pdf_name, 'D');
     }
 

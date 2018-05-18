@@ -22,7 +22,7 @@
     <? if ($task_user->hint) : ?>
         <section class="contentbox">
             <header>
-                <h1><?= _('Hinweis für diese(n) Teilnehmer(in)') ?><?= tooltipIcon(_('Sie können den Hinweistext nicht mehr verändern, da die Aufgabe bereits gestartet ist!'), true) ?></h1>
+                <h1><?= $_('Hinweis für diese(n) Teilnehmer(in)') ?><?= tooltipIcon($_('Sie können den Hinweistext nicht mehr verändern, da die Aufgabe bereits gestartet ist!'), true) ?></h1>
             </header>
             <section>
                 <?= formatReady($task_user->hint) ?>
@@ -33,7 +33,7 @@
     <?= $this->render_partial('index/_edit_text', [
         'form_route'   => 'index/update_dozent/' . $task_user->getId(),
         'cancel_route' => 'index/view_dozent/' . $task_user->getId(),
-        'name'         => _('Hinweis für diese(n) Teilnehmer(in)'),
+        'name'         => $_('Hinweis für diese(n) Teilnehmer(in)'),
         'field'        => 'hint',
         'text'         => $task_user->hint,
         'type_folder'  => \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer')
@@ -47,13 +47,13 @@
     <? if ($task['allow_text']) : ?>
         <section class="contentbox">
             <header>
-                <h1><?= _('Antwort / Abgabe') ?></h1>
+                <h1><?= $_('Antwort / Abgabe') ?></h1>
             </header>
             <section>
                 <? if ($task_user->answer) : ?>
                     <?= formatReady($task_user->answer) ?>
                 <? else : ?>
-                    <p style="text-align: center"><?= _('Es wurde keine Antwort eingegeben') ?></p>
+                    <p style="text-align: center"><?= $_('Es wurde keine Antwort eingegeben') ?></p>
                 <? endif ?>
             </section>
         </section>
@@ -70,7 +70,7 @@
     <?= $this->render_partial('index/_edit_text', [
         'form_route'   => 'index/update_dozent/' . $task_user->getId(),
         'cancel_route' => 'index/view_dozent/' . $task_user->getId(),
-        'name'         => _('Feedback'),
+        'name'         => $_('Feedback'),
         'field'        => 'feedback',
         'text'         => $task_user->feedback,
         'edit'         => true,

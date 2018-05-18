@@ -12,6 +12,8 @@
 
 namespace EPP;
 
+use AufgabenPlugin;
+
 class Tasks extends \SimpleORMap
 {
     /**
@@ -54,15 +56,15 @@ class Tasks extends \SimpleORMap
     {
         switch ($this->getStatus()) {
             case 'running':
-                return _('läuft');
+                return dgettext(AufgabenPlugin::GETTEXT_DOMAIN, 'läuft');
                 break;
 
             case 'past':
-                return _('beendet');
+                return dgettext(AufgabenPlugin::GETTEXT_DOMAIN, 'beendet');
                 break;
 
             case 'future':
-                return _('läuft noch nicht');
+                return dgettext(AufgabenPlugin::GETTEXT_DOMAIN, 'läuft noch nicht');
                 break;
         }
     }

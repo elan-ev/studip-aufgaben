@@ -24,7 +24,7 @@ foreach ($path as $step) :
         switch ($step) :
             case 'overview':
                 $breadcrumb[] = '<a href="'. $controller->url_for('index/index') .'">'
-                              . _('Übersicht') . '</a>';
+                              . $_('Übersicht') . '</a>';
             break;
             case 'view_dozent':
                 $breadcrumb[] = $step;
@@ -37,5 +37,5 @@ foreach ($path as $step) :
    endif;
 endforeach; ?>
 
-<span><?= _('Sie befinden sich hier:') ?></span>
+<span><?= $_('Sie befinden sich hier:') ?></span>
 <span><?= implode(' &gt; ', $breadcrumb) ?></span>
