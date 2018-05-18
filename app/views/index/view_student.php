@@ -83,7 +83,8 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
             'name'         => $_('Antworttext'),
             'field'        => 'answer',
             'text'         => $task_user->answer,
-            'edit'         => ($task->enddate >= time()),
+            'edit'         => $edit,
+            'editable'     => ($task->enddate >= time()),
             'type_folder'  => \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer')
         ]) ?>
     <? endif ?>
