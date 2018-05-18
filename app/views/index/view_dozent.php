@@ -36,7 +36,8 @@
         'name'         => $_('Hinweis für diese(n) Teilnehmer(in)'),
         'field'        => 'hint',
         'text'         => $task_user->hint,
-        'type_folder'  => \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer')
+        'type_folder'  => \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer'),
+        'edit'         => $edit
     ]) ?>
 <? endif ?>
 
@@ -73,7 +74,8 @@
         'name'         => $_('Feedback'),
         'field'        => 'feedback',
         'text'         => $task_user->feedback,
-        'edit'         => true,
+        'editable'     => true,
+        'edit'         => $edit,
         'type_folder'  => \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'feedback')
     ]) ?>
 

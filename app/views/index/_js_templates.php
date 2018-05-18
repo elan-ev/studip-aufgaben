@@ -17,7 +17,7 @@
     <td style="width: 10%"><%- size %> kb</td>
     <td style="width: 10%">
         <a href="javascript:STUDIP.epp.removeUploadFile(<%- id %>)">
-            <?= Assets::img('icons/16/blue/trash.png') ?>
+            <?= Icon::create('trash') ?>
         </a>
     </td>
 </tr>
@@ -36,7 +36,7 @@
     <td><a href="<%- user_url %>"><%- user_name %></a></td>
     <td>
         <a href="javascript:STUDIP.epp.removeFile('<%- seminar %>', '<%- id %>')">
-            <?= Assets::img('icons/16/blue/trash.png') ?>
+            <?= Icon::create('trash') ?>
         </a>
     </td>
 </tr>
@@ -70,10 +70,10 @@
         <div><%- fullname %></div>
         <div><%- permission %></div>
         <div>
-            <?= Assets::img('icons/16/blue/trash.png', array(
+            <?= Icon::create('trash', [
                 'title' => $_('Berechtigung entfernen'),
                 'class' => 'link'
-            )) ?>
+            ]) ?>
         </div>
         <br style="clear: both">
     </div>
