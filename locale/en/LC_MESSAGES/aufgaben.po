@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Opencast\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-18 09:05+0200\n"
+"POT-Creation-Date: 2018-05-18 09:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,10 +84,7 @@ msgstr ""
 msgid "Aufgabe bearbeiten"
 msgstr "Edit task"
 
-msgid "Aufgabe Bearbeiten"
-msgstr "Edit task"
-
-msgid "Aufgabe Löschen"
+msgid "Aufgabe löschen"
 msgstr "Delete task"
 
 msgid "Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?"
@@ -240,9 +237,6 @@ msgstr "Download all tasks responses"
 
 msgid "Textantworten als PDF herunterladen"
 msgstr "Download text responses as PDF"
-
-msgid "Aufgabe löschen"
-msgstr "Delete task"
 
 msgid "TeilnehmerIn"
 msgstr "Participant"

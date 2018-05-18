@@ -266,12 +266,12 @@ class IndexController extends \EPP\Controller
         }
         $actions = new ActionsWidget();
         $actions->addLink(
-            $this->_('Aufgabe Bearbeiten'),
+            $this->_('Aufgabe bearbeiten'),
             $this->url_for('index/edit_task/' . $id),
             Icon::create('edit')
         )->asDialog('size=50%');
         $actions->addLink(
-            $this->_('Aufgabe Löschen'),
+            $this->_('Aufgabe löschen'),
             $this->url_for('index/delete_task/' . $id),
             Icon::create('trash'),
             ['data-confirm' => $this->_('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?')]
@@ -303,26 +303,12 @@ class IndexController extends \EPP\Controller
                 new WidgetElement(sprintf('<hr>%s %s', Icon::create('upload'), $this->_('Dateiupload erlaubt')))
             );
         }
-        $actions = new ActionsWidget();
-        $actions->addLink(
-            _('Aufgabe Bearbeiten'),
-            $this->url_for('index/edit_task/' . $id),
-            Icon::create('edit')
-        )->asDialog('size=50%');
-        $actions->addLink(
-            _('Aufgabe Löschen'),
-            $this->url_for('index/delete_task/' . $id),
-            Icon::create('trash'),
-            ['data-confirm' => _('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?')]
-        );
-
-        Sidebar::Get()->addWidget($actions);
 
         $infos = new SidebarWidget();
         $infos->setTitle(_('Legende'));
         $infos->addElement(
             new WidgetElement(
-                sprintf('%s' . _('Aufgabe bearbeitbar: <br>%s - %s Uhr'),
+                sprintf('%s' . $this->_('Aufgabe bearbeitbar: <br>%s - %s Uhr'),
                     Icon::create('date'),
                     strftime($this->timeformat, $this->task['startdate']),
                     strftime($this->timeformat, $this->task['enddate']))
