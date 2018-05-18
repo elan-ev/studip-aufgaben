@@ -12,7 +12,7 @@ Ein einfaches Plugin für zeitgesteuerte Aufgaben mit Text- und Dateiabgabe in S
 Weitere Infos auf der HP unter http://tgloeggl.github.io/studip-aufgaben/
 
 # Changelog
-## 1.5.3
+## 1.5.7
 * Kompatibilität zu Stud.IP 4.0 & PHP 7
 * Anbindung an den neuen Dateibereich
 * Herunterladen aller abgegebenen Texte einer Aufgabe als PDF
