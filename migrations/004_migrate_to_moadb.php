@@ -29,10 +29,9 @@ class MigrateToMoadb extends Migration
             $dok_stmt = $db->prepare("SELECT * FROM dokumente WHERE dokument_id = ?");
         };
 
-        $result = $db->query("SELECT * FROM ep_task_user_files");
+        $result = $db->query("SELECT * FROM ep_task_user_files LIMIT 10");
 
-        while($data = $result->fetch(PDO::FETCH_ASSOC)) {
-
+        while ($data = $result->fetch(PDO::FETCH_ASSOC)) {
             $task_user_files = EPP\TaskUserFiles::find($data['id']);
             $task_user       = $task_user_files->task_user;
             $task            = $task_user_files->task_user->task;
@@ -169,26 +168,34 @@ class MigrateToMoadb extends Migration
                     }
                 }
 
-                // create file in type_folder
-                $file = new \File();
-                $file->setData($data = [
-                    'id'        => $task_user_files->dokument_id,
-                    'user_id'   => $task_user->user_id,
-                    'mime_type' => $dok_metadata['mime_type'],
-                    'name'      => $dok_metadata['name'],
-                    'size'      => $dok_metadata['size'],
-                    'storage'   => 'disk',
-                ]);
-                $file->store();
+                // check if user_id is valid and skip if not
+                $user = \User::find($task_user->user_id);
 
-                $file_ref = new \FileRef();
-                $file_ref->setData($data = [
-                    'file_id'   => $task_user_files->dokument_id,
-                    'folder_id' => $type_folder->getId(),
-                    'user_id'   => $task_user->user_id,
-                    'name'      => $dok_metadata['name']
-                ]);
-                $file_ref->store();
+                if ($user) {
+                    try {
+                        // create file in type_folder
+                        $file = new \File();
+                        $file->setData($zw = [
+                            'id'        => $task_user_files->dokument_id,
+                            'user_id'   => $task_user->user_id,
+                            'mime_type' => $dok_metadata['mime_type'],
+                            'name'      => $dok_metadata['name'],
+                            'size'      => $dok_metadata['size'],
+                            'storage'   => 'disk',
+                        ]);
+
+                        $file->store();
+
+                        $file_ref = new \FileRef();
+                        $file_ref->setData($zw = [
+                            'file_id'   => $task_user_files->dokument_id,
+                            'folder_id' => $type_folder->getId(),
+                            'user_id'   => $task_user->user_id,
+                            'name'      => $dok_metadata['name']
+                        ]);
+                        $file_ref->store();
+                    } catch (Exception $e) {}
+                }
             }
         }
 
