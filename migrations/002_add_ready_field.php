@@ -16,9 +16,12 @@ class AddReadyField extends Migration
 {
     function up()
     {
-        DBManager::get()->exec("
-            ALTER TABLE `ep_task_users` ADD `ready` BOOLEAN NOT NULL DEFAULT FALSE
-        ");
+        try {
+            DBManager::get()->exec("
+                ALTER TABLE `ep_task_users` ADD `ready` BOOLEAN NOT NULL DEFAULT FALSE
+            ");
+        } catch (PDOException $e) {
+        }
 
         SimpleORMap::expireTableScheme();
     }
