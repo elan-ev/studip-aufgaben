@@ -29,7 +29,7 @@ class MigrateToMoadb extends Migration
             $dok_stmt = $db->prepare("SELECT * FROM dokumente WHERE dokument_id = ?");
         };
 
-        $result = $db->query("SELECT * FROM ep_task_user_files LIMIT 10");
+        $result = $db->query("SELECT * FROM ep_task_user_files");
 
         while ($data = $result->fetch(PDO::FETCH_ASSOC)) {
             $task_user_files = EPP\TaskUserFiles::find($data['id']);
