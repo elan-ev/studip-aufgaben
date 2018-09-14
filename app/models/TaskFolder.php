@@ -84,7 +84,7 @@ class TaskFolder extends StandardFolder
             return true;
         }
 
-        if ($parent = $this->getParent() && $parent>data_content['task_user'] == $user_id) {
+        if ($parent = $this->getParent() && $parent->data_content['task_user'] == $user_id) {
             return true;
         }
 
