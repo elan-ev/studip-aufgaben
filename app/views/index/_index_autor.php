@@ -42,6 +42,14 @@
     <tbody>
         <? foreach ($tasks as $task) : ?>
             <? $task_user = $task->task_users->findOneBy('user_id', $GLOBALS['user']->id) ?>
+            <? if (!$task_user) :
+                $data = [
+                    'ep_tasks_id' => $task->id,
+                    'user_id'     => $GLOBALS['user']->id
+                ];
+
+                $task_user = EPP\TaskUsers::create($data);
+            endif; ?>
             <tr class="<?= $task->getStatus() ?>">
                 <td>
                     <? if ($task->startdate <= time()) : ?>
