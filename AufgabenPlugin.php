@@ -174,6 +174,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
     {
         $this->addStylesheet('assets/stylesheets/epp.less');
         PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/epp.js');
+        PageLayout::setTitle(Context::getHeaderLine() .' - '. _('Aufgaben'));
 
         $trails_root        = $this->getPluginPath() . '/app';
         $dispatcher         = new Trails_Dispatcher($trails_root,

@@ -62,7 +62,7 @@ $infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content]
     </section>
 <? endif ?>
 
-<? if ($task->allow_text) : ?>
+<? if ($task->allow_text || $task->allow_files) : ?>
     <? if ($task->enddate < time()) : ?>
         <section class="contentbox">
             <header>
