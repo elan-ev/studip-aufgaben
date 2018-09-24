@@ -11,29 +11,25 @@
  * @category    Stud.IP
  */
 
-if ($task_user->ready) {
-    $infobox_content[] = [
-        'kategorie' => $_('Informationen'),
-        'eintrag'   => [
-            [
-                'icon' => 'icons/16/green/accept.png',
-                'text' => 'Aufgabe ist bereits als fertig markiert!'
-            ]
-        ]
-    ];
-} else {
-    $infobox_content[] = [
-        'kategorie' => $_('Aktionen'),
-        'eintrag'   => [
-            [
-                'icon' => 'icons/16/blue/link-intern.png',
-                'text' => '<a href="' . $controller->url_for('index/set_ready/' . $task->getId()) . '">Aufgabe als fertig markieren</a>'
-            ]
-        ]
-    ];
-}
+$sidebar = Sidebar::get();
 
-$infobox = ['picture' => 'infobox/schedules.jpg', 'content' => $infobox_content];
+if ($task_user->ready) :
+    $widget = new ListWidget();
+    $widget->title = $_('Informationen');
+    $widget->addElement(new InfoElement(
+        $_('Aufgabe ist als fertig markiert!'),
+        new Icon('link-intern', 'status-green')
+    ));
+else :
+    $widget = new ActionsWidget();
+    $widget->addLink(
+        $_('Aufgabe als fertig markieren'),
+        $controller->url_for('index/set_ready/' . $task->getId()),
+        new Icon('link-intern', 'clickable')
+    );
+endif;
+
+$sidebar->addWidget($widget);
 ?>
 
 <?= $this->render_partial('index/_breadcrumb', ['path' => ['overview', $task['title']]]) ?>
