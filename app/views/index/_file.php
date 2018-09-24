@@ -55,11 +55,14 @@ if ($current_folder->isFileDownloadable($file_ref->id, $GLOBALS['user']->id)) {
                     $file_ref->name)) ?>', this.href);"
                 data-dialog
             >
+
+            <? if ($task->enddate >= time()) : ?>
             <?= Icon::create('trash', Icon::ROLE_CLICKABLE, [
                     'size'  => 20,
                     'title' => _('Datei löschen')
                 ]);
             ?>
+            <? endif; ?>
             </a>
         <? endif ?>
     </td>
