@@ -75,7 +75,7 @@ class Controller extends StudipController
      * @param type $to
      * @return type
      */
-    public function url_for($to = '')
+    public function url_for($to)
     {
         $args = func_get_args();
 

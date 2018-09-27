@@ -61,7 +61,7 @@ class EPPluginStudipController extends StudipController
      * @param type $to
      * @return type
      */
-    function url_for($to = '')
+    function url_for($to)
     {
         $args = func_get_args();
 
