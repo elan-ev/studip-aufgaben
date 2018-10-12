@@ -18,7 +18,7 @@ class Helper
      * default timeformat for all dates
      * @var string
      */
-    public const timeformat = '%d.%m.%Y, %H:%M:%S';
+    const timeformat = '%d.%m.%Y, %H:%M:%S';
 
     public static function getForeignTasksForUser($user_id)
     {
