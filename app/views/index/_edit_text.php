@@ -24,11 +24,13 @@
             <? if ($text) : ?>
                 <?= formatReady($text) ?>
             <? else : ?>
+                <? if ($task['allow_text'] || $field == 'feedback') : ?>
                 <p style="text-align: center"><?= $_('Es wurde noch kein Text eingegeben') ?></p>
+                <? endif ?>
             <? endif ?>
         </section>
         <footer>
-            <? if ($task['allow_text']) : ?>
+            <? if ($task['allow_text'] || ($editable && $field == 'feedback')) : ?>
             <?= \Studip\LinkButton::createEdit($_('Bearbeiten'), $controller->url_for($cancel_route . '/' . $field
                 . ($task_user_id ? '?task_user_id=' . $task_user_id : '') . '#jumpto_' . $field)) ?>
             <? endif ?>

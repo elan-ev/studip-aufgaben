@@ -76,7 +76,7 @@ $sidebar->addWidget($widget);
         <?= $this->render_partial('index/_edit_text', [
             'form_route'   => 'index/update_student/' . $task->getId() . '/' . $task_user->getId(),
             'cancel_route' => 'index/view_student/' . $task->getId(),
-            'name'         => $_('Antworttext'),
+            'name'         => $_('Abgabe'),
             'field'        => 'answer',
             'text'         => $task_user->answer,
             'edit'         => $edit,
