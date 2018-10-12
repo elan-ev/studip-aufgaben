@@ -45,10 +45,10 @@
                     </a>
                 </td>
                 <td>
-                    <?= strftime($timeformat, $task['startdate']) ?>
+                    <?= strftime(EPP\Helper::timeformat, $task['startdate']) ?>
                 </td>
                 <td>
-                    <?= strftime($timeformat, $task['enddate']) ?>
+                    <?= strftime(EPP\Helper::timeformat, $task['enddate']) ?>
                 </td>
                 <td>
                     <?= $task->getStatusText() ?>

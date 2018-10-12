@@ -22,7 +22,7 @@
 <section class="contentbox">
     <header>
         <h1>
-            <?= strftime($timeformat, $task['startdate']) ?> - <?= strftime($timeformat, $task['enddate']) ?>
+            <?= strftime(EPP\Helper::timeformat, $task['startdate']) ?> - <?= strftime(EPP\Helper::timeformat, $task['enddate']) ?>
         </h1>
     </header>
     <?= $this->render_partial('index/_status.php', compact('participants')) ?>

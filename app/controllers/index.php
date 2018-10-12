@@ -229,6 +229,8 @@ class IndexController extends \EPP\Controller
         if ($this->task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
+
+        Sidebar::get()->addWidget(EPP\Helper::getSidebarInfos($this->task, $this));
     }
 
     public function update_dozent_action($task_user_id)
@@ -277,59 +279,8 @@ class IndexController extends \EPP\Controller
             ['data-confirm' => $this->_('Sind Sie sicher, dass Sie die komplette Aufgabe löschen möchten?')]
         );
 
-        Sidebar::Get()->addWidget($actions);
-
-        $infos = new SidebarWidget();
-        $infos->setTitle($this->_('Legende'));
-        $infos->addElement(
-            new WidgetElement(
-                sprintf('%s' . $this->_('Aufgabe bearbeitbar: <br>%s - %s Uhr'),
-                    Icon::create('date'),
-                    strftime($this->timeformat, $this->task['startdate']),
-                    strftime($this->timeformat, $this->task['enddate']))
-            )
-        );
-
-        if ($this->task->allow_text && $this->task->allow_files) {
-            $infos->addElement(
-                new WidgetElement(sprintf('<hr>%s %s', Icon::create('info-circle'), $this->_('Texteingabe und Dateiupload erlaubt')))
-            );
-        } else if ($this->task->allow_text) {
-            $infos->addElement(
-                new WidgetElement(sprintf('<hr>%s %s', Icon::create('file-text+add'), $this->_('Texteingabe erlaubt')))
-            );
-        } else if ($this->task->allow_files) {
-            $infos->addElement(
-                new WidgetElement(sprintf('<hr>%s %s', Icon::create('upload'), $this->_('Dateiupload erlaubt')))
-            );
-        }
-
-        $infos = new SidebarWidget();
-        $infos->setTitle(_('Legende'));
-        $infos->addElement(
-            new WidgetElement(
-                sprintf('%s' . $this->_('Aufgabe bearbeitbar: <br>%s - %s Uhr'),
-                    Icon::create('date'),
-                    strftime($this->timeformat, $this->task['startdate']),
-                    strftime($this->timeformat, $this->task['enddate']))
-            )
-        );
-
-        if ($this->task->allow_text && $this->task->allow_files) {
-            $infos->addElement(
-                new WidgetElement(sprintf('<hr>%s %s', Icon::create('info-circle'), $this->_('Texteingabe und Dateiupload erlaubt')))
-            );
-        } else if ($this->task->allow_text) {
-            $infos->addElement(
-                new WidgetElement(sprintf('<hr>%s %s', Icon::create('file-text+add'), $this->_('Texteingabe erlaubt')))
-            );
-        } else if ($this->task->allow_files) {
-            $infos->addElement(
-                new WidgetElement(sprintf('<hr>%s %s', Icon::create('upload'), $this->_('Dateiupload erlaubt')))
-            );
-        }
-
-        Sidebar::Get()->addWidget($infos);
+        Sidebar::get()->addWidget($actions);
+        Sidebar::get()->addWidget(EPP\Helper::getSidebarInfos($this->task, $this));
     }
 
     public function view_student_action($id, $edit_field = null)
@@ -367,6 +318,8 @@ class IndexController extends \EPP\Controller
         if (!$this->perms['edit_answer']) {
             throw new AccessDeniedException($this->_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe.'));
         }
+
+        Sidebar::get()->addWidget(EPP\Helper::getSidebarInfos($this->task, $this));
     }
 
     public function update_student_action($task_id, $task_user_id)

@@ -14,6 +14,12 @@ namespace EPP;
 
 class Helper
 {
+    /**
+     * default timeformat for all dates
+     * @var string
+     */
+    public const timeformat = '%d.%m.%Y, %H:%M:%S';
+
     public static function getForeignTasksForUser($user_id)
     {
         $task_users = array();
@@ -102,5 +108,60 @@ class Helper
         }
 
         return $type_folder->getTypedFolder();
+    }
+
+    public static function getSidebarInfos($task, $controller)
+    {
+        $infos = new \SidebarWidget();
+        $infos->setTitle(_('Aufgabeinformationen'));
+        $infos->addElement(
+            new \WidgetElement(
+                sprintf('%s' . $controller->_('Bearbeitungszeitraum: <br>%s - %s Uhr'),
+                    \Icon::create('date'),
+                    strftime(self::timeformat, $task['startdate']),
+                    strftime(self::timeformat, $task['enddate']))
+            )
+        );
+
+        if ($task['enddate'] >= time()) {
+            $infos->addElement(
+                new \WidgetElement(
+                    '<hr>' . \Icon::create('date')
+                    . $controller->_('Aufgabe kann momentan bearbeitet werden.')
+                )
+            );
+        } else {
+            $infos->addElement(
+                new \WidgetElement(
+                    '<hr>' . \Icon::create('date', 'attention')
+                    . $controller->_('Aufgabe kann momentan nicht bearbeitet werden!')
+                )
+            );
+        }
+
+        if ($task->allow_text && $task->allow_files) {
+            $infos->addElement(
+                new \WidgetElement(sprintf('<hr>%s %s',
+                    \Icon::create('info-circle'),
+                    $controller->_('Texteingabe und Dateiupload erlaubt'))
+                )
+            );
+        } else if ($task->allow_text) {
+            $infos->addElement(
+                new \WidgetElement(sprintf('<hr>%s %s',
+                    \Icon::create('file-text+add'),
+                    $controller->_('Texteingabe erlaubt'))
+                )
+            );
+        } else if ($task->allow_files) {
+            $infos->addElement(
+                new \WidgetElement(sprintf('<hr>%s %s',
+                    \Icon::create('upload'),
+                    $controller->_('Dateiupload erlaubt'))
+                )
+            );
+        }
+
+        return $infos;
     }
 }

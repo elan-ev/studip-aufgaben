@@ -20,7 +20,7 @@ if ($task_user->ready) :
         $_('Aufgabe ist als fertig markiert!'),
         new Icon('link-intern', 'status-green')
     ));
-else :
+elseif ($task->enddate >= time()) :
     $widget = new ActionsWidget();
     $widget->addLink(
         $_('Aufgabe als fertig markieren'),
@@ -29,7 +29,10 @@ else :
     );
 endif;
 
-$sidebar->addWidget($widget);
+if (isset($widget)) {
+    $sidebar->addWidget($widget);
+}
+
 ?>
 
 <?= $this->render_partial('index/_breadcrumb', ['path' => ['overview', $task['title']]]) ?>
@@ -62,7 +65,7 @@ $sidebar->addWidget($widget);
     <? if ($task->enddate < time()) : ?>
         <section class="contentbox">
             <header>
-                <h1><?= $_('Antworttext') ?></h1>
+                <h1><?= $_('Abgabe') ?></h1>
             </header>
             <section>
                 <? if ($task_user->answer) : ?>

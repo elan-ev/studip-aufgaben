@@ -51,17 +51,17 @@
                 </td>
 
                 <td>
-                    <?= strftime($timeformat, $task_user->task['startdate']) ?>
+                    <?= strftime(EPP\Helper::timeformat, $task_user->task['startdate']) ?>
                 </td>
                 <td>
-                    <?= strftime($timeformat, $task_user->task['enddate']) ?>
+                    <?= strftime(EPP\Helper::timeformat, $task_user->task['enddate']) ?>
                 </td>
                 <td>
                     <?= $task_user->task->getStatusText() ?>
                 </td>
                 <td style="width: 50px; text-align: right">
                     <?= (!$task_user || $task_user->answer === null) ? '0' : strlen($task_user->answer) ?>
-                    <?= Icon::create('file-text', 'info', tooltip2($_('Antworttext'))) ?>
+                    <?= Icon::create('file-text', 'info', tooltip2($_('Abgabe'))) ?>
                 </td>
                 <td style="width: 40px">
                     <? $type_folder = \EPP\Helper::getTypedFolder($folder, $task_user->task, $task_user, 'answer'); ?>
@@ -70,7 +70,7 @@
                 </td>
                 <td style="width:50px; text-align: right">
                     <?= (!$task_user || $task_user->feedback === null) ? '0' : strlen($task_user->feedback) ?>
-                    <?= Icon::create('file-text', 'info', tooltip2($_('Antworttext'))) ?>
+                    <?= Icon::create('file-text', 'info', tooltip2($_('Abgabe'))) ?>
                 </td>
                 <td style="width: 40px">
                     <? $type_folder = \EPP\Helper::getTypedFolder($folder, $task_user->task, $task_user, 'feedback'); ?>

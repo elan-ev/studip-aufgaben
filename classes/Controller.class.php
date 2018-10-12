@@ -31,10 +31,9 @@ class Controller extends StudipController
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
+
         $this->plugin = $this->dispatcher->current_plugin;
-        // default timeformat for all dates
-        $this->timeformat = '%d.%m.%Y, %H:%M:%S';
-        $this->flash = Trails_Flash::instance();
+        $this->flash  = Trails_Flash::instance();
 
         // Localization
         $this->_ = function ($string) {

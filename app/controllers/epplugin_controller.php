@@ -23,9 +23,6 @@ class EPPluginStudipController extends StudipController
 
         $this->plugin = $this->dispatcher->plugin;
 
-        // default timeformat for all dates
-        $this->timeformat = '%d.%m.%Y, %H:%M:%S';
-
         $this->flash = Trails_Flash::instance();
 
         PageLayout::addStylesheet($this->getPluginURL() . '/assets/stylesheets/epp.css');
