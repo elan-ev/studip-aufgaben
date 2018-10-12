@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Opencast\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-24 13:35+0200\n"
+"POT-Creation-Date: 2018-10-12 11:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -92,10 +92,6 @@ msgstr "Are you sure you want to delete the task completely?"
 
 msgid "Legende"
 msgstr "Legend"
-
-#, php-format
-msgid "Aufgabe bearbeitbar: <br>%s - %s Uhr"
-msgstr "Task may be edited:<br>%s - %s o'clock"
 
 msgid "Texteingabe und Dateiupload erlaubt"
 msgstr "Text entry and file upload permitted"
@@ -352,3 +348,19 @@ msgstr "Taks is marked as ready!"
 
 msgid "Aufgabe als fertig markieren"
 msgstr "Mark task as ready"
+
+msgid "Aufgabeinformationen"
+msgstr "Taskinfo"
+
+#, php-format
+msgid "Bearbeitungszeitraum: <br>%s - %s Uhr"
+msgstr "Editing period: <br>%s - %s o'clock"
+
+msgid "Aufgabe kann momentan bearbeitet werden."
+msgstr "Task can be edited"
+
+msgid "Aufgabe kann momentan nicht bearbeitet werden!"
+msgstr "Task cannot be edited"
+
+msgid "Abgabe"
+msgstr "Submission"
