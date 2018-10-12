@@ -56,7 +56,7 @@ if ($current_folder->isFileDownloadable($file_ref->id, $GLOBALS['user']->id)) {
                 data-dialog
             >
 
-            <? if ($task->enddate >= time()) : ?>
+            <? if ($task->enddate >= time() || $editable) : ?>
             <?= Icon::create('trash', Icon::ROLE_CLICKABLE, [
                     'size'  => 20,
                     'title' => _('Datei löschen')

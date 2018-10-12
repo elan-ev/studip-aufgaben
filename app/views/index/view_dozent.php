@@ -63,7 +63,8 @@
 
     <? if ($task['allow_files']) : ?>
         <?= $this->render_partial('index/_file_list', [
-            'type'  => 'answer'
+            'type'     => 'answer',
+            'editable' => true
         ]) ?>
     <? endif ?>
 
@@ -81,7 +82,8 @@
 
     <? if ($task['allow_files']) : ?>
         <?= $this->render_partial('index/_file_list', [
-            'type'  => 'feedback',
+            'type'     => 'feedback',
+            'editable' => true
         ]) ?>
     <? endif ?>
 
