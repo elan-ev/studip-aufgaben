@@ -143,7 +143,10 @@ class IndexController extends \EPP\Controller
         ];
 
         if (\EPP\Tasks::create($data)) {
-            PageLayout::postSuccess(sprintf($this->_('Die Aufgabe %s wurde erfolgreich angelegt!'), Request::get('title')));
+            PageLayout::postSuccess(sprintf(
+                $this->_('Die Aufgabe %s wurde erfolgreich angelegt!'),
+                htmlReady(Request::get('title'))
+            ));
         } else {
             PageLayout::postError($this->_('Beim Anlegen der Aufgabe ist etwas schief gelaufen.
             Versuchen Sie es noch einmal oder wenden Sie sich an einen Systemadministrator'));
@@ -176,7 +179,10 @@ class IndexController extends \EPP\Controller
 
         $task->setData($data);
         if ($task->store()) {
-            PageLayout::postSuccess(sprintf($this->_('Die Aufgabe %s wurde erfolgreich bearbeitet!'), Request::get('title')));
+            PageLayout::postSuccess(sprintf(
+                $this->_('Die Aufgabe %s wurde erfolgreich bearbeitet!'),
+                htmlReady(Request::get('title'))
+            ));
         } else {
             PageLayout::postError($this->_('Beim Bearbeiten der Aufgabe ist etwas schief gelaufen.
             Versuchen Sie es noch einmal oder wenden Sie sich an einen Systemadministrator'));
