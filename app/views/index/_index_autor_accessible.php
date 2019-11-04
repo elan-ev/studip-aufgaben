@@ -35,6 +35,7 @@
     </thead>
     <tbody>
         <? foreach ($tasks as $task_user) : ?>
+            <? if (!$task_user->task) continue; ?>
             <tr class="<?= $task_user->task->getStatus() ?>">
                 <td>
                     <? if ($task_user->task->startdate <= time()) : ?>
