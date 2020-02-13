@@ -89,9 +89,9 @@ class TaskFolder extends StandardFolder
         }
 
         $sub_folders = $this->getSubfolders();
-        if(!empty($sub_folders)) {
-            foreach($sub_folders as $sub_folder) {
-                if($sub_folder->isReadable($user_id)) {
+        if (!empty($sub_folders)) {
+            foreach ($sub_folders as $sub_folder) {
+                if ($sub_folder->isReadable($user_id)) {
                     return true;
                 }
             }
