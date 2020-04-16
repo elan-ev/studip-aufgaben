@@ -19,7 +19,7 @@ if ($current_folder->isFileDownloadable($file_ref->id, $GLOBALS['user']->id)) {
     </td>
     <td data-sort-value="<?= htmlReady($file_ref->name) ?>">
     <? if ($current_folder->isFileDownloadable($file_ref, $GLOBALS['user']->id)) : ?>
-        <a href="<?= htmlReady(URLHelper::getURL('dispatch.php/file/details/' . $file_ref->id)) ?>" data-dialog="">
+        <a href="<?= htmlReady(URLHelper::getURL('sendfile.php?force_download=1&type=0&file_id=' . $file_ref->id .'&file_name=' . $file_ref->name)) ?>">
             <?= htmlReady($file_ref->name) ?>
         </a>
     <? else : ?>
