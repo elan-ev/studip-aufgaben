@@ -14,9 +14,9 @@ screenshot = assets/images/screenshots/Dateien_Hochladen.png
 icon = ../../../assets/images/icons/black/assessment.svg
 
 category = Inhalte und Aufgabenstellungen
-displayname = Aufgaben
-descriptionshort = Erstellung und Bereitstellung zeitgesteuerter Aufgaben für Studierende
+displayname = Reflexionsaufgaben
+descriptionshort = Erstellung und Bereitstellung zeitgesteuerter Reflexionsaufgaben für Studierende
 
-descriptionlong = Studierende können Antworttexte eingeben und Dateien bis zum vom Lehrenden eingestellten Datum einreichen. Das Feedback der Lehrenden kann ebenfalls in Textform oder mittels Dateien erfolgen. Der spezielle Uploader erlaubt das Hochladen von beliebig vielen Dateien auf Knopfdruck.
+descriptionlong = Mit diesem Plugin können Sie Reflexionsaufgaben an die Teilnehmenden einer Veranstaltung verteilen, Textantworten entgegennehmen und den Studierenden Ihrerseits Feedback zu ihren Antworten geben. Texte können direkt eingegeben oder in Dateiform hochgeladen werden. Eine Übersicht über die Anzahl eingegebener Zeichen bzw. hochgeladener Dateien erleichtert Ihnen einen Überblick über den Bearbeitungsstand der Aufgaben. Ideal, wenn Sie mit einer eher kleinen Teilnehmerzahl über das Semester hinweg mehrere Reflexionsaufgaben nacheinander bearbeiten möchten.
 
-keywords =  Einstieg in die Erstellung von E-Learningeinheiten;Übersichtliche Funktionen;Anzeige, wer welche Aufgaben bearbeitet hat;Anzeige, wer eine Frage gestellt oder bereits ein Feedback erhalten hat;Individuelles Feedback der Lehrenden pro Studierender/m möglich und erwünscht;Spezieller Dateiuploader für mehrere Dateien in einem Schritt
+keywords = Zeitgesteuerte Reflexionsaufgaben;Abgabe als Text oder in Dateiform;Individuelles Feedback für Studierende möglich
