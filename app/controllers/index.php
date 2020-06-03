@@ -473,7 +473,7 @@ class IndexController extends \EPP\Controller
                 $document->writeHTMLCell(0, 0, '', '', $content, 0, 1, 0, true, '', true);
             }
         }
-        $pdf_name = prepareFilename($task->title . '-' . $this->_('Abgaben der Studierenden') . '.pdf');
+        $pdf_name = FileManager::cleanFileName($task->title . '-' . $this->_('Abgaben der Studierenden') . '.pdf');
         $document->Output($pdf_name, 'D');
     }
 
