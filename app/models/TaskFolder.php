@@ -12,6 +12,10 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category  Stud.IP
  */
+
+use EPP\Permissions;
+use EPP\TaskUsers;
+
 class TaskFolder extends StandardFolder
 {
 
@@ -64,6 +68,20 @@ class TaskFolder extends StandardFolder
 
         if ($this->data_content['task_user'] == $user_id) {
             return true;
+        }
+
+        if ($this->data_content['task_id']) {
+            // check, if user has been granted access to this task
+            $task_user = TaskUsers::findOneBySQL('ep_tasks_id = ? AND user_id = ?', [
+                $this->data_content['task_id'],
+                $this->data_content['task_user']
+            ]);
+
+            if (!empty($task_user) &&
+                !empty($task_user->perms->findOneBySQL('user_id = ?', [$user_id])[0])
+            ) {
+                return true;
+            }
         }
 
         return false;

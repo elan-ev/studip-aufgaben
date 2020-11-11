@@ -73,12 +73,18 @@ class Helper
                 'range_type'   => \Context::getType(),
                 'description'  => 'Nutzerordner',
                 'name'         => get_fullname($task_user->user_id),
-                'data_content' => ['task_user' => $task_user->user_id],
+                'data_content' => [
+                    'task_user' => $task_user->user_id,
+                    'task_id'   => $task->id
+                ],
                 'folder_type'  => 'TaskFolder',
                 'user_id'      => $task_user->user_id
             ]);
 
             $task_folder->subfolders[] = $user_folder;
+        } else {
+            $user_folder->data_content['task_id'] = $task->id;
+            $user_folder->store();
         }
 
         // Ordner für die Art der Datei
@@ -98,13 +104,17 @@ class Helper
                 'name'         => ucfirst($type),
                 'data_content' => [
                     'task_type' => $type,
-                    'task_user' => $task_user->user_id
+                    'task_user' => $task_user->user_id,
+                    'task_id'   => $task->id
                 ],
                 'folder_type'  => 'TaskFolder',
                 'user_id'      => $task_user->user_id
             ]);
 
             $user_folder->subfolders[] = $type_folder;
+        } else {
+            $type_folder->data_content['task_id'] = $task->id;
+            $type_folder->store();
         }
 
         return $type_folder->getTypedFolder();
