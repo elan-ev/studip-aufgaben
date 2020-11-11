@@ -78,7 +78,7 @@ class TaskFolder extends StandardFolder
             ]);
 
             if (!empty($task_user) &&
-                !empty($task_user->perms->findOneBySQL('user_id = ?', [$user_id])[0])
+                !empty($task_user->perms->findOneBy('user_id', $user_id))
             ) {
                 return true;
             }
