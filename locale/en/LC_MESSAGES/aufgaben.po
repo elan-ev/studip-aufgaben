@@ -384,7 +384,7 @@ msgstr "With this plugin you can distribute reflection tasks to the participants
 " course, receive text responses and give students feedback on their answers."
 " Texts can be entered directly or uploaded in file form. An overview of the number of "
 " entered characters or uploaded files makes it easier for you to get an overview of the processing status of the tasks."
-" Ideal if you are working with a small number of participants with several reflection tasks during the semester.
+" Ideal if you are working with a small number of participants with several reflection tasks during the semester."
 
 msgid ""
 "Zeitgesteuerte Reflexionsaufgaben;Abgabe als Text oder in Dateiform;"
