@@ -52,11 +52,9 @@ class TaskFolder extends StandardFolder
     /**
      * @inherit
      */
-    public function isFileDownloadable($fileref_or_id, $user_id)
+    public function isFileDownloadable($file, $user_id)
     {
         global $perm;
-
-        $file = FileRef::toObject($fileref_or_id);
 
         if ($perm->have_studip_perm('tutor', $this->range_id, $user_id)) {
             return true;

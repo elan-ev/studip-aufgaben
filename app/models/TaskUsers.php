@@ -17,21 +17,21 @@ class TaskUsers extends \SimpleORMap
     /**
      * *@inherit
      */
-    protected static function configure($config = array())
+    protected static function configure($config = [])
     {
         $config['db_table'] = 'ep_task_users';
 
         $config['has_many'] = [
             'perms' => [
-                'class_name'        => 'EPP\Permissions',
+                'class_name' => 'EPP\Permissions',
                 'assoc_foreign_key' => 'ep_task_users_id',
-                'on_delete'         => 'delete',
-                'on_store'          => 'store'
+                'on_delete' => 'delete',
+                'on_store' => 'store'
             ]
         ];
 
         $config['belongs_to']['task'] = [
-            'class_name'  => 'EPP\Tasks',
+            'class_name' => 'EPP\Tasks',
             'foreign_key' => 'ep_tasks_id',
         ];
 
