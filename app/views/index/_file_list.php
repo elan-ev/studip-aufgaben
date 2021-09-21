@@ -7,7 +7,7 @@ $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, $type);
 ?>
 
     <!-- files already there -->
-    <table class="default zebra" <? /* data-folder-id="<?= $user_folder->id ?>" */ ?>>
+    <table class="default">
         <tbody>
         <? if (count($type_folder->getFiles())) : ?>
             <? foreach ($type_folder->getFiles() as $file_ref) : ?>
