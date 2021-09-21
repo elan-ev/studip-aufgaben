@@ -188,7 +188,9 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
     {
         return null;
     }
-    function getMetadata() {
+
+    function getMetadata()
+    {
         $metadata = parent::getMetadata();
         $metadata['pluginname'] = dgettext("aufgaben", "AufgabenPlugin");
         $metadata['displayname'] = dgettext("aufgaben", "Reflexionsaufgaben");

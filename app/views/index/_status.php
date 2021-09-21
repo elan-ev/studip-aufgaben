@@ -25,7 +25,7 @@
                 <tr>
                     <td>
                         <a href="<?= $controller->url_for("index/view_dozent/" . $task_user->id) ?>">
-                            <?= get_fullname($user->user_id) ?>
+                            <?= htmlReady(get_fullname($user->user_id)) ?>
                         </a>
                     </td>
 
@@ -53,7 +53,7 @@
                     </td>
                     <td>
                         <?= ($task_user && $task_user->hint)
-                            ? Assets::img('icons/16/black/file-text.png', [
+                            ? Icon::create('file-text', 'info', [
                                 'title' => $_('Für diese Aufgabe wurden Hinweise für sie hinterlegt!')
                             ]) : '-' ?>
                     </td>

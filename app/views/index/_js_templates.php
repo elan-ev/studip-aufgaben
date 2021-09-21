@@ -48,7 +48,7 @@
 
 
 <script type="text/template" class="quest_template">
-    <?= createQuestion('<%- question %>', array()) ?>
+    <?= QuestionBox::create('<%- question %>', array()) ?>
 </script>
 
 <script type="text/template" class="confirm_dialog">
