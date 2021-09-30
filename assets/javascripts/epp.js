@@ -117,10 +117,9 @@ STUDIP.Aufgaben.Permissions = {
 
 STUDIP.epp = {
     removeFile: function(id) {
+        jQuery('#fileref_' + id).remove();
         jQuery.post(STUDIP.ABSOLUTE_URI_STUDIP + "dispatch.php/file/delete/" + id,
-            {}, function() {
-                jQuery('#fileref_' + id).remove();
-            }
+            {}
         );
     },
 };
