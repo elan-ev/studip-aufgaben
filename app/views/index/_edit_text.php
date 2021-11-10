@@ -39,7 +39,7 @@
                 <?= \Studip\LinkButton::create(
                     _('Datei hinzufügen'), '#',
                     [
-                        'onClick' => "STUDIP.epp.refresh_enabled = true; STUDIP.Files.openAddFilesWindow('". $type_folder->getId() ."'); return false;"
+                        'onClick' => "STUDIP.Files.openAddFilesWindow('". $type_folder->getId() ."'); return false;"
                     ]
                 ) ?>
             <? endif ?>

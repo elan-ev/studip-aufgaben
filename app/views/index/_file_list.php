@@ -20,13 +20,3 @@ $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, $type);
         </tbody>
     </table>
 </span>
-
-<script>
-$(function() {
-    $(document).on('refresh-handlers', function() {
-        if (STUDIP.epp.refresh_enabled) {
-            window.location.reload();
-        }
-    })
-})
-</script>
