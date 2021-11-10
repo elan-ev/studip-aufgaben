@@ -193,7 +193,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
     {
         $metadata = parent::getMetadata();
         $metadata['pluginname'] = dgettext("aufgaben", "AufgabenPlugin");
-        $metadata['displayname'] = dgettext("aufgaben", "Reflexionsaufgaben");
+        $metadata['displayname'] = dgettext("aufgaben", "Aufgaben (Reflexion)");
         $metadata['descriptionlong'] = dgettext("aufgaben", "Mit diesem Plugin können Sie Reflexionsaufgaben an die Teilnehmenden einer Veranstaltung verteilen, Textantworten entgegennehmen und den Studierenden Ihrerseits Feedback zu ihren Antworten geben. Texte können direkt eingegeben oder in Dateiform hochgeladen werden. Eine Übersicht über die Anzahl eingegebener Zeichen bzw. hochgeladener Dateien erleichtert Ihnen einen Überblick über den Bearbeitungsstand der Aufgaben. Ideal, wenn Sie mit einer eher kleinen Teilnehmerzahl über das Semester hinweg mehrere Reflexionsaufgaben nacheinander bearbeiten möchten.");
         $metadata['descriptionshort'] = dgettext("aufgaben", "Erstellung und Bereitstellung zeitgesteuerter Reflexionsaufgaben für Studierende");
         $metadata['keywords'] = dgettext("aufgaben", "Zeitgesteuerte Reflexionsaufgaben;Abgabe als Text oder in Dateiform;Individuelles Feedback für Studierende möglich");

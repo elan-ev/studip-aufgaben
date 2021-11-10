@@ -14,7 +14,7 @@ screenshot = assets/images/screenshots/Dateien_Hochladen.png
 icon = ../../../assets/images/icons/black/assessment.svg
 
 category = Inhalte und Aufgabenstellungen
-displayname = Reflexionsaufgaben
+displayname = Aufgaben (Reflexion)
 descriptionshort = Erstellung und Bereitstellung zeitgesteuerter Reflexionsaufgaben für Studierende
 
 descriptionlong = Mit diesem Plugin können Sie Reflexionsaufgaben an die Teilnehmenden einer Veranstaltung verteilen, Textantworten entgegennehmen und den Studierenden Ihrerseits Feedback zu ihren Antworten geben. Texte können direkt eingegeben oder in Dateiform hochgeladen werden. Eine Übersicht über die Anzahl eingegebener Zeichen bzw. hochgeladener Dateien erleichtert Ihnen einen Überblick über den Bearbeitungsstand der Aufgaben. Ideal, wenn Sie mit einer eher kleinen Teilnehmerzahl über das Semester hinweg mehrere Reflexionsaufgaben nacheinander bearbeiten möchten.
