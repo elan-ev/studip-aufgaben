@@ -7,7 +7,7 @@ $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, $type);
 ?>
 <span id="files-index">
     <!-- files already there -->
-    <table class="default" id="files_table_form">
+    <table class="default">
         <tbody>
         <? if (count($type_folder->getFiles())) : ?>
             <? foreach ($type_folder->getFiles() as $file_ref) : ?>

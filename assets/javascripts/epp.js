@@ -123,3 +123,7 @@ STUDIP.epp = {
         );
     },
 };
+
+STUDIP.Files.filesapp = {
+    files: []
+}
