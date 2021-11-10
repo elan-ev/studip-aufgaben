@@ -26,8 +26,6 @@ use URLHelper;
 
 class Controller extends StudipController
 {
-    protected $utf8decode_xhr = true;
-
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);

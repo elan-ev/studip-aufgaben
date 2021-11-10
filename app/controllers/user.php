@@ -13,11 +13,9 @@
  */
 class UserController extends EPP\Controller
 {
-    protected $utf8decode_xhr = true;
-
     public function search_action()
     {
-        $searchterm = studip_utf8decode(urldecode(Request::get('term')));
+        $searchterm = Request::get('term');
 
         // search a bit more intelligent
         $parts = explode(' ', $searchterm);
@@ -44,8 +42,8 @@ class UserController extends EPP\Controller
 
         foreach ($users as $index => $user) {
             $users[$index] = [
-                'id'      => studip_utf8encode($user['username']),
-                'text'    => studip_utf8encode(get_fullname($user['user_id']) . ' (' . $user['username'] . ')'),
+                'id'      => $user['username'],
+                'text'    => get_fullname($user['user_id']) . ' (' . $user['username'] . ')',
             ];
         }
 
