@@ -26,6 +26,12 @@ use URLHelper;
 
 class Controller extends StudipController
 {
+    protected function _(string $text)
+    {
+        return $this->plugin->_($text);
+    }
+
+
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
@@ -64,7 +70,7 @@ class Controller extends StudipController
         if (isset($variables[$method]) && is_callable($variables[$method])) {
             return call_user_func_array($variables[$method], $arguments);
         }
-        throw new RuntimeException("Method {$method} does not exist");
+        throw new \RuntimeException("Method {$method} does not exist");
     }
 
     /**
