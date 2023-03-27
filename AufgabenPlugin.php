@@ -10,7 +10,7 @@
  * @category    Stud.IP
  */
 
-require_once 'bootstrap.php';
+require_once __DIR__ .'/bootstrap.php';
 
 class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugin
 {
@@ -19,7 +19,6 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
     /**
      * Does nothing if plugin is not activated in the current course.
      * In Stud.IP versions prior 2.5 navigation is built here
-     * @return type
      */
     public function __construct()
     {
@@ -28,7 +27,6 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
         bindtextdomain(static::GETTEXT_DOMAIN, $this->getPluginPath() . '/locale');
         bind_textdomain_codeset(static::GETTEXT_DOMAIN, 'ISO-8859-1');
 
-        $GLOBALS['epplugin_path'] = $this->getPluginURL();
     }
 
     /**
@@ -37,7 +35,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
      * parameters.
      *
      * @param String $string String to translate
-     * @return translated string
+     * @return string string
      */
     public function _($string)
     {
@@ -64,7 +62,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
      * @param String $string0 String to translate (singular)
      * @param String $string1 String to translate (plural)
      * @param mixed  $n       Quantity factor (may be an array or array-like)
-     * @return translated string
+     * @return string string
      */
     public function _n($string0, $string1, $n)
     {
@@ -89,8 +87,8 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
 
     /**
      * Returns the in-course navigation
-     * @param type $course_id
-     * @return type
+     * @param string $course_id
+     * @return array
      */
     public function getTabNavigation($course_id)
     {
@@ -104,9 +102,9 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
 
     /**
      * returns the navigation-icon for the course-overview
-     * @param type $course_id
-     * @param type $last_visit
-     * @param type $user_id
+     * @param string $course_id
+     * @param string $last_visit
+     * @param string $user_id
      * @return \Navigation
      */
     public function getIconNavigation($course_id, $last_visit, $user_id = null)
@@ -154,17 +152,16 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
 
     /**
      * This plugin does currently not return any notification objects
-     * @param type $course_id
-     * @param type $since
-     * @param type $user_id
-     * @return type
+     * @param string $course_id
+     * @param string $since
+     * @param string $user_id
+     * @return array
      */
     public function getNotificationObjects($course_id, $since, $user_id)
     {
         return [];
     }
 
-    const DEFAULT_CONTROLLER = "index";
 
     /**
      * route the request to the controllers
@@ -175,13 +172,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
         $this->addStylesheet('assets/stylesheets/epp.less');
         PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/epp.js');
         PageLayout::setTitle(Context::getHeaderLine() .' - '. _('Aufgaben'));
-
-        $trails_root        = $this->getPluginPath() . '/app';
-        $dispatcher         = new Trails_Dispatcher($trails_root,
-            rtrim(PluginEngine::getURL($this, null, ''), '/'),
-            self::DEFAULT_CONTROLLER);
-        $dispatcher->current_plugin = $this;
-        $dispatcher->dispatch($unconsumed_path);
+        parent::perform($unconsumed_path);
     }
 
     public function getInfoTemplate($course_id)

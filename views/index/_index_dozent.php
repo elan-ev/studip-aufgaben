@@ -10,7 +10,7 @@
     <thead>
         <tr class="sortable">
             <th style="width: 60%" <?= $sort == 'title' ? 'class="sort' . $order . '"' : '' ?>>
-                <a href="<?= $controller->url_for('index/index?sort_by=title' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+                <a href="<?= $controller->link_for('index/index?sort_by=title' . ($order == 'desc' ? '&asc=1' : '')) ?>">
                     <?= $_('Aufgabe') ?>
                 </a>
             </th>
@@ -22,13 +22,13 @@
             </th>
 
             <th <?= $sort == 'enddate' ? 'class="sort' . $order . '"' : '' ?>>
-                <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+                <a href="<?= $controller->link_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
                     <?= $_('Ende') ?>
                 </a>
             </th>
 
             <th <?= $sort == 'enddate' ? 'class="sort' . $order . '"' : '' ?>>
-                <a href="<?= $controller->url_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
+                <a href="<?= $controller->link_for('index/index?sort_by=enddate' . ($order == 'desc' ? '&asc=1' : '')) ?>">
                     <?= $_('Status') ?>
                 </a>
             </th>
@@ -39,7 +39,7 @@
         <? foreach ($tasks as $task) : ?>
             <tr class="<?= $task->getStatus() ?>">
                 <td>
-                    <a href="<?= $controller->url_for('/index/view_task/' . $task['id']) ?>"
+                    <a href="<?= $controller->link_for('index/view_task/' . $task['id']) ?>"
                        title="<?= $_('Diese Aufgabe anzeigen') ?>">
                         <?= htmlReady($task['title']) ?>
                     </a>
@@ -58,16 +58,16 @@
 
                     <?
                     $actions->addLink(
-                        $controller->url_for('/index/edit_task/' . $task['id']),
+                        $controller->url_for('index/edit_task/' . $task['id']),
                         $_('Aufgabe bearbeiten'),
                         Icon::create('edit'),
                         ['data-dialog' => 'size=50%']);
                     $actions->addLink(
-                        $controller->url_for('/index/zip/' . $task['id']),
+                        $controller->url_for('index/zip/' . $task['id']),
                         $_('Hochgeladene Aufgabenabgaben herunterladen'),
                         Icon::create('file-archive+move_down'));
                     $actions->addLink(
-                        $controller->url_for('/index/pdf/' . $task['id']),
+                        $controller->url_for('index/pdf/' . $task['id']),
                         $_('Textantworten als PDF herunterladen'),
                         Icon::create('file-pdf+move_down'));
 

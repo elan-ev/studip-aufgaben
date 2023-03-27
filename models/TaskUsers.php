@@ -5,6 +5,7 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
+ *
  * @author      Till Glöggler <tgloeggl@uos.de>
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
@@ -23,15 +24,15 @@ class TaskUsers extends \SimpleORMap
 
         $config['has_many'] = [
             'perms' => [
-                'class_name' => 'EPP\Permissions',
+                'class_name'        => Permissions::class,
                 'assoc_foreign_key' => 'ep_task_users_id',
-                'on_delete' => 'delete',
-                'on_store' => 'store'
+                'on_delete'         => 'delete',
+                'on_store'          => 'store'
             ]
         ];
 
         $config['belongs_to']['task'] = [
-            'class_name' => 'EPP\Tasks',
+            'class_name'  => Tasks::class,
             'foreign_key' => 'ep_tasks_id',
         ];
 
