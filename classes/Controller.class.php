@@ -6,6 +6,7 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
  * the License, or (at your option) any later version.
+ *
  * @author      Till Glöggler <tgloeggl@uos.de>
  * @author      Marcus Lunzenauer <mlunzena@uos.de>
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
@@ -15,14 +16,9 @@
 
 namespace EPP;
 
-use StudipController;
-use PageLayout;
-use Trails_Flash;
-use Config;
-use PluginEngine;
 use Request;
 use RuntimeException;
-use URLHelper;
+use Trails_Flash;
 
 
 class Controller extends \PluginController
@@ -31,7 +27,7 @@ class Controller extends \PluginController
     {
         parent::before_filter($action, $args);
 
-        $this->flash  = Trails_Flash::instance();
+        $this->flash = Trails_Flash::instance();
 
         // Localization
         $this->_ = function ($string) {
@@ -54,7 +50,7 @@ class Controller extends \PluginController
      * calls to _ and _n.
      *
      * @param string $method
-     * @param array  $arguments
+     * @param array $arguments
      * @return mixed
      * @throws RuntimeException when method is not found
      */
@@ -68,6 +64,7 @@ class Controller extends \PluginController
 
     /**
      * Return the Content-Type of the HTTP request.
+     *
      * @return string the content type
      */
     public function contentType()
@@ -76,5 +73,15 @@ class Controller extends \PluginController
             return strtolower(trim($matches[1]));
         }
         return null;
+    }
+
+    public function render_template($template_name, $layout = null)
+    {
+        $layout_file = Request::isXhr()
+            ? 'layouts/dialog.php'
+            : 'layouts/base.php';
+        $layout      = $GLOBALS['template_factory']->open($layout_file);
+
+        parent::render_template($template_name, $layout);
     }
 }

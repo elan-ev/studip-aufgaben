@@ -19,7 +19,6 @@ class IndexController extends \EPP\Controller
         parent::before_filter($action, $args);
 
         // set default layout
-        $this->set_layout('layouts/layout');
         Navigation::activateItem('/course/aufgaben');
 
         $this->seminar_id = \Context::get()->id;
@@ -75,6 +74,7 @@ class IndexController extends \EPP\Controller
 
             // reorder all running tasks if necessary - the task with the shortest time frame shall be first
             if ($this->sort == 'enddate') {
+                $reorder = [];
                 foreach ($this->tasks as $task) {
                     $reorder[$task->getStatus()][] = $task;
                 }
@@ -115,16 +115,7 @@ class IndexController extends \EPP\Controller
         \EPP\Perm::check('new_task', $this->seminar_id);
 
         $this->destination = 'index/add_task';
-
-        if (Request::isXHR()) {
-            $this->render_template('index/edit_task', null);
-        } else {
-            $this->render_template(
-                'index/edit_task',
-                $GLOBALS['template_factory']->open('layouts/base')
-            );
-        }
-
+        $this->render_template('index/edit_task');
     }
 
     public function add_task_action()
@@ -218,7 +209,7 @@ class IndexController extends \EPP\Controller
         }
 
         $this->destination = 'index/update_task/' . $id;
-        $this->render_template('index/edit_task', null);
+        $this->render_template('index/edit_task');
     }
 
     public function view_dozent_action($task_user_id, $edit_field = null)
@@ -369,7 +360,10 @@ class IndexController extends \EPP\Controller
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
-        $task_user        = \EPP\TaskUsers::findOneBySQL('user_id = ? AND ep_tasks_id = ?', [$GLOBALS['user']->id, $task->getId()]);
+        $task_user = \EPP\TaskUsers::findOneBySQL('user_id = ? AND ep_tasks_id = ?',
+            [$GLOBALS['user']->id, $task->getId()]
+        );
+
         $task_user->ready = 1;
         $task_user->store();
 
@@ -379,7 +373,7 @@ class IndexController extends \EPP\Controller
     /**
      * add a permission for an user-instance of a task
      *
-     * @param int $task_user_id
+     * @param string $task_user_id
      */
     public function add_permission_action($task_user_id)
     {
@@ -519,8 +513,7 @@ class IndexController extends \EPP\Controller
                 $task_folder->getTypedFolder(),
                 User::findCurrent(),
                 $archive_path,
-                false,
-                true
+                false
             );
 
             $archive_download_link = FileManager::getDownloadURLForTemporaryFile(

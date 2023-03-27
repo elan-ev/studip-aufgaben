@@ -36,6 +36,11 @@ class TaskUsers extends \SimpleORMap
             'foreign_key' => 'ep_tasks_id',
         ];
 
+        $config['belongs_to']['user'] = [
+            'class_name'  => \User::class,
+            'foreign_key' => 'user_id',
+        ];
+
         parent::configure($config);
     }
 

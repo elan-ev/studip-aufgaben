@@ -14,7 +14,7 @@
 ?>
 
 <?= $this->render_partial('index/_breadcrumb', ['path' => [
-    'overview', ['index/view_task/' . $task->getId(), $task['title']], get_fullname($task_user->user_id)]]) ?>
+    'overview', ['index/view_task/' . $task->getId(), $task['title']], $task_user->user->getFullname()]]) ?>
 
 <?= $this->render_partial('index/_task_details') ?>
 
@@ -88,6 +88,7 @@
     <? endif ?>
 
 <? endif ?>
+
 
 <script type="text/javascript">
     jQuery(document).ready(function () {
