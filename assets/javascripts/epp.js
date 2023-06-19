@@ -24,7 +24,7 @@ STUDIP.Aufgaben.Permissions = {
                 return m;
             },
             ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
-                url: STUDIP.URLHelper.getURL('plugins.php/' + STUDIP.AufgabenConfig.plugin_name + '/user/search'),
+                url: STUDIP.URLHelper.getURL('plugins.php/aufgabenplugin/user/search'),
                 dataType: 'json',
                 data: function (params) {
                     return {
@@ -32,7 +32,7 @@ STUDIP.Aufgaben.Permissions = {
                     };
                 },
                 processResults: function (data) {
-                    var arr = []
+                    let arr = []
                     $.each(data, function (index, value) {
                         arr.push({
                             id: value.id,
@@ -49,14 +49,14 @@ STUDIP.Aufgaben.Permissions = {
             minimumResultsForSearch: -1
         });
 
-        var self = this;
+        let self = this;
         $('#add-permission').click(function(){
             self.add();
         })
     },
 
     add: function() {
-        var self = this,
+        let self = this,
             data_user = $("#permissions select[name=search]").select2('data')[0];
             data_perm = $('#permissions select[name=permission]').select2('data')[0];
 
@@ -67,7 +67,7 @@ STUDIP.Aufgaben.Permissions = {
             return;
         }
 
-        var data = {
+        let data = {
             user:       data_user.id,
             fullname:   data_user.text,
             perm:       data_perm.id,
@@ -78,7 +78,7 @@ STUDIP.Aufgaben.Permissions = {
 
 
         // store the new permission
-        $.ajax(STUDIP.URLHelper.getURL('plugins.php/' + STUDIP.AufgabenConfig.plugin_name + '/index/add_permission/' + $('#edit-permissions-form').attr('data-task-user-id')), {
+        $.ajax(STUDIP.URLHelper.getURL('plugins.php/aufgabenplugin/index/add_permission/' + $('#edit-permissions-form').attr('data-task-user-id')), {
             method: 'POST',
             data: data,
             success: function() {
@@ -96,7 +96,7 @@ STUDIP.Aufgaben.Permissions = {
     },
 
     addTemplate: function(data) {
-        var template = STUDIP.Aufgaben.getTemplate('permission'),
+        let template = STUDIP.Aufgaben.getTemplate('permission'),
             self = this;
 
         $('#permission_list').append(template(data)).find('div:last-child img').click(function() {
@@ -107,7 +107,7 @@ STUDIP.Aufgaben.Permissions = {
     },
 
     delete: function(user) {
-        $.ajax(STUDIP.URLHelper.getURL('plugins.php/' + STUDIP.AufgabenConfig.plugin_name + '/index/delete_permission/' + $('#edit-permissions-form').attr('data-task-user-id')), {
+        $.ajax(STUDIP.URLHelper.getURL('plugins.php/aufgabenplugin/index/delete_permission/' + $('#edit-permissions-form').attr('data-task-user-id')), {
             method: 'POST',
             data: {user: user}
         });

@@ -66,7 +66,7 @@ class MigrateToMoadb extends Migration
                         'description'  => 'Dateiablage des Aufgabenplugins',
                         'name'         => 'Aufgaben-Plugin',
                         'data_content' => ['aufgabenplugin' => '1'],
-                        'folder_type'  => 'TaskFolder',
+                        'folder_type'  => TaskFolder::class,
                         'user_id'      => $seminar_id
                     ]);
                 }
@@ -90,7 +90,7 @@ class MigrateToMoadb extends Migration
                         'description'  => 'Aufgabenordner',
                         'name'         => 'Aufgabenordner: ' . $task->title,
                         'data_content' => ['task_id' => $task->id],
-                        'folder_type'  => 'TaskFolder',
+                        'folder_type'  => TaskFolder::class,
                         'user_id'      => $seminar_id
                     ]);
 
@@ -113,7 +113,7 @@ class MigrateToMoadb extends Migration
                         'description'  => 'Nutzerordner',
                         'name'         => get_fullname($task_user->user_id),
                         'data_content' => ['task_user' => $task_user->user_id],
-                        'folder_type'  => 'TaskFolder',
+                        'folder_type'  => TaskFolder::class,
                         'user_id'      => $task_user->user_id
                     ]);
 
@@ -139,7 +139,7 @@ class MigrateToMoadb extends Migration
                             'task_type' => $task_user_files->type,
                             'task_user' => $task_user->user_id
                         ],
-                        'folder_type'  => 'TaskFolder',
+                        'folder_type'  => TaskFolder::class,
                         'user_id'      => $task_user->user_id
                     ]);
 

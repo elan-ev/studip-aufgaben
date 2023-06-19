@@ -12,17 +12,19 @@
 
 namespace EPP;
 
+
 class Helper
 {
     /**
      * default timeformat for all dates
+     *
      * @var string
      */
     const timeformat = '%d.%m.%Y, %H:%M:%S';
 
     public static function getForeignTasksForUser($user_id)
     {
-        $task_users = array();
+        $task_users = [];
 
         $perms = Permissions::findByUser_id($user_id);
 
@@ -51,7 +53,7 @@ class Helper
                 'description'  => 'Aufgabenordner',
                 'name'         => 'Aufgabenordner: ' . $task->title,
                 'data_content' => ['task_id' => $task->id],
-                'folder_type'  => 'TaskFolder',
+                'folder_type'  => TaskFolder::class,
                 'user_id'      => \Context::getId()
             ]);
 
@@ -77,7 +79,7 @@ class Helper
                     'task_user' => $task_user->user_id,
                     'task_id'   => $task->id
                 ],
-                'folder_type'  => 'TaskFolder',
+                'folder_type'  => TaskFolder::class,
                 'user_id'      => $task_user->user_id
             ]);
 
@@ -107,7 +109,7 @@ class Helper
                     'task_user' => $task_user->user_id,
                     'task_id'   => $task->id
                 ],
-                'folder_type'  => 'TaskFolder',
+                'folder_type'  => TaskFolder::class,
                 'user_id'      => $task_user->user_id
             ]);
 
@@ -123,7 +125,7 @@ class Helper
     public static function getSidebarInfos($task, $controller)
     {
         $infos = new \SidebarWidget();
-        $infos->setTitle(_('Aufgabeinformationen'));
+        $infos->setTitle($controller->_('Aufgabeinformationen'));
         $infos->addElement(
             new \WidgetElement(
                 sprintf('%s' . $controller->_('Bearbeitungszeitraum: <br>%s - %s Uhr'),
@@ -152,22 +154,22 @@ class Helper
         if ($task->allow_text && $task->allow_files) {
             $infos->addElement(
                 new \WidgetElement(sprintf('<hr>%s %s',
-                    \Icon::create('info-circle'),
-                    $controller->_('Texteingabe und Dateiupload erlaubt'))
+                        \Icon::create('info-circle'),
+                        $controller->_('Texteingabe und Dateiupload erlaubt'))
                 )
             );
         } else if ($task->allow_text) {
             $infos->addElement(
                 new \WidgetElement(sprintf('<hr>%s %s',
-                    \Icon::create('file-text+add'),
-                    $controller->_('Texteingabe erlaubt'))
+                        \Icon::create('file-text+add'),
+                        $controller->_('Texteingabe erlaubt'))
                 )
             );
         } else if ($task->allow_files) {
             $infos->addElement(
                 new \WidgetElement(sprintf('<hr>%s %s',
-                    \Icon::create('upload'),
-                    $controller->_('Dateiupload erlaubt'))
+                        \Icon::create('upload'),
+                        $controller->_('Dateiupload erlaubt'))
                 )
             );
         }

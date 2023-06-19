@@ -13,9 +13,7 @@
  * @category  Stud.IP
  */
 
-use EPP\Permissions;
 use EPP\TaskUsers;
-
 class TaskFolder extends StandardFolder
 {
 
@@ -44,8 +42,8 @@ class TaskFolder extends StandardFolder
     public function getIcon($role = Icon::DEFAULT_ROLE)
     {
         $shape = count($this->getSubfolders()) + count($this->getFiles()) === 0
-               ? 'folder-lock-empty+visibility-invisible'
-               : 'folder-lock-full+visibility-invisible';
+            ? 'folder-lock-empty+visibility-invisible'
+            : 'folder-lock-full+visibility-invisible';
         return Icon::create($shape, $role);
     }
 
@@ -54,9 +52,7 @@ class TaskFolder extends StandardFolder
      */
     public function isFileDownloadable($file, $user_id)
     {
-        global $perm;
-
-        if ($perm->have_studip_perm('tutor', $this->range_id, $user_id)) {
+        if ($GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id)) {
             return true;
         }
 
@@ -75,8 +71,7 @@ class TaskFolder extends StandardFolder
                 $this->data_content['task_user']
             ]);
 
-            if (!empty($task_user) &&
-                !empty($task_user->perms->findOneBy('user_id', $user_id))
+            if (!empty($task_user) && !empty($task_user->perms->findOneBy('user_id', $user_id))
             ) {
                 return true;
             }

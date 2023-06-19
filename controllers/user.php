@@ -1,5 +1,8 @@
 <?php
 
+use EPP;
+
+
 /**
  * UserController - Short description for file
  * Long description for file (if any)...
@@ -7,6 +10,7 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
+ *
  * @author      Till Glöggler <tgloeggl@uos.de>
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
  * @category    Stud.IP
@@ -42,8 +46,8 @@ class UserController extends EPP\Controller
 
         foreach ($users as $index => $user) {
             $users[$index] = [
-                'id'      => $user['username'],
-                'text'    => get_fullname($user['user_id']) . ' (' . $user['username'] . ')',
+                'id'   => $user['username'],
+                'text' => get_fullname($user['user_id']) . ' (' . $user['username'] . ')',
             ];
         }
 

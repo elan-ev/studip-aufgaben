@@ -25,7 +25,7 @@ class TaskUserFiles extends \SimpleORMap
         $config['db_table'] = 'ep_task_user_files';
 
         $config['belongs_to']['task_user'] = [
-            'class_name'  => 'EPP\TaskUsers',
+            'class_name'  => TaskUsers::class,
             'foreign_key' => 'ep_task_users_id',
         ];
 

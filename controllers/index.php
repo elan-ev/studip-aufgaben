@@ -6,6 +6,7 @@
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 3 of
  * the License, or (at your option) any later version.
+ *
  * @author      Till Glöggler <tgloeggl@uos.de>
  * @author      Ramus Fuhse <fuhse@data-quest.de>
  * @license     http://www.gnu.org/licenses/gpl-3.0.html GPL version 3
@@ -13,15 +14,14 @@
  */
 class IndexController extends \EPP\Controller
 {
-    function before_filter(&$action, &$args)
+    public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
 
         // set default layout
-        $this->set_layout('layouts/layout');
         Navigation::activateItem('/course/aufgaben');
 
-        $this->seminar_id = $this->getSeminarId();
+        $this->seminar_id = \Context::get()->id;
 
         $this->permissions = [
             'student' => $this->_('Kommilitone/in'),
@@ -45,7 +45,7 @@ class IndexController extends \EPP\Controller
                 'description'  => 'Dateiablage des Aufgabenplugins',
                 'name'         => 'Aufgaben-Plugin',
                 'data_content' => ['aufgabenplugin' => '1'],
-                'folder_type'  => 'TaskFolder',
+                'folder_type'  => TaskFolder::class,
                 'user_id'      => $this->seminar_id
             ]);
         }
@@ -65,15 +65,16 @@ class IndexController extends \EPP\Controller
             $this->order = Request::option('asc') ? 'asc' : 'desc';
         }
 
-        if (EPP\Perm::has('new_task', $this->seminar_id)) {
-            $this->tasks = EPP\Tasks::findBySQL("seminar_id = ?
+        if (\EPP\Perm::has('new_task', $this->seminar_id)) {
+            $this->tasks = \EPP\Tasks::findBySQL("seminar_id = ?
                 ORDER BY {$this->sort} {$this->order}, startdate DESC", [$this->seminar_id]);
         } else {
-            $this->tasks = EPP\Tasks::findBySQL("seminar_id = ? /* AND startdate <= UNIX_TIMESTAMP() */
+            $this->tasks = \EPP\Tasks::findBySQL("seminar_id = ? /* AND startdate <= UNIX_TIMESTAMP() */
                 ORDER BY {$this->sort} {$this->order}, startdate DESC", [$this->seminar_id]);
 
             // reorder all running tasks if necessary - the task with the shortest time frame shall be first
             if ($this->sort == 'enddate') {
+                $reorder = [];
                 foreach ($this->tasks as $task) {
                     $reorder[$task->getStatus()][] = $task;
                 }
@@ -94,9 +95,9 @@ class IndexController extends \EPP\Controller
             }
         }
 
-        $this->accessible_tasks = EPP\Helper::getForeignTasksForUser($GLOBALS['user']->id);
+        $this->accessible_tasks = \EPP\Helper::getForeignTasksForUser($GLOBALS['user']->id);
 
-        if (EPP\Perm::has('new_task', $this->seminar_id)) {
+        if (\EPP\Perm::has('new_task', $this->seminar_id)) {
             $actions = new ActionsWidget();
             $actions->addLink(
                 $this->_('Neue Aufgabe anlegen'),
@@ -111,24 +112,15 @@ class IndexController extends \EPP\Controller
     public function new_task_action()
     {
         PageLayout::setTitle($this->_('Neue Aufgabe anlegen'));
-        EPP\Perm::check('new_task', $this->seminar_id);
+        \EPP\Perm::check('new_task', $this->seminar_id);
 
         $this->destination = 'index/add_task';
-
-        if (Request::isXHR()) {
-            $this->render_template('index/edit_task', null);
-        } else {
-            $this->render_template(
-                'index/edit_task',
-                $GLOBALS['template_factory']->open('layouts/base')
-            );
-        }
-
+        $this->render_template('index/edit_task');
     }
 
     public function add_task_action()
     {
-        EPP\Perm::check('new_task', $this->seminar_id);
+        \EPP\Perm::check('new_task', $this->seminar_id);
 
         $data = [
             'seminar_id'  => $this->seminar_id,
@@ -158,8 +150,8 @@ class IndexController extends \EPP\Controller
     public function update_task_action($id)
     {
         CSRFProtection::verifyUnsafeRequest();
-        EPP\Perm::check('new_task', $this->seminar_id);
-        $task = new EPP\Tasks($id);
+        \EPP\Perm::check('new_task', $this->seminar_id);
+        $task = new \EPP\Tasks($id);
 
         if ($task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
@@ -193,9 +185,9 @@ class IndexController extends \EPP\Controller
 
     public function delete_task_action($id)
     {
-        EPP\Perm::check('new_task', $this->seminar_id);
+        \EPP\Perm::check('new_task', $this->seminar_id);
 
-        $task = new EPP\Tasks($id);
+        $task = new \EPP\Tasks($id);
 
         if ($task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
@@ -208,21 +200,21 @@ class IndexController extends \EPP\Controller
     public function edit_task_action($id)
     {
         PageLayout::setTitle($this->_('Aufgabe bearbeiten'));
-        EPP\Perm::check('new_task', $this->seminar_id);
+        \EPP\Perm::check('new_task', $this->seminar_id);
 
-        $this->task = new EPP\Tasks($id);
+        $this->task = new \EPP\Tasks($id);
 
         if ($this->task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
         $this->destination = 'index/update_task/' . $id;
-        $this->render_template('index/edit_task', null);
+        $this->render_template('index/edit_task');
     }
 
     public function view_dozent_action($task_user_id, $edit_field = null)
     {
-        EPP\Perm::check('new_task', $this->seminar_id);
+        \EPP\Perm::check('new_task', $this->seminar_id);
 
         // if the second parameter is present, the passed field shall be edited
         if ($edit_field) {
@@ -236,12 +228,12 @@ class IndexController extends \EPP\Controller
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
-        Sidebar::get()->addWidget(EPP\Helper::getSidebarInfos($this->task, $this));
+        Sidebar::get()->addWidget(\EPP\Helper::getSidebarInfos($this->task, $this));
     }
 
     public function update_dozent_action($task_user_id)
     {
-        EPP\Perm::check('new_task', $this->seminar_id);
+        \EPP\Perm::check('new_task', $this->seminar_id);
 
         $task_user = new \EPP\TaskUsers($task_user_id);
         $task      = new \EPP\Tasks($task_user->ep_tasks_id);
@@ -264,9 +256,9 @@ class IndexController extends \EPP\Controller
 
     public function view_task_action($id)
     {
-        EPP\Perm::check('new_task', $this->seminar_id);
+        \EPP\Perm::check('new_task', $this->seminar_id);
 
-        $this->task         = new EPP\Tasks($id);
+        $this->task         = new \EPP\Tasks($id);
         $this->participants = CourseMember::findByCourse($this->seminar_id);
 
         if ($this->task->seminar_id != $this->seminar_id) {
@@ -286,7 +278,7 @@ class IndexController extends \EPP\Controller
         );
 
         Sidebar::get()->addWidget($actions);
-        Sidebar::get()->addWidget(EPP\Helper::getSidebarInfos($this->task, $this));
+        Sidebar::get()->addWidget(\EPP\Helper::getSidebarInfos($this->task, $this));
     }
 
     public function view_student_action($id, $edit_field = null)
@@ -296,7 +288,7 @@ class IndexController extends \EPP\Controller
             $this->edit[$edit_field] = true;
         }
 
-        $this->task = new EPP\Tasks($id);
+        $this->task = new \EPP\Tasks($id);
 
         if ($this->task->startdate > time() || $this->task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
@@ -304,7 +296,7 @@ class IndexController extends \EPP\Controller
 
         if ($task_user_id = Request::get('task_user_id')) {
 
-            $this->task_user    = EPP\TaskUsers::find($task_user_id);
+            $this->task_user    = \EPP\TaskUsers::find($task_user_id);
             $this->task_user_id = $task_user_id;
         } else {
             $this->task_user = $this->task->task_users->findOneBy('user_id', $GLOBALS['user']->id);
@@ -316,21 +308,21 @@ class IndexController extends \EPP\Controller
                 'user_id'     => $GLOBALS['user']->id
             ];
 
-            $this->task_user = EPP\TaskUsers::create($data);
+            $this->task_user = \EPP\TaskUsers::create($data);
         }
 
-        $this->perms = EPP\Perm::get($GLOBALS['user']->id, $this->task_user);
+        $this->perms = \EPP\Perm::get($GLOBALS['user']->id, $this->task_user);
 
         if (!$this->perms['edit_answer']) {
             throw new AccessDeniedException($this->_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe.'));
         }
 
-        Sidebar::get()->addWidget(EPP\Helper::getSidebarInfos($this->task, $this));
+        Sidebar::get()->addWidget(\EPP\Helper::getSidebarInfos($this->task, $this));
     }
 
     public function update_student_action($task_id, $task_user_id)
     {
-        $task = new EPP\Tasks($task_id);
+        $task = new \EPP\Tasks($task_id);
 
         if ($task->startdate > time() || $task->enddate < time()) {
             throw new AccessDeniedException($this->_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
@@ -345,7 +337,7 @@ class IndexController extends \EPP\Controller
             'answer'      => Request::get('answer')
         ];
 
-        $task_user = new EPP\TaskUsers($task_user_id);
+        $task_user = new \EPP\TaskUsers($task_user_id);
         $task_user->setData($data);
         $task_user->store();
 
@@ -358,7 +350,7 @@ class IndexController extends \EPP\Controller
 
     public function set_ready_action($task_id)
     {
-        $task = new EPP\Tasks($task_id);
+        $task = new \EPP\Tasks($task_id);
 
         if ($task->startdate > time() || $task->enddate < time()) {
             throw new AccessDeniedException($this->_('Sie dürfen diese Aufgabe nicht bearbeiten!'));
@@ -368,7 +360,10 @@ class IndexController extends \EPP\Controller
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
 
-        $task_user        = reset(\EPP\TaskUsers::findBySQL('user_id = ? AND ep_tasks_id = ?', [$GLOBALS['user']->id, $task->getId()]));
+        $task_user = \EPP\TaskUsers::findOneBySQL('user_id = ? AND ep_tasks_id = ?',
+            [$GLOBALS['user']->id, $task->getId()]
+        );
+
         $task_user->ready = 1;
         $task_user->store();
 
@@ -377,7 +372,8 @@ class IndexController extends \EPP\Controller
 
     /**
      * add a permission for an user-instance of a task
-     * @param int $task_user_id
+     *
+     * @param string $task_user_id
      */
     public function add_permission_action($task_user_id)
     {
@@ -387,7 +383,7 @@ class IndexController extends \EPP\Controller
         ## $task_user = EPP\TaskUsers::find($task_user_id);
         $task_user = new \EPP\TaskUsers($task_user_id);
 
-        $perms = EPP\Perm::get($current_user_id, $task_user);
+        $perms = \EPP\Perm::get($current_user_id, $task_user);
         if (!$perms['edit_settings']) {
             throw new AccessDeniedException();
         }
@@ -408,7 +404,7 @@ class IndexController extends \EPP\Controller
             }
         }
 
-        $perm = new EPP\Permissions();
+        $perm = new \EPP\Permissions();
 
         // add new permission entry
         $perm->setData([
@@ -423,14 +419,15 @@ class IndexController extends \EPP\Controller
 
     /**
      * delete a permission for an user-instance of a task
+     *
      * @param int $task_user_id
      */
     public function delete_permission_action($task_user_id)
     {
         $current_user_id = $GLOBALS['user']->id;
-        $task_user       = EPP\TaskUsers::find($task_user_id);
+        $task_user       = \EPP\TaskUsers::find($task_user_id);
 
-        $perms = EPP\Perm::get($current_user_id, $task_user);
+        $perms = \EPP\Perm::get($current_user_id, $task_user);
         if (!$perms['edit_settings']) {
             throw new AccessDeniedException();
         }
@@ -450,11 +447,12 @@ class IndexController extends \EPP\Controller
 
     /**
      * create a pdf from all answers to the solutions of the submitted task
+     *
      * @param int $task_id
      */
     public function pdf_action($task_id)
     {
-        $task = new EPP\Tasks($task_id);
+        $task = new \EPP\Tasks($task_id);
         $this->render_nothing();
         $document = new ExportPDF();
         $document->SetTitle($task->title);
@@ -479,6 +477,7 @@ class IndexController extends \EPP\Controller
 
     /**
      * Returns the matriculation number if exists
+     *
      * @param $user_id
      * @return string
      */
@@ -491,13 +490,14 @@ class IndexController extends \EPP\Controller
 
     /**
      * create a zip from all files attached to the solutions of the submitted task
+     *
      * @param int $task_id
      */
     public function zip_action($task_id)
     {
-        $task = new EPP\Tasks($task_id);
+        $task = new \EPP\Tasks($task_id);
 
-        $archive_file_name = $task->title . '-' . _('Abgaben_der_Studierenden') .'-'. date('Ymds-Hi') . '.zip';
+        $archive_file_name = $task->title . '-' . _('Abgaben_der_Studierenden') . '-' . date('Ymds-Hi') . '.zip';
         $archive_path      = $GLOBALS['TMP_PATH'] . '/' . $archive_file_name;
 
         $task_folder = null;
@@ -513,8 +513,7 @@ class IndexController extends \EPP\Controller
                 $task_folder->getTypedFolder(),
                 User::findCurrent(),
                 $archive_path,
-                false,
-                true
+                false
             );
 
             $archive_download_link = FileManager::getDownloadURLForTemporaryFile(

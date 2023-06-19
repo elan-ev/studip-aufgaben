@@ -1,4 +1,9 @@
 <?php
+
+namespace EPP;
+
+use WidgetElement;
+
 class InfoElement extends WidgetElement
 {
     public function __construct($text, $icon)
