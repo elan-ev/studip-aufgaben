@@ -23,6 +23,12 @@ use Trails_Flash;
 
 class Controller extends \PluginController
 {
+    protected function _(string $text)
+    {
+        return $this->plugin->_($text);
+    }
+
+
     public function before_filter(&$action, &$args)
     {
         parent::before_filter($action, $args);
