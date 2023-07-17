@@ -39,7 +39,7 @@
             <tr class="<?= $task_user->task->getStatus() ?>">
                 <td>
                     <? if ($task_user->task->startdate <= time()) : ?>
-                        <a href="<?= $controller->url_for('/index/view_student/' . $task_user->task['id'] . '?task_user_id=' . $task_user->id) ?>"
+                        <a href="<?= $controller->url_for('index/view_student/' . $task_user->task['id'] . '?task_user_id=' . $task_user->id) ?>"
                            title="<?= $_('Diese Aufgabe anzeigen') ?>">
                             <?= htmlReady($task_user->task['title']) ?>
                         </a>

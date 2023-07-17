@@ -16,7 +16,7 @@ $sidebar = Sidebar::get();
 if ($task_user->ready) :
     $widget = new ListWidget();
     $widget->title = $_('Informationen');
-    $widget->addElement(new InfoElement(
+    $widget->addElement(new EPP\InfoElement(
         $_('Aufgabe ist als fertig markiert!'),
         new Icon('link-intern', 'status-green')
     ));
