@@ -53,7 +53,7 @@ class Helper
                 'description'  => 'Aufgabenordner',
                 'name'         => 'Aufgabenordner: ' . $task->title,
                 'data_content' => ['task_id' => $task->id],
-                'folder_type'  => TaskFolder::class,
+                'folder_type'  => \TaskFolder::class,
                 'user_id'      => \Context::getId()
             ]);
 
@@ -79,7 +79,7 @@ class Helper
                     'task_user' => $task_user->user_id,
                     'task_id'   => $task->id
                 ],
-                'folder_type'  => TaskFolder::class,
+                'folder_type'  => \TaskFolder::class,
                 'user_id'      => $task_user->user_id
             ]);
 
@@ -109,7 +109,7 @@ class Helper
                     'task_user' => $task_user->user_id,
                     'task_id'   => $task->id
                 ],
-                'folder_type'  => TaskFolder::class,
+                'folder_type'  => \TaskFolder::class,
                 'user_id'      => $task_user->user_id
             ]);
 
