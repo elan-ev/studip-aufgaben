@@ -114,7 +114,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
         }
 
         $navigation = new Navigation('aufgabenplugin', PluginEngine::getLink('aufgabenplugin/index'));
-        $navigation->setImage(Icon::create('assessment', 'inactive'), [
+        $navigation->setImage(Icon::create('assessment', 'clickable'), [
             'title' => $this->_('Es gibt nichts neues seit Ihrem letzten Besuch.')
         ]);
 
