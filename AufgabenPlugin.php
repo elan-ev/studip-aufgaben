@@ -169,7 +169,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
      */
     public function perform($unconsumed_path)
     {
-        $this->addStylesheet('assets/stylesheets/epp.less');
+        $this->addStylesheet('assets/stylesheets/epp.scss');
         PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/epp.js');
         PageLayout::setTitle(Context::getHeaderLine() .' - '. _('Aufgaben'));
         parent::perform($unconsumed_path);

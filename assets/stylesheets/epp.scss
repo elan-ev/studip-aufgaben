@@ -1,10 +1,12 @@
-#epp {
+@import "assets/stylesheets/scss/variables";
+
+#aufgaben-plugin {
     table {
         tr.running {
-            background-color: @yellow-20;
+            background-color: $yellow-20;
         }
         tr.future {
-            background-color: @orange-40;
+            background-color: $orange-40;
         }
     }
 
@@ -34,7 +36,7 @@
 
     span.file_error, span.error {
         display: block;
-        background-color: @red-80;
+        background-color: $red-80;
         padding: 5px;
         white-space:nowrap;
         position: absolute;
@@ -44,12 +46,12 @@
     }
 
     .three-columns {
-        .flex();
-        .flex-wrap(wrap);
+        display: flex;
+        flex-wrap: wrap;
         width: 100%;
 
         & > div {
-            .flex-item(0,0, 33%);
+            flex: 0 0 33%;
         }
 
         a.button {

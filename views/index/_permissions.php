@@ -1,3 +1,5 @@
+<?= $this->render_partial('index/_js_templates.php') ?>
+
 <section class="contentbox">
     <header>
         <h1><?= $_('Zugriff gewähren') ?></h1>

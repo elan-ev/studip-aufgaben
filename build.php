@@ -35,11 +35,13 @@ function zip()
     $archive->open('aufgaben.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
     addDirectories($archive, [
-        'app',
         'assets',
         'classes',
+        'controllers',
         'locale',
-        'migrations'
+        'migrations',
+        'models',
+        'views'
     ]);
 
     $archive->addFile('README.md');

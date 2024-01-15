@@ -35,8 +35,8 @@
                     </td>
                     <td>
                         <? $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer'); ?>
-                        <?# $type_folder ? count($type_folder->getFiles()) : 0 ?>
-                        <?# Icon::create('file-generic', 'info', tooltip2($_('Hochgeladene Dateien'))) ?>
+                        <?= $type_folder ? count($type_folder->getFiles()) : 0 ?>
+                        <?= Icon::create('file-generic', 'info', tooltip2($_('Hochgeladene Dateien'))) ?>
                     </td>
                     <td>
                         <?= ($task_user && $task_user->chdate) ? strftime(EPP\Helper::timeformat, $task_user->chdate) : '-' ?>
@@ -47,9 +47,9 @@
                         <?= Icon::create('file-text', 'info', tooltip2($_('Abgabe'))) ?>
                     </td>
                     <td>
-                        <?# $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'feedback'); ?>
-                        <?# $type_folder ? count($type_folder->getFiles()) : 0 ?>
-                        <?# Icon::create('file-generic', 'info', tooltip2($_('Hochgeladene Dateien'))) ?>
+                        <? $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'feedback'); ?>
+                        <?= $type_folder ? count($type_folder->getFiles()) : 0 ?>
+                        <?= Icon::create('file-generic', 'info', tooltip2($_('Hochgeladene Dateien'))) ?>
                     </td>
                     <td>
                         <?= ($task_user && $task_user->hint)

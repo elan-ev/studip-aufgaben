@@ -12,9 +12,9 @@
  * @category    Stud.IP
  */
 
-require_once dirname(__FILE__) . '/../app/models/TaskUserFiles.php';
-require_once dirname(__FILE__) . '/../app/models/TaskUsers.php';
-require_once dirname(__FILE__) . '/../app/models/Tasks.php';
+require_once dirname(__FILE__) . '/../models/TaskUserFiles.php';
+require_once dirname(__FILE__) . '/../models/TaskUsers.php';
+require_once dirname(__FILE__) . '/../models/Tasks.php';
 
 class MigrateToMoadb extends Migration
 {

@@ -100,7 +100,6 @@ STUDIP.Aufgaben.Permissions = {
             self = this;
 
         $('#permission_list').append(template(data)).find('div:last-child img').click(function() {
-            console.log($(this));
             self.delete(data.user);
             $(this).parent().parent().remove();
         });

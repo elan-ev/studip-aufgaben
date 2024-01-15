@@ -21,6 +21,8 @@ class IndexController extends \EPP\Controller
         // set default layout
         Navigation::activateItem('/course/aufgaben');
 
+        PageLayout::setBodyElementId('aufgaben-plugin');
+
         $this->seminar_id = \Context::get()->id;
 
         $this->permissions = [
