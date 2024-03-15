@@ -91,7 +91,7 @@ class Perm
      *
      * @throws AccessDeniedException
      */
-    public function check($perm, $seminar_id)
+    public static function check($perm, $seminar_id)
     {
         if (!self::has($perm, $seminar_id)) {
             throw new \AccessDeniedException(sprintf(
