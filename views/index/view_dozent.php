@@ -76,7 +76,6 @@
         'field'        => 'feedback',
         'text'         => $task_user->feedback,
         'editable'     => true,
-        'edit'         => $edit,
         'type_folder'  => \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'feedback')
     ]) ?>
 

@@ -116,19 +116,8 @@ class Perm
      */
     public static function has($perm, $seminar_id, $user_id = null)
     {
-        static $permissions = [];
-
-        // if no user-id is passed, use the current user (for your convenience)
-        if (!$user_id) {
-            $user_id = $GLOBALS['user']->id;
-        }
-
         // get the status for the user in the passed seminar
-        if (!$permissions[$seminar_id][$user_id]) {
-            $permissions[$seminar_id][$user_id] = $GLOBALS['perm']->get_studip_perm($seminar_id, $user_id);
-        }
-
-        $status = $permissions[$seminar_id][$user_id];
+        $status = $GLOBALS['perm']->get_studip_perm($seminar_id, $user_id);
 
         // root and admins have all possible perms
         if (in_array($status, words('root admin')) !== false) {

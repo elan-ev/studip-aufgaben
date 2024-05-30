@@ -116,6 +116,8 @@ class IndexController extends \EPP\Controller
         PageLayout::setTitle($this->_('Neue Aufgabe anlegen'));
         \EPP\Perm::check('new_task', $this->seminar_id);
 
+        $this->task = new \EPP\Tasks();
+
         $this->destination = 'index/add_task';
         $this->render_template('index/edit_task');
     }

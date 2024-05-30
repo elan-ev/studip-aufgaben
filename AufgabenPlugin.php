@@ -124,7 +124,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
 
             $act_num = 0;
             foreach ($tasks as $task) {
-                $tu = EPP\TaskUsers::findBySQL('ep_tasks_id = ? AND mkdate >= ?', [$tasks->id, $last_visit]);
+                $tu = EPP\TaskUsers::findBySQL('ep_tasks_id = ? AND mkdate >= ?', [$task->id, $last_visit]);
                 if (!empty($tu)) {
                     $act_num += sizeof($tu);
                 }

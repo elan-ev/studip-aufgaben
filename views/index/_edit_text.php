@@ -5,7 +5,7 @@
         <h1><?= $name ?></h1>
     </header>
 
-    <? if ($edit[$field]) : ?>
+    <? if (isset($edit[$field]) && $edit[$field]) : ?>
         <section>
             <form action="<?= $controller->url_for($form_route) ?>" method="post">
                 <?= CSRFProtection::tokenTag() ?>
@@ -32,7 +32,7 @@
         <footer>
             <? if ($task['allow_text'] || ($editable && $field == 'feedback')) : ?>
             <?= \Studip\LinkButton::createEdit($_('Bearbeiten'), $controller->url_for($cancel_route . '/' . $field
-                . ($task_user_id ? '?task_user_id=' . $task_user_id : '') . '#jumpto_' . $field)) ?>
+                . (isset($task_user_id) ? '?task_user_id=' . $task_user_id : '') . '#jumpto_' . $field)) ?>
             <? endif ?>
 
             <? if ($editable && $task['allow_files']) : ?>
