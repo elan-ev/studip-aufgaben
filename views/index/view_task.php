@@ -25,5 +25,5 @@
             <?= strftime(EPP\Helper::timeformat, $task['startdate']) ?> - <?= strftime(EPP\Helper::timeformat, $task['enddate']) ?>
         </h1>
     </header>
-    <?= $this->render_partial('index/_status.php', compact('participants')) ?>
+    <?= $this->render_partial('index/_status.php') ?>
 </section>

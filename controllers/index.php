@@ -265,6 +265,10 @@ class IndexController extends \EPP\Controller
         $this->task         = new \EPP\Tasks($id);
         $this->participants = CourseMember::findByCourse($this->seminar_id);
 
+        usort($this->participants, function($a, $b) {
+            return strcoll($a->getUserFullname('no_title_rev'), $b->getUserFullname('no_title_rev'));
+        });
+
         if ($this->task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }

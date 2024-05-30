@@ -25,7 +25,7 @@
                 <tr>
                     <td>
                         <a href="<?= $controller->url_for("index/view_dozent/" . $task_user->id) ?>">
-                            <?= htmlReady(get_fullname($user->user_id)) ?>
+                            <?= htmlReady($user->getUserFullname('no_title_rev')) ?>
                         </a>
                     </td>
 
