@@ -71,6 +71,17 @@
                         $_('Textantworten als PDF herunterladen'),
                         Icon::create('file-pdf+move_down'));
 
+                    $link = new StudipLink(
+                        '',
+                        $_('Feedback zip-Datei hochladen'),
+                        Icon::create('file-archive+move_up')
+                    );
+
+                    $link->attributes = [
+                        'onClick' => "task_id = ". $task['id'] ."; STUDIP.Files.openAddFilesWindow('". $tmp_folder->getId() ."'); return false;"
+                    ];
+                    $actions->addLink($link);
+
                     $actions->addLink(
                         $controller->url_for('index/delete_task/' . $task['id']),
                         $_('Aufgabe löschen'),

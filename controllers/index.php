@@ -97,6 +97,27 @@ class IndexController extends \EPP\Controller
             }
         }
 
+        if (\EPP\Perm::has('new_task', $this->seminar_id)) {
+            $this->tmp_folder = null;
+            foreach ($this->folder->subfolders as $subfolder) {
+                if ($subfolder->name === 'Aufgaben-Plugin-Tmp') {
+                    $this->tmp_folder = $subfolder;
+                }
+            }
+            if (!$this->tmp_folder) {
+                $this->tmp_folder = \Folder::create([
+                    'parent_id'    => $this->folder->getId(),
+                    'range_id'     => $this->seminar_id,
+                    'range_type'   => Context::getType(),
+                    'description'  => 'Temporärer Ordner für Feedback-Uploads',
+                    'name'         => 'Aufgaben-Plugin-Tmp',
+                    'data_content' => '',
+                    'folder_type'  => \HiddenFolder::class,
+                    'user_id'      => $this->seminar_id
+                ]);
+            }
+        }
+
         $this->accessible_tasks = \EPP\Helper::getForeignTasksForUser($GLOBALS['user']->id);
 
         if (\EPP\Perm::has('new_task', $this->seminar_id)) {
@@ -527,5 +548,78 @@ class IndexController extends \EPP\Controller
         } else {
             $this->redirect('index/index');
         }
+    }
+
+    /**
+     * Sorts through the data in the zip file for feedback files and attaches
+     * them to the correct student.
+     *
+     * @param $task_id
+     * @param $file_id
+     */
+    public function upload_zip_action($task_id, $file_id)
+    {
+        $uploaded_zip = \FileRef::find($file_id);
+
+        if (!$uploaded_zip) {
+            throw new FileNotFoundException(_('Fehler beim Entpacken der zip-Datei: Datei existiert nicht.'));
+        }
+
+        $tmp_folder = null;
+        foreach ($this->folder->subfolders as $subfolder) {
+            if ($subfolder->name === 'Aufgaben-Plugin-Tmp') {
+                $tmp_folder = $subfolder;
+            }
+        }
+
+        if (!$tmp_folder) {
+            throw new FileNotFoundException(_('Fehler beim Entpacken der zip-Datei: Ordner existiert nicht'));
+        }
+
+        $archive = FileArchiveManager::extractArchiveFileToFolder(
+            $uploaded_zip->getFileType(),
+            $tmp_folder->getTypedFolder()
+        );
+        $feedback = [];
+        foreach ($archive as $file) {
+            // extract only the feedback files from the archive
+            if ($file->getFolderType()->name === 'Feedback') {
+                $username = $file->getFolderType()->getParent()->name;
+                $feedback[$username] = $file;
+            }
+        }
+
+        $task_folder = null;
+        foreach ($this->folder->subfolders as $subfolder) {
+            if ($subfolder['data_content']['task_id'] == $task_id) {
+                $task_folder = $subfolder;
+            }
+        }
+
+        foreach ($task_folder->subfolders as $userfolder) {
+            // replace spaces with underscores to match zip-file syntax
+            $username = preg_replace('/\s+/', '_', $userfolder->name);
+            $feedback_folder = $userfolder->subfolders[1]->getTypedFolder();
+
+            if ($feedback[$username]) {
+                $old_feedbacks = $feedback_folder->getFiles();
+                $old_feedback = null;
+                foreach ($old_feedbacks as $old_file) {
+                    if ($old_file->name === $feedback[$username]->name) {
+                        $old_feedback = $old_file;
+                    }
+                }
+
+                if ($old_feedback) {
+                    // delete old feedback to avoid duplicates
+                    $feedback_folder->deleteFile($old_feedback->id);
+                }
+                $feedback_folder->addFile($feedback[$username]);
+            }
+        }
+        // delete tmp folder with uploaded zip to avoid duplicates
+        $tmp_folder->delete();
+
+        $this->render_nothing();
     }
 }
