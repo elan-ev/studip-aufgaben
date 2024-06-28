@@ -195,15 +195,12 @@ class IndexController extends \EPP\Controller
         ];
 
         $task->setData($data);
-        if ($task->store()) {
-            PageLayout::postSuccess(sprintf(
-                $this->_('Die Aufgabe %s wurde erfolgreich bearbeitet!'),
-                htmlReady(Request::get('title'))
-            ));
-        } else {
-            PageLayout::postError($this->_('Beim Bearbeiten der Aufgabe ist etwas schief gelaufen.
-            Versuchen Sie es noch einmal oder wenden Sie sich an einen Systemadministrator'));
-        }
+        $task->store();
+
+        PageLayout::postSuccess(sprintf(
+            $this->_('Die Aufgabe %s wurde erfolgreich bearbeitet!'),
+            htmlReady(Request::get('title'))
+        ));
 
         $this->redirect('index/view_task/' . $id);
     }
