@@ -1,5 +1,7 @@
 var STUDIP = STUDIP || {};
 STUDIP.AufgabenConfig = STUDIP.AufgabenConfig || {};
+var task_id;
+var dialog;
 
 jQuery(document).ready(function() {
     jQuery(function () {
@@ -7,6 +9,30 @@ jQuery(document).ready(function() {
         STUDIP.Files.filesapp.folders = [];
         STUDIP.Files.filesapp.removeFile = () => {};
     });
+
+    (function() {
+        var origOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function() {
+            this.addEventListener('load', function() {
+                if (this.responseURL.includes(STUDIP.ABSOLUTE_URI_STUDIP + "dispatch.php/file/upload/")) {
+                    dialog = $('button[title="Schließen"]');
+
+                    $.ajax(STUDIP.URLHelper.getURL('plugins.php/aufgabenplugin/index/upload_zip/'
+                            + task_id + '/'
+                            + JSON.parse(this.response).added_files[0].id), {
+                        method: 'POST',
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    })
+                    .done(function() {
+                        dialog.click();
+                    });
+                }
+            });
+            origOpen.apply(this, arguments);
+        };
+      })();
 });
 
 
