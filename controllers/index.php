@@ -588,7 +588,10 @@ class IndexController extends \EPP\Controller
             // extract only the feedback files from the archive
             if ($file->getFolderType()->name === 'Feedback') {
                 $username = $file->getFolderType()->getParent()->name;
-                $feedback[$username] = $file;
+                // skip MacOS hidden files
+                if (strpos($file->name, '._') !== 0) {
+                    $feedback[$username] = $file;
+                }
             }
         }
 
