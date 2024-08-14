@@ -21,7 +21,7 @@ class AddPermissions extends Migration
         $db->exec("
             CREATE  TABLE IF NOT EXISTS `ep_permissions` (
               `ep_task_users_id` INT NOT NULL ,
-              `user_id` VARCHAR(32) NULL ,
+              `user_id` VARCHAR(32) NOT NULL ,
               `role` ENUM('tutor','followup-tutor','student') NULL ,
               PRIMARY KEY (`ep_task_users_id`, `user_id`)
             );
