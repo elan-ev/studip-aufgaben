@@ -20,13 +20,13 @@
         <label>
             <?= $_('Sichtbar und bearbeitbar ab') ?>:<br>
             <input type="text" data-datetime-picker name="startdate" placeholder="<?= $_('tt.mm.jjjj ss:mm') ?>" required
-                   class="size-s" value="<?= $task ? strftime('%d.%m.%Y %R', $task['startdate']) : '' ?>">
+                   class="size-s" value="<?= $task['startdate'] ? strftime('%d.%m.%Y %R', $task['startdate']) : '' ?>">
         </label>
 
         <label>
             <?= $_('Bearbeitbar bis') ?>:<br>
             <input type="text" data-datetime-picker name="enddate" placeholder="<?= $_('tt.mm.jjjj ss:mm') ?>" required
-                   class="size-s" value="<?= $task ? strftime('%d.%m.%Y %R', $task['enddate']) : '' ?>">
+                   class="size-s" value="<?= $task['enddate'] ? strftime('%d.%m.%Y %R', $task['enddate']) : '' ?>">
         </label>
 
 
