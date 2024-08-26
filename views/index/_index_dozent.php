@@ -72,14 +72,13 @@
                         Icon::create('file-pdf+move_down'));
 
                     $link = new StudipLink(
-                        '',
+                        $controller->url_for('index/upload_dialog/' . $task['id']),
                         $_('Feedback zip-Datei hochladen'),
                         Icon::create('file-archive+move_up')
                     );
 
-                    $link->attributes = [
-                        'onClick' => "task_id = ". $task['id'] ."; STUDIP.Files.openAddFilesWindow('". $tmp_folder->getId() ."'); return false;"
-                    ];
+                    $link->attributes['data-dialog'] = 'size=auto;reload-on-close';
+
                     $actions->addLink($link);
 
                     $actions->addLink(

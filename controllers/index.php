@@ -43,7 +43,7 @@ class IndexController extends \EPP\Controller
             $aufgaben_folder = \Folder::create([
                 'parent_id'    => $root_folder->getId(),
                 'range_id'     => $this->seminar_id,
-                'range_type'   => Context::getType(),
+                'range_type'   => \Context::getType(),
                 'description'  => 'Dateiablage des Aufgabenplugins',
                 'name'         => 'Aufgaben-Plugin',
                 'data_content' => ['aufgabenplugin' => '1'],
@@ -94,27 +94,6 @@ class IndexController extends \EPP\Controller
                 }
 
                 $this->tasks = $new_order;
-            }
-        }
-
-        if (\EPP\Perm::has('new_task', $this->seminar_id)) {
-            $this->tmp_folder = null;
-            foreach ($this->folder->subfolders as $subfolder) {
-                if ($subfolder->name === 'Aufgaben-Plugin-Tmp') {
-                    $this->tmp_folder = $subfolder;
-                }
-            }
-            if (!$this->tmp_folder) {
-                $this->tmp_folder = \Folder::create([
-                    'parent_id'    => $this->folder->getId(),
-                    'range_id'     => $this->seminar_id,
-                    'range_type'   => Context::getType(),
-                    'description'  => 'Temporärer Ordner für Feedback-Uploads',
-                    'name'         => 'Aufgaben-Plugin-Tmp',
-                    'data_content' => '',
-                    'folder_type'  => \HiddenFolder::class,
-                    'user_id'      => $this->seminar_id
-                ]);
             }
         }
 
@@ -514,6 +493,15 @@ class IndexController extends \EPP\Controller
             where lower(`name`) LIKE '%matrikel%' AND dfe.`range_id` = ?", [$user_id]);
     }
 
+    public function upload_dialog_action($task_id)
+    {
+        // check perms
+        \EPP\Perm::check('new_task', $this->seminar_id);
+
+        $this->tmp_folder = \EPP\Helper::getTempFolder($this->folder, $this->seminar_id);
+        $this->task_id = $task_id;
+    }
+
     /**
      * create a zip from all files attached to the solutions of the submitted task
      *
@@ -521,6 +509,9 @@ class IndexController extends \EPP\Controller
      */
     public function zip_action($task_id)
     {
+        // check perms
+        \EPP\Perm::check('new_task', $this->seminar_id);
+
         $task = new \EPP\Tasks($task_id);
 
         $archive_file_name = $task->title . '-' . _('Abgaben_der_Studierenden') . '-' . date('Ymds-Hi') . '.zip';
@@ -560,71 +551,95 @@ class IndexController extends \EPP\Controller
      * @param $task_id
      * @param $file_id
      */
-    public function upload_zip_action($task_id, $file_id)
+    public function upload_zip_action($task_id)
     {
-        $uploaded_zip = \FileRef::find($file_id);
+        // check perms
+        \EPP\Perm::check('new_task', $this->seminar_id);
 
-        if (!$uploaded_zip) {
-            throw new FileNotFoundException(_('Fehler beim Entpacken der zip-Datei: Datei existiert nicht.'));
-        }
+        $tmp_folder = \EPP\Helper::getTempFolder($this->folder, $this->seminar_id);
 
-        $tmp_folder = null;
-        foreach ($this->folder->subfolders as $subfolder) {
-            if ($subfolder->name === 'Aufgaben-Plugin-Tmp') {
-                $tmp_folder = $subfolder;
+        // get the uploaded zip and store it
+        if (is_array($_FILES['file'])) {
+            $validatedFiles = FileManager::handleFileUpload(
+                $_FILES['file'],
+                $tmp_folder->getTypedFolder(),
+                $GLOBALS['user']->id
+            );
+
+            if (count($validatedFiles['error']) > 0) {
+                throw new \Exception(
+                    _('Beim Hochladen ist ein Fehler aufgetreten: ') .
+                    implode(',', array_map('htmlready', $validatedFiles['error']))
+                );
             }
-        }
 
-        if (!$tmp_folder) {
-            throw new FileNotFoundException(_('Fehler beim Entpacken der zip-Datei: Ordner existiert nicht'));
-        }
+            $uploaded_zip = $validatedFiles['files'][0]->getFileref();
 
-        $archive = FileArchiveManager::extractArchiveFileToFolder(
-            $uploaded_zip->getFileType(),
-            $tmp_folder->getTypedFolder()
-        );
-        $feedback = [];
-        foreach ($archive as $file) {
-            // extract only the feedback files from the archive
-            if ($file->getFolderType()->name === 'Feedback') {
-                $username = $file->getFolderType()->getParent()->name;
-                // skip MacOS hidden files
-                if (strpos($file->name, '._') !== 0) {
-                    $feedback[$username] = $file;
-                }
+            if (!$uploaded_zip) {
+                \PageLayout::postError(
+                    _('Fehler beim Entpacken der zip-Datei: Datei existiert nicht.')
+                );
             }
-        }
 
-        $task_folder = null;
-        foreach ($this->folder->subfolders as $subfolder) {
-            if ($subfolder['data_content']['task_id'] == $task_id) {
-                $task_folder = $subfolder;
+            if (!$tmp_folder) {
+                \PageLayout::postError(
+                    _('Fehler beim Entpacken der zip-Datei: Ordner existiert nicht')
+                );
             }
-        }
 
-        foreach ($task_folder->subfolders as $userfolder) {
-            // replace spaces with underscores to match zip-file syntax
-            $username = preg_replace('/\s+/', '_', $userfolder->name);
-            $feedback_folder = $userfolder->subfolders[1]->getTypedFolder();
-
-            if ($feedback[$username]) {
-                $old_feedbacks = $feedback_folder->getFiles();
-                $old_feedback = null;
-                foreach ($old_feedbacks as $old_file) {
-                    if ($old_file->name === $feedback[$username]->name) {
-                        $old_feedback = $old_file;
+            $archive = FileArchiveManager::extractArchiveFileToFolder(
+                $uploaded_zip->getFileType(),
+                $tmp_folder->getTypedFolder()
+            );
+            $feedback = [];
+            foreach ($archive as $file) {
+                // extract only the feedback files from the archive
+                if ($file->getFolderType()->name === 'Feedback') {
+                    $username = $file->getFolderType()->getParent()->name;
+                    // skip MacOS hidden files
+                    if (strpos($file->name, '._') !== 0) {
+                        $feedback[$username][] = $file;
                     }
                 }
-
-                if ($old_feedback) {
-                    // delete old feedback to avoid duplicates
-                    $feedback_folder->deleteFile($old_feedback->id);
-                }
-                $feedback_folder->addFile($feedback[$username]);
             }
+
+            $task_folder = null;
+            foreach ($this->folder->subfolders as $subfolder) {
+                if ($subfolder['data_content']['task_id'] == $task_id) {
+                    $task_folder = $subfolder;
+                }
+            }
+
+            foreach ($task_folder->subfolders as $userfolder) {
+                // replace spaces with underscores to match zip-file syntax
+                $username = preg_replace('/\s+/', '_', $userfolder->name);
+                $feedback_folder = $userfolder->subfolders[1]->getTypedFolder();
+
+                if (!empty($feedback[$username])) {
+                    foreach ($feedback[$username] as $feedback_file) {
+                        $old_feedbacks = $feedback_folder->getFiles();
+                        $old_feedback = null;
+                        foreach ($old_feedbacks as $old_file) {
+                            if ($old_file->name === $feedback_file->name) {
+                                $old_feedback = $old_file;
+                            }
+                        }
+
+                        if ($old_feedback) {
+                            // delete old feedback to avoid duplicates
+                            $feedback_folder->deleteFile($old_feedback->id);
+                        }
+                        $feedback_folder->addFile($feedback_file);
+                    }
+                }
+            }
+            // delete tmp folder with uploaded zip to avoid duplicates
+            $tmp_folder->delete();
+
+            \PageLayout::postSuccess(
+                _('Die Feedback-Datei wurde erfolgreich hochgeladen, entpackt und den Abgaben zugeordnet!'),
+            );
         }
-        // delete tmp folder with uploaded zip to avoid duplicates
-        $tmp_folder->delete();
 
         $this->render_nothing();
     }

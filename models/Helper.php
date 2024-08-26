@@ -176,4 +176,38 @@ class Helper
 
         return $infos;
     }
+
+    /**
+     * Create a temp folder for the current user under the passed folder in the passed course.
+     * Beware: The folder will be cleaned before usage!
+     *
+     * @param \Folder $folder
+     * @param string $course_id
+     *
+     * @return \Folder
+     */
+    public static function getTempFolder($folder, $course_id)
+    {
+        global $user;
+
+        // clear out old temp folders
+        foreach ($folder->subfolders as $subfolder) {
+            if ($subfolder->name === 'Aufgaben-Plugin-Tmp-'. $user->id) {
+                $subfolder->delete();
+            }
+        }
+
+        $tmp_folder = \Folder::create([
+            'parent_id'    => $folder->getId(),
+            'range_id'     => $course_id,
+            'range_type'   => \Context::getType(),
+            'description'  => 'Temporärer Ordner für Feedback-Uploads',
+            'name'         => 'Aufgaben-Plugin-Tmp-'. $user->id,
+            'data_content' => '',
+            'folder_type'  => \HiddenFolder::class,
+            'user_id'      => $course_id
+        ]);
+
+        return $tmp_folder;
+    }
 }

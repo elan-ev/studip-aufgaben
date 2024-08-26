@@ -1,7 +1,5 @@
 var STUDIP = STUDIP || {};
 STUDIP.AufgabenConfig = STUDIP.AufgabenConfig || {};
-var task_id;
-var dialog;
 
 jQuery(document).ready(function() {
     jQuery(function () {
@@ -9,37 +7,63 @@ jQuery(document).ready(function() {
         STUDIP.Files.filesapp.folders = [];
         STUDIP.Files.filesapp.removeFile = () => {};
     });
-
-    (function() {
-        var origOpen = XMLHttpRequest.prototype.open;
-        XMLHttpRequest.prototype.open = function() {
-            this.addEventListener('load', function() {
-                if (this.responseURL.includes(STUDIP.ABSOLUTE_URI_STUDIP + "dispatch.php/file/upload/")) {
-                    dialog = $('button[title="Schließen"]');
-
-                    $.ajax(STUDIP.URLHelper.getURL('plugins.php/aufgabenplugin/index/upload_zip/'
-                            + task_id + '/'
-                            + JSON.parse(this.response).added_files[0].id), {
-                        method: 'POST',
-                        error: function(error) {
-                            console.log(error);
-                        }
-                    })
-                    .done(function() {
-                        dialog.click();
-                    });
-                }
-            });
-            origOpen.apply(this, arguments);
-        };
-      })();
 });
 
 
 STUDIP.Aufgaben = {
     getTemplate: _.memoize(function(name) {
         return _.template($("script." + name).html());
-    })
+    }),
+
+    upload: function(filelist) {
+        var files = 0;
+        var task_id = $('.files_source_selector').data('task_id');
+        var data = new FormData();
+
+        //Open upload-dialog
+        const nameslist = $('.file_upload_window .filenames').show().empty();
+        $('.file_upload_window .errorbox').hide().find('.errormessage').empty();
+
+        $.each(filelist, function(index, file) {
+            if (STUDIP.Files.validateUpload(file)) {
+                data.append('file[]', file, file.name);
+                files += 1;
+            } else {
+                const errorMessage = file.name + ': ' + 'Datei ist zu groß oder hat eine nicht erlaubte Endung.' + "<br>";
+                $('.errorbox').show().find('.errormessage').html(errorMessage);
+            }
+        });
+
+        //start upload
+        $('form.drag-and-drop.files').removeClass('hovered');
+        if (files > 0) {
+            STUDIP.JSUpdater.stop();
+
+            $('.file_upload_window .uploadbar').show().filter('.uploadbar-inner').css({
+                right: '100%'
+            });
+
+            $.ajax({
+                url: STUDIP.URLHelper.getURL(`plugins.php/aufgabenplugin/index/upload_zip/${task_id}`),
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: () => {
+                    STUDIP.Dialog.close();
+                },
+                error: (data) => {
+                    let errorMessage = 'Unbekannter Fehler beim Hochladen der Datei';
+                    if (data.responseJSON !== undefined && data.responseJSON.message !== undefined) {
+                        errorMessage = data.responseJSON.message;
+                    }
+                    // STUDIP.Dialog.close();
+                    $('.errorbox').show().find('.errormessage').html(errorMessage);
+                }
+            })
+        }
+    }
 }
 
 
