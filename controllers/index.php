@@ -637,7 +637,7 @@ class IndexController extends \EPP\Controller
             $tmp_folder->delete();
 
             \PageLayout::postSuccess(
-                _('Die Feedback-Datei wurde erfolgreich hochgeladen, entpackt und den Abgaben zugeordnet!'),
+                _('Die Feedback-Datei wurde erfolgreich hochgeladen, entpackt und den Abgaben zugeordnet!')
             );
         }
 
