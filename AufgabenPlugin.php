@@ -92,10 +92,10 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
      */
     public function getTabNavigation($course_id)
     {
-        $navigation = new Navigation(_('Aufgaben'), PluginEngine::getLink('aufgabenplugin/index'));
+        $navigation = new Navigation(_('Feedback-Aufgaben'), PluginEngine::getLink('aufgabenplugin/index'));
         $navigation->setImage(Icon::create('assessment'));
         return [
-            'aufgaben' => $navigation
+            'feedback-aufgaben' => $navigation
         ];
     }
 
@@ -171,7 +171,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
     {
         $this->addStylesheet('assets/stylesheets/epp.scss');
         PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/epp.js');
-        PageLayout::setTitle(Context::getHeaderLine() .' - '. _('Aufgaben'));
+        PageLayout::setTitle(Context::getHeaderLine() .' - '. _('Feedback-Aufgaben'));
         parent::perform($unconsumed_path);
     }
 
@@ -184,10 +184,10 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
     {
         $metadata = parent::getMetadata();
         $metadata['pluginname'] = dgettext("aufgaben", "AufgabenPlugin");
-        $metadata['displayname'] = dgettext("aufgaben", "Aufgaben (Reflexion)");
-        $metadata['descriptionlong'] = dgettext("aufgaben", "Mit diesem Plugin können Sie Reflexionsaufgaben an die Teilnehmenden einer Veranstaltung verteilen, Textantworten entgegennehmen und den Studierenden Ihrerseits Feedback zu ihren Antworten geben. Texte können direkt eingegeben oder in Dateiform hochgeladen werden. Eine Übersicht über die Anzahl eingegebener Zeichen bzw. hochgeladener Dateien erleichtert Ihnen einen Überblick über den Bearbeitungsstand der Aufgaben. Ideal, wenn Sie mit einer eher kleinen Teilnehmerzahl über das Semester hinweg mehrere Reflexionsaufgaben nacheinander bearbeiten möchten.");
-        $metadata['descriptionshort'] = dgettext("aufgaben", "Erstellung und Bereitstellung zeitgesteuerter Reflexionsaufgaben für Studierende");
-        $metadata['keywords'] = dgettext("aufgaben", "Zeitgesteuerte Reflexionsaufgaben;Abgabe als Text oder in Dateiform;Individuelles Feedback für Studierende möglich");
+        $metadata['displayname'] = dgettext("aufgaben", "Feedback-Aufgaben");
+        $metadata['descriptionlong'] = dgettext("aufgaben", "Mit diesem Plugin können Sie Feedback-Aufgaben an die Teilnehmenden einer Veranstaltung verteilen, Textantworten entgegennehmen und den Studierenden Ihrerseits Feedback zu ihren Antworten geben. Texte können direkt eingegeben oder in Dateiform hochgeladen werden. Eine Übersicht über die Anzahl eingegebener Zeichen bzw. hochgeladener Dateien erleichtert Ihnen einen Überblick über den Bearbeitungsstand der Aufgaben. Ideal, wenn Sie mit einer eher kleinen Teilnehmerzahl über das Semester hinweg mehrere Feedback-Aufgaben nacheinander bearbeiten möchten.");
+        $metadata['descriptionshort'] = dgettext("aufgaben", "Erstellung und Bereitstellung zeitgesteuerter Feedback-Aufgaben für Studierende");
+        $metadata['keywords'] = dgettext("aufgaben", "Zeitgesteuerte Feedback-Aufgaben;Abgabe als Text oder in Dateiform;Individuelles Feedback für Studierende möglich");
         return $metadata;
     }
 }

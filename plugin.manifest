@@ -1,9 +1,9 @@
 pluginclassname=AufgabenPlugin
 pluginname=AufgabenPlugin
 origin=elan-ev
-version=1.19
+version=1.20
 studipMinVersion=5.0
-studipMaxVersion=6.0.99
+studipMaxVersion=6.3.99
 description=Erstellung und Bereitstellung zeitgesteuerter Aufgaben für Studierende
 
 screenshot = assets/images/screenshots/Aufgabenuebersicht.png
@@ -14,9 +14,10 @@ screenshot = assets/images/screenshots/Dateien_Hochladen.png
 icon = ../../../assets/images/icons/black/assessment.svg
 
 category = Inhalte und Aufgabenstellungen
-displayname = Aufgaben (Reflexion)
-descriptionshort = Erstellung und Bereitstellung zeitgesteuerter Reflexionsaufgaben für Studierende
+displayname = Feedback-Aufgaben
+summary=Zeitgesteuerte Text- und Dateiabgabe mit Feedbackmöglichkeit 
+descriptionshort = Erstellung und Bereitstellung zeitgesteuerter Feedback-Aufgaben für Studierende
 
-descriptionlong = Mit diesem Plugin können Sie Reflexionsaufgaben an die Teilnehmenden einer Veranstaltung verteilen, Textantworten entgegennehmen und den Studierenden Ihrerseits Feedback zu ihren Antworten geben. Texte können direkt eingegeben oder in Dateiform hochgeladen werden. Eine Übersicht über die Anzahl eingegebener Zeichen bzw. hochgeladener Dateien erleichtert Ihnen einen Überblick über den Bearbeitungsstand der Aufgaben. Ideal, wenn Sie mit einer eher kleinen Teilnehmerzahl über das Semester hinweg mehrere Reflexionsaufgaben nacheinander bearbeiten möchten.
+descriptionlong = Mit diesem Plugin können Sie Feedback-Aufgaben an die Teilnehmenden einer Veranstaltung verteilen, Textantworten entgegennehmen und den Studierenden Ihrerseits Feedback zu ihren Antworten geben. Texte können direkt eingegeben oder in Dateiform hochgeladen werden. Eine Übersicht über die Anzahl eingegebener Zeichen bzw. hochgeladener Dateien erleichtert Ihnen einen Überblick über den Bearbeitungsstand der Aufgaben. Ideal, wenn Sie mit einer eher kleinen Teilnehmerzahl über das Semester hinweg mehrere Feedback-Aufgaben nacheinander bearbeiten möchten.
 
-keywords = Zeitgesteuerte Reflexionsaufgaben;Abgabe als Text oder in Dateiform;Individuelles Feedback für Studierende möglich
+keywords = Zeitgesteuerte Feedback-Aufgaben;Abgabe als Text oder in Dateiform;Individuelles Feedback für Studierende möglich
