@@ -19,7 +19,7 @@ class IndexController extends \EPP\Controller
         parent::before_filter($action, $args);
 
         // set default layout
-        Navigation::activateItem('/course/aufgaben');
+        Navigation::activateItem('/course/feedback-aufgaben');
 
         PageLayout::setBodyElementId('aufgaben-plugin');
 

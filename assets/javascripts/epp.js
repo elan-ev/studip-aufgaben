@@ -4,8 +4,6 @@ STUDIP.AufgabenConfig = STUDIP.AufgabenConfig || {};
 jQuery(document).ready(function() {
     jQuery(function () {
         STUDIP.Aufgaben.Permissions.initialize();
-        STUDIP.Files.filesapp.folders = [];
-        STUDIP.Files.filesapp.removeFile = () => {};
     });
 });
 
@@ -174,7 +172,3 @@ STUDIP.epp = {
         );
     },
 };
-
-STUDIP.Files.filesapp = {
-    files: []
-}

@@ -38,6 +38,11 @@ class MigrateToMoadb extends Migration
             $seminar_id      = $task_user->task->seminar_id;
 
             $context_type = '';
+
+            if (empty($seminar_id)) {
+                continue;
+            }
+
             switch (get_object_type($seminar_id)) {
                 case 'sem': $context_type = 'course';break;
                 case 'inst':

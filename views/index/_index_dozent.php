@@ -65,16 +65,16 @@
                     $actions->addLink(
                         $controller->url_for('index/zip/' . $task['id']),
                         $_('Hochgeladene Aufgabenabgaben herunterladen'),
-                        Icon::create('file-archive+move_down'));
+                        Icon::create('download'));
                     $actions->addLink(
                         $controller->url_for('index/pdf/' . $task['id']),
                         $_('Textantworten als PDF herunterladen'),
-                        Icon::create('file-pdf+move_down'));
+                        Icon::create('file-pdf'));
 
                     $link = new StudipLink(
                         $controller->url_for('index/upload_dialog/' . $task['id']),
                         $_('Feedback zip-Datei hochladen'),
-                        Icon::create('file-archive+move_up')
+                        Icon::create('upload')
                     );
 
                     $link->attributes['data-dialog'] = 'size=auto;reload-on-close';
