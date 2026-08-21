@@ -255,20 +255,76 @@ class IndexController extends \EPP\Controller
     }
 
 
-    public function view_task_action($id)
+    public function view_task_action($id, $page = 1)
     {
         \EPP\Perm::check('new_task', $this->seminar_id);
 
-        $this->task         = new \EPP\Tasks($id);
-        $this->participants = CourseMember::findByCourse($this->seminar_id);
-
-        usort($this->participants, function($a, $b) {
-            return strcoll($a->getUserFullname('no_title_rev'), $b->getUserFullname('no_title_rev'));
-        });
+        $this->task = new \EPP\Tasks($id);
 
         if ($this->task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
+
+        $this->search = trim(Request::get('search', ''));
+        $this->participants_per_page = Config::get()->ENTRIES_PER_PAGE;
+
+        $participant_sql = 'LEFT JOIN auth_user_md5 USING (user_id)
+            WHERE seminar_id = :seminar_id
+              AND seminar_user.status != :status';
+        $participant_parameters = [
+            'seminar_id' => $this->seminar_id,
+            'status'     => 'dozent',
+        ];
+        if ($this->search !== '') {
+            $participant_sql .= ' AND (
+                auth_user_md5.Vorname LIKE :search_first_name
+                OR auth_user_md5.Nachname LIKE :search_last_name
+                OR auth_user_md5.username LIKE :search_username
+                OR CONCAT_WS(\' \', auth_user_md5.Vorname, auth_user_md5.Nachname) LIKE :search_full_name
+                OR CONCAT_WS(\' \', auth_user_md5.Nachname, auth_user_md5.Vorname) LIKE :search_reverse_name
+            )';
+            $search_term = '%' . $this->search . '%';
+            $participant_parameters += [
+                'search_first_name'   => $search_term,
+                'search_last_name'    => $search_term,
+                'search_username'     => $search_term,
+                'search_full_name'    => $search_term,
+                'search_reverse_name' => $search_term,
+            ];
+        }
+
+        $this->participant_count = CourseMember::countBySql(
+            $participant_sql,
+            $participant_parameters
+        );
+        $this->page = max(1, (int) $page);
+        $last_page = max(1, (int) ceil($this->participant_count / $this->participants_per_page));
+        $this->page = min($this->page, $last_page);
+
+        $this->participants = CourseMember::findBySQL($participant_sql . '
+            ORDER BY auth_user_md5.Nachname, auth_user_md5.Vorname, seminar_user.user_id
+            LIMIT :offset, :limit', $participant_parameters + [
+            'offset'     => ($this->page - 1) * $this->participants_per_page,
+            'limit'      => $this->participants_per_page,
+        ]);
+
+        $participant_ids = SimpleCollection::createFromArray($this->participants)->pluck('user_id');
+        $this->participant_users = [];
+        if ($participant_ids) {
+            foreach (User::findMany($participant_ids) as $participant_user) {
+                $this->participant_users[$participant_user->id] = $participant_user;
+            }
+        }
+        $this->task_users = [];
+        if ($participant_ids) {
+            foreach (\EPP\TaskUsers::findBySQL(
+                'ep_tasks_id = ? AND user_id IN (?)',
+                [$this->task->id, $participant_ids]
+            ) as $task_user) {
+                $this->task_users[$task_user->user_id] = $task_user;
+            }
+        }
+
         $actions = new ActionsWidget();
         $actions->addLink(
             $this->_('Aufgabe bearbeiten'),
@@ -283,6 +339,11 @@ class IndexController extends \EPP\Controller
         );
 
         Sidebar::get()->addWidget($actions);
+
+        $search = new SearchWidget($this->url_for('index/view_task/' . $id));
+        $search->addNeedle($this->_('Person suchen'), 'search', true);
+        Sidebar::get()->addWidget($search);
+
         Sidebar::get()->addWidget(\EPP\Helper::getSidebarInfos($this->task, $this));
     }
 
