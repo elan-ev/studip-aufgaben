@@ -12,27 +12,27 @@
     </thead>
     <tbody>
         <? foreach ($participants as $user) : ?>
-            <? if ($user->status != 'dozent') : ?>
-                <? $task_user = $task->task_users->findOneBy('user_id', $user->user_id) ?>
-                <? if (!$task_user) :  // create missing entries on the fly
-                    $task_user = EPP\TaskUsers::create([
-                        'user_id'     => $user->user_id,
-                        'chdate'      => 0,
-                        'mkdate'      => 0,
-                        'ep_tasks_id' => $task->getId()
-                    ]);
-                endif ?>
-                <tr>
-                    <td>
-                        <a href="<?= $controller->url_for("index/view_dozent/" . $task_user->id) ?>">
-                            <?= htmlReady($user->getUserFullname('no_title_rev')) ?>
-                        </a>
-                    </td>
+            <? $task_user = $task_users[$user->user_id] ?? null ?>
+            <? if (!$task_user) :  // create missing entries on the fly
+                $task_user = EPP\TaskUsers::create([
+                    'user_id'     => $user->user_id,
+                    'chdate'      => 0,
+                    'mkdate'      => 0,
+                    'ep_tasks_id' => $task->getId()
+                ]);
+                $task_users[$user->user_id] = $task_user;
+            endif ?>
+            <tr>
+                <td>
+                    <a href="<?= $controller->url_for("index/view_dozent/" . $task_user->id) ?>">
+                        <?= htmlReady($participant_users[$user->user_id]->getFullName('no_title_rev')) ?>
+                    </a>
+                </td>
 
-                    <td style="text-align: right">
+                <td style="text-align: right">
                         <?= (!$task_user || $task_user->answer === null) ? '0' : strlen($task_user->answer) ?>
                         <?= Icon::create('file-text', 'info', tooltip2($_('Abgabe'))) ?>
-                    </td>
+                </td>
                     <td>
                         <? $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer'); ?>
                         <?= $type_folder ? count($type_folder->getFiles()) : 0 ?>
@@ -69,8 +69,22 @@
                             <?= Icon::create('edit', 'clickable', tooltip2($_('Diese Aufgabe für diesen Nutzer bearbeiten'))) ?>
                         </a>
                     </td>
-                </tr>
-            <? endif ?>
+            </tr>
         <? endforeach ?>
     </tbody>
+    <? if ($participant_count > $participants_per_page) : ?>
+        <tfoot>
+            <tr>
+                <td colspan="9">
+                    <?= $GLOBALS['template_factory']->render('shared/pagechooser', [
+                        'perPage'      => $participants_per_page,
+                        'num_postings' => $participant_count,
+                        'page'         => $page,
+                        'pagelink'     => $controller->url_for("index/view_task/{$task->id}/%u"),
+                        'pageparams'   => ['search' => $search],
+                    ]) ?>
+                </td>
+            </tr>
+        </tfoot>
+    <? endif ?>
 </table>
