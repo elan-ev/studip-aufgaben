@@ -50,30 +50,35 @@ class TaskFolder extends StandardFolder
     /**
      * @inherit
      */
-    public function isFileDownloadable($file, $user_id)
+    public function isFileDownloadable($fileref_or_id, $user_id)
     {
+        
         if ($GLOBALS['perm']->have_studip_perm('tutor', $this->range_id, $user_id)) {
             return true;
         }
 
-        if ($file->user_id == $user_id) {
-            return true;
-        }
+        $fileref = FileRef::toObject($fileref_or_id);
 
-        if ($this->data_content['task_user'] == $user_id) {
-            return true;
-        }
-
-        if ($this->data_content['task_id']) {
-            // check, if user has been granted access to this task
-            $task_user = TaskUsers::findOneBySQL('ep_tasks_id = ? AND user_id = ?', [
-                $this->data_content['task_id'],
-                $this->data_content['task_user']
-            ]);
-
-            if (!empty($task_user) && !empty($task_user->perms->findOneBy('user_id', $user_id))
-            ) {
+        if (is_object($fileref)) {
+            if ($fileref->user_id == $user_id) {
                 return true;
+            }
+
+            if ($this->data_content['task_user'] == $user_id) {
+                return true;
+            }
+
+            if ($this->data_content['task_id']) {
+                // check, if user has been granted access to this task
+                $task_user = TaskUsers::findOneBySQL('ep_tasks_id = ? AND user_id = ?', [
+                    $this->data_content['task_id'],
+                    $this->data_content['task_user']
+                ]);
+
+                if (!empty($task_user) && !empty($task_user->perms->findOneBy('user_id', $user_id))
+                ) {
+                    return true;
+                }
             }
         }
 
