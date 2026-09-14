@@ -1,8 +1,8 @@
 pluginclassname=AufgabenPlugin
 pluginname=AufgabenPlugin
 origin=elan-ev
-version=1.20
-studipMinVersion=5.0
+version=1.21
+studipMinVersion=6.0
 studipMaxVersion=6.3.99
 description=Erstellung und Bereitstellung zeitgesteuerter Aufgaben für Studierende
 
