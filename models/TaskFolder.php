@@ -57,7 +57,10 @@ class TaskFolder extends StandardFolder
             return true;
         }
 
-        $fileref = FileRef::toObject($fileref_or_id);
+        // Only convert to object if it is not already one.
+        $fileref = is_object($fileref_or_id)
+            ? $fileref_or_id
+            : FileRef::toObject($fileref_or_id);
 
         if (is_object($fileref)) {
             if ($fileref->user_id == $user_id) {
