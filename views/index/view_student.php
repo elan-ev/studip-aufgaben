@@ -82,7 +82,7 @@ if (isset($widget)) {
             'name'         => $_('Abgabe'),
             'field'        => 'answer',
             'text'         => $task_user->answer,
-            'edit'         => $edit,
+            'edit'         => $edit ?? [],
             'editable'     => ($task->enddate >= time()),
             'type_folder'  => \EPP\Helper::getTypedFolder($folder, $task, $task_user, 'answer')
         ]) ?>

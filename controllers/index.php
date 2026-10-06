@@ -81,7 +81,7 @@ class IndexController extends \EPP\Controller
                     $reorder[$task->getStatus()][] = $task;
                 }
 
-                if (is_array($reorder['running'])) {
+                if (isset($reorder['running'])) {
                     $reorder['running'] = array_reverse($reorder['running']);
                 }
 
