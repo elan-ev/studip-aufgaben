@@ -7,7 +7,7 @@ if ($current_folder->isFileDownloadable($file_ref, $GLOBALS['user']->id)) {
     $permissions[] = 'dr';
 }
 ?>
-<tr <? if ($full_access) printf('data-file="%s"', $file_ref->id) ?>
+<tr <? if (!empty($full_access)) printf('data-file="%s"', $file_ref->id) ?>
         id="fileref_<?= htmlReady($file_ref->id) ?>"
         role="row"
         data-permissions="<?= implode($permissions) ?>">
