@@ -171,6 +171,7 @@ class AufgabenPlugin extends StudIPPlugin implements StandardPlugin, SystemPlugi
     {
         $this->addStylesheet('assets/stylesheets/epp.scss');
         PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/epp.js');
+        PageLayout::addScript($this->getPluginURL() . '/assets/javascripts/audio-feedback.js');
         PageLayout::setTitle(Context::getHeaderLine() .' - '. _('Feedback-Aufgaben'));
         parent::perform($unconsumed_path);
     }

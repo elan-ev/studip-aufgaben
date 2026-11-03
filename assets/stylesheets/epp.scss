@@ -58,4 +58,14 @@
             margin: 0;
         }
     }
+
+    [data-audio-feedback-form] {
+        audio {
+            width: 100%;
+        }
+
+        [data-audio-error] {
+            color: $red-80;
+        }
+    }
 }

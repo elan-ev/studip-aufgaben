@@ -42,6 +42,11 @@
                         'onClick' => "STUDIP.Files.openAddFilesWindow('". $type_folder->getId() ."'); return false;"
                     ]
                 ) ?>
+                <? if ($field === 'feedback') : ?>
+                    <?= \Studip\LinkButton::create($_('Audio-Feedback aufnehmen'),
+                        $controller->url_for('index/audio_feedback/' . $task_user->getId()),
+                        ['data-dialog' => 'size=auto']) ?>
+                <? endif ?>
             <? endif ?>
         </footer>
     <? endif; ?>

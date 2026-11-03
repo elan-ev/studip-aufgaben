@@ -431,3 +431,58 @@ msgstr "My computer"
 
 msgid "Der Feedback-Ordner wurde nicht gefunden!"
 msgstr "The feedback folder could not be found!"
+
+msgid "Audio-Feedback aufnehmen"
+msgstr "Record audio feedback"
+
+msgid "Audioaufnahmen werden von diesem Browser nicht unterstützt. Bitte verwenden Sie einen aktuellen Browser und HTTPS."
+msgstr "This browser does not support audio recording. Please use a current browser and HTTPS."
+
+msgid "Das Mikrofon konnte nicht geöffnet werden. Bitte prüfen Sie die Mikrofonberechtigung."
+msgstr "The microphone could not be opened. Please check microphone permissions."
+
+msgid "Die Aufnahme ist fehlgeschlagen. Bitte versuchen Sie es erneut."
+msgstr "Recording failed. Please try again."
+
+msgid "Die Aufnahme konnte nicht hochgeladen werden. Bitte versuchen Sie es erneut."
+msgstr "The recording could not be uploaded. Please try again."
+
+msgid "Aufnahme läuft …"
+msgstr "Recording …"
+
+msgid "Die Aufnahme kann jetzt angehört und hochgeladen werden."
+msgstr "The recording is ready for playback and upload."
+
+msgid "Die Aufnahme wird hochgeladen …"
+msgstr "Uploading the recording …"
+
+#, php-format
+msgid "Feedback für %s"
+msgstr "Feedback for %s"
+
+msgid "Aufnahme anhören"
+msgstr "Listen to recording"
+
+msgid "Aufnahme starten"
+msgstr "Start recording"
+
+msgid "Aufnahme beenden"
+msgstr "Stop recording"
+
+msgid "Aufnahme verwerfen"
+msgstr "Discard recording"
+
+msgid "Aufnahme hochladen"
+msgstr "Upload recording"
+
+msgid "Es wurde keine Aufnahme hochgeladen."
+msgstr "No recording was uploaded."
+
+msgid "Das Audioformat wird nicht unterstützt."
+msgstr "This audio format is not supported."
+
+msgid "Die Aufnahme konnte nicht hochgeladen werden."
+msgstr "The recording could not be uploaded."
+
+msgid "Das Audio-Feedback wurde hochgeladen."
+msgstr "Audio feedback was uploaded."
