@@ -1,8 +1,4 @@
 <?
-/* create folder(s) for current task */
-// TODO: move to better suited location
-
-// Aufgabenordner
 $type_folder = \EPP\Helper::getTypedFolder($folder, $task, $task_user, $type);
 ?>
 <span id="files-index">
