@@ -560,6 +560,10 @@ class IndexController extends \EPP\Controller
         \EPP\Perm::check('new_task', $this->seminar_id);
 
         $task = new \EPP\Tasks($task_id);
+        if ($task->seminar_id != $this->seminar_id) {
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
+        }
+        \EPP\Tasks::createMissingFolders($this->folder, $task);
 
         $archive_file_name = $task->title . '-' . _('Abgaben_der_Studierenden') . '-' . date('Ymds-Hi') . '.zip';
         $archive_path      = $GLOBALS['TMP_PATH'] . '/' . $archive_file_name;
