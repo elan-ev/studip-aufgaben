@@ -252,6 +252,56 @@ class IndexController extends \EPP\Controller
     }
 
 
+    public function audio_feedback_action($task_user_id)
+    {
+        \EPP\Perm::check('new_task', $this->seminar_id);
+        $this->task_user = \EPP\TaskUsers::find($task_user_id);
+        $task = $this->task_user ? \EPP\Tasks::find($this->task_user->ep_tasks_id) : null;
+        if (!$task || $task->seminar_id != $this->seminar_id
+            || $task->startdate > time() || !$task->allow_files
+        ) {
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
+        }
+        PageLayout::setTitle(sprintf($this->_('Audio-Feedback für %s'), $this->task_user->user->getFullname()));
+    }
+
+    public function upload_audio_action($task_user_id)
+    {
+        CSRFProtection::verifyUnsafeRequest();
+        \EPP\Perm::check('new_task', $this->seminar_id);
+
+        $task_user = \EPP\TaskUsers::find($task_user_id);
+        $task = $task_user ? \EPP\Tasks::find($task_user->ep_tasks_id) : null;
+        if (!$task || $task->seminar_id != $this->seminar_id
+            || $task->startdate > time() || !$task->allow_files
+        ) {
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
+        }
+
+        $upload = $_FILES['file'] ?? null;
+        if (!Request::isPost() || !$upload || !is_array($upload['name']) || count($upload['name']) !== 1) {
+            $this->render_json(['error' => $this->_('Es wurde keine Aufnahme hochgeladen.')]);
+            return;
+        }
+
+        $extension = strtolower(pathinfo(reset($upload['name']), PATHINFO_EXTENSION));
+        if (!in_array($extension, ['webm', 'ogg', 'mp4', 'm4a'], true)) {
+            $this->render_json(['error' => $this->_('Das Audioformat wird nicht unterstützt.')]);
+            return;
+        }
+
+        \EPP\Tasks::ensureUserFolders($this->folder, $task, $task_user);
+        $folder = \EPP\Helper::getTypedFolder($this->folder, $task, $task_user, 'feedback');
+        $result = FileManager::handleFileUpload($upload, $folder, $GLOBALS['user']->id);
+        if (!empty($result['error']) || empty($result['files'])) {
+            $this->render_json(['error' => implode("\n", $result['error']) ?: $this->_('Die Aufnahme konnte nicht hochgeladen werden.')]);
+            return;
+        }
+
+        PageLayout::postSuccess($this->_('Das Audio-Feedback wurde hochgeladen.'));
+        $this->render_json(['success' => true]);
+    }
+
     public function view_task_action($id, $page = 1)
     {
         \EPP\Perm::check('new_task', $this->seminar_id);
