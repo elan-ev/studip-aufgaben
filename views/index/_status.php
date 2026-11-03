@@ -12,16 +12,7 @@
     </thead>
     <tbody>
         <? foreach ($participants as $user) : ?>
-            <? $task_user = $task_users[$user->user_id] ?? null ?>
-            <? if (!$task_user) :  // create missing entries on the fly
-                $task_user = EPP\TaskUsers::create([
-                    'user_id'     => $user->user_id,
-                    'chdate'      => 0,
-                    'mkdate'      => 0,
-                    'ep_tasks_id' => $task->getId()
-                ]);
-                $task_users[$user->user_id] = $task_user;
-            endif ?>
+            <? $task_user = $task_users[$user->user_id] ?>
             <tr>
                 <td>
                     <a href="<?= $controller->url_for("index/view_dozent/" . $task_user->id) ?>">

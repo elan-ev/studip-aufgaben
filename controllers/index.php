@@ -97,6 +97,10 @@ class IndexController extends \EPP\Controller
             }
         }
 
+        foreach ($this->tasks as $task) {
+            \EPP\Tasks::createMissingFolders($this->folder, $task);
+        }
+
         $this->accessible_tasks = \EPP\Helper::getForeignTasksForUser($GLOBALS['user']->id);
 
         if (\EPP\Perm::has('new_task', $this->seminar_id)) {
@@ -315,15 +319,7 @@ class IndexController extends \EPP\Controller
                 $this->participant_users[$participant_user->id] = $participant_user;
             }
         }
-        $this->task_users = [];
-        if ($participant_ids) {
-            foreach (\EPP\TaskUsers::findBySQL(
-                'ep_tasks_id = ? AND user_id IN (?)',
-                [$this->task->id, $participant_ids]
-            ) as $task_user) {
-                $this->task_users[$task_user->user_id] = $task_user;
-            }
-        }
+        $this->task_users = \EPP\Tasks::createMissingFolders($this->folder, $this->task);
 
         $actions = new ActionsWidget();
         $actions->addLink(
@@ -616,6 +612,12 @@ class IndexController extends \EPP\Controller
     {
         // check perms
         \EPP\Perm::check('new_task', $this->seminar_id);
+
+        $task = new \EPP\Tasks($task_id);
+        if ($task->seminar_id != $this->seminar_id) {
+            throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
+        }
+        \EPP\Tasks::createMissingFolders($this->folder, $task);
 
         $tmp_folder = \EPP\Helper::getTempFolder($this->folder, $this->seminar_id);
 

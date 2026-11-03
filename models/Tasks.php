@@ -33,6 +33,40 @@ class Tasks extends \SimpleORMap
     }
 
     /**
+     * Ensure every participant has a task entry and answer and feedback folders.
+     *
+     * @return TaskUsers[] Task entries indexed by user ID.
+     */
+    public static function createMissingFolders($folder, $task)
+    {
+        $task_users = [];
+        foreach (TaskUsers::findBySQL('ep_tasks_id = ?', [$task->id]) as $task_user) {
+            $task_users[$task_user->user_id] = $task_user;
+        }
+
+        foreach (\CourseMember::findBySQL(
+            'seminar_id = ? AND status != ?',
+            [$task->seminar_id, 'dozent']
+        ) as $participant) {
+            $task_user = $task_users[$participant->user_id] ?? null;
+            if (!$task_user) {
+                $task_user = TaskUsers::create([
+                    'user_id'     => $participant->user_id,
+                    'chdate'      => 0,
+                    'mkdate'      => 0,
+                    'ep_tasks_id' => $task->id
+                ]);
+                $task_users[$participant->user_id] = $task_user;
+            }
+
+            Helper::getTypedFolder($folder, $task, $task_user, 'answer');
+            Helper::getTypedFolder($folder, $task, $task_user, 'feedback');
+        }
+
+        return $task_users;
+    }
+
+    /**
      * returns a human readable version of the run-status
      *
      * @return string
