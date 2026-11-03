@@ -62,6 +62,20 @@ class Helper
         return $folder->getTypedFolder();
     }
 
+    /**
+     * Find an answer or feedback folder by its metadata, regardless of order.
+     */
+    public static function findTypeFolder($user_folder, $type)
+    {
+        foreach ($user_folder->subfolders as $subfolder) {
+            if (($subfolder['data_content']['task_type'] ?? null) === $type) {
+                return $subfolder->getTypedFolder();
+            }
+        }
+
+        return null;
+    }
+
     public static function getTypedFolder($folder, $task, $task_user, $type)
     {
         if ($folder->range_id != $task->seminar_id) {

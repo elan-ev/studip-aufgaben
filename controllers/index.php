@@ -653,9 +653,13 @@ class IndexController extends \EPP\Controller
             foreach ($task_folder->subfolders as $userfolder) {
                 // replace spaces with underscores to match zip-file syntax
                 $username = preg_replace('/\s+/', '_', $userfolder->name);
-                $feedback_folder = $userfolder->subfolders[1]->getTypedFolder();
 
                 if (!empty($feedback[$username])) {
+                    $feedback_folder = \EPP\Helper::findTypeFolder($userfolder, 'feedback');
+                    if (!$feedback_folder) {
+                        throw new \RuntimeException($this->_('Der Feedback-Ordner wurde nicht gefunden!'));
+                    }
+
                     foreach ($feedback[$username] as $feedback_file) {
                         $old_feedbacks = $feedback_folder->getFiles();
                         $old_feedback = null;
