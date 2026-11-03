@@ -545,7 +545,6 @@ class IndexController extends \EPP\Controller
         // check perms
         \EPP\Perm::check('new_task', $this->seminar_id);
 
-        $this->tmp_folder = \EPP\Helper::getTempFolder($this->folder, $this->seminar_id);
         $this->task_id = $task_id;
     }
 
@@ -613,93 +612,93 @@ class IndexController extends \EPP\Controller
         }
         \EPP\Tasks::createMissingFolders($this->folder, $task);
 
-        $tmp_folder = \EPP\Helper::getTempFolder($this->folder, $this->seminar_id);
-
         // get the uploaded zip and store it
-        if (is_array($_FILES['file'])) {
-            $validatedFiles = FileManager::handleFileUpload(
-                $_FILES['file'],
-                $tmp_folder->getTypedFolder(),
-                $GLOBALS['user']->id
-            );
-
-            if (count($validatedFiles['error']) > 0) {
-                throw new \Exception(
-                    _('Beim Hochladen ist ein Fehler aufgetreten: ') .
-                    implode(',', array_map('htmlready', $validatedFiles['error']))
+        if (isset($_FILES['file']) && is_array($_FILES['file'])) {
+            $tmp_folder = \EPP\Helper::createTempFolder($this->folder, $this->seminar_id);
+            try {
+                $validatedFiles = FileManager::handleFileUpload(
+                    $_FILES['file'],
+                    $tmp_folder->getTypedFolder(),
+                    $GLOBALS['user']->id
                 );
-            }
 
-            $uploaded_zip = $validatedFiles['files'][0]->getFileref();
+                if (count($validatedFiles['error']) > 0) {
+                    throw new \Exception(
+                        _('Beim Hochladen ist ein Fehler aufgetreten: ') .
+                        implode(',', array_map('htmlready', $validatedFiles['error']))
+                    );
+                }
 
-            if (!$uploaded_zip) {
-                \PageLayout::postError(
-                    _('Fehler beim Entpacken der zip-Datei: Datei existiert nicht.')
+                $uploaded_zip = $validatedFiles['files'][0]->getFileref();
+
+                if (!$uploaded_zip) {
+                    \PageLayout::postError(
+                        _('Fehler beim Entpacken der zip-Datei: Datei existiert nicht.')
+                    );
+                }
+
+                if (!$tmp_folder) {
+                    \PageLayout::postError(
+                        _('Fehler beim Entpacken der zip-Datei: Ordner existiert nicht')
+                    );
+                }
+
+                $archive = FileArchiveManager::extractArchiveFileToFolder(
+                    $uploaded_zip->getFileType(),
+                    $tmp_folder->getTypedFolder()
                 );
-            }
-
-            if (!$tmp_folder) {
-                \PageLayout::postError(
-                    _('Fehler beim Entpacken der zip-Datei: Ordner existiert nicht')
-                );
-            }
-
-            $archive = FileArchiveManager::extractArchiveFileToFolder(
-                $uploaded_zip->getFileType(),
-                $tmp_folder->getTypedFolder()
-            );
-            $feedback = [];
-            foreach ($archive as $file) {
-                // extract only the feedback files from the archive
-                if ($file->getFolderType()->name === 'Feedback') {
-                    $username = $file->getFolderType()->getParent()->name;
-                    // skip MacOS hidden files
-                    if (strpos($file->name, '._') !== 0) {
-                        $feedback[$username][] = $file;
+                $feedback = [];
+                foreach ($archive as $file) {
+                    // extract only the feedback files from the archive
+                    if ($file->getFolderType()->name === 'Feedback') {
+                        $username = $file->getFolderType()->getParent()->name;
+                        // skip MacOS hidden files
+                        if (strpos($file->name, '._') !== 0) {
+                            $feedback[$username][] = $file;
+                        }
                     }
                 }
-            }
 
-            $task_folder = null;
-            foreach ($this->folder->subfolders as $subfolder) {
-                if ($subfolder['data_content']['task_id'] == $task_id) {
-                    $task_folder = $subfolder;
-                }
-            }
-
-            foreach ($task_folder->subfolders as $userfolder) {
-                // replace spaces with underscores to match zip-file syntax
-                $username = preg_replace('/\s+/', '_', $userfolder->name);
-
-                if (!empty($feedback[$username])) {
-                    $feedback_folder = \EPP\Helper::findTypeFolder($userfolder, 'feedback');
-                    if (!$feedback_folder) {
-                        throw new \RuntimeException($this->_('Der Feedback-Ordner wurde nicht gefunden!'));
+                $task_folder = null;
+                foreach ($this->folder->subfolders as $subfolder) {
+                    if ($subfolder['data_content']['task_id'] == $task_id) {
+                        $task_folder = $subfolder;
                     }
+                }
 
-                    foreach ($feedback[$username] as $feedback_file) {
-                        $old_feedbacks = $feedback_folder->getFiles();
-                        $old_feedback = null;
-                        foreach ($old_feedbacks as $old_file) {
-                            if ($old_file->name === $feedback_file->name) {
-                                $old_feedback = $old_file;
+                foreach ($task_folder->subfolders as $userfolder) {
+                    // replace spaces with underscores to match zip-file syntax
+                    $username = preg_replace('/\s+/', '_', $userfolder->name);
+
+                    if (!empty($feedback[$username])) {
+                        $feedback_folder = \EPP\Helper::findTypeFolder($userfolder, 'feedback');
+                        if (!$feedback_folder) {
+                            throw new \RuntimeException($this->_('Der Feedback-Ordner wurde nicht gefunden!'));
+                        }
+
+                        foreach ($feedback[$username] as $feedback_file) {
+                            $old_feedbacks = $feedback_folder->getFiles();
+                            $old_feedback = null;
+                            foreach ($old_feedbacks as $old_file) {
+                                if ($old_file->name === $feedback_file->name) {
+                                    $old_feedback = $old_file;
+                                }
                             }
-                        }
 
-                        if ($old_feedback) {
-                            // delete old feedback to avoid duplicates
-                            $feedback_folder->deleteFile($old_feedback->id);
+                            if ($old_feedback) {
+                                // delete old feedback to avoid duplicates
+                                $feedback_folder->deleteFile($old_feedback->id);
+                            }
+                            $feedback_folder->addFile($feedback_file);
                         }
-                        $feedback_folder->addFile($feedback_file);
                     }
                 }
+                \PageLayout::postSuccess(
+                    _('Die Feedback-Datei wurde erfolgreich hochgeladen, entpackt und den Abgaben zugeordnet!')
+                );
+            } finally {
+                $tmp_folder->delete();
             }
-            // delete tmp folder with uploaded zip to avoid duplicates
-            $tmp_folder->delete();
-
-            \PageLayout::postSuccess(
-                _('Die Feedback-Datei wurde erfolgreich hochgeladen, entpackt und den Abgaben zugeordnet!')
-            );
         }
 
         $this->render_nothing();
