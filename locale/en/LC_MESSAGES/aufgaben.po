@@ -8,14 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Opencast\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 10:26+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2026-11-03 16:34+0100\n"
+"PO-Revision-Date: 2026-11-03 16:40+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.10\n"
 
 msgid "Aufgaben"
 msgstr "Tasks"
@@ -40,13 +41,15 @@ msgid ""
 msgstr "You are not authorized to perform this action. Permissions needed: %s"
 
 msgid "läuft"
-msgstr "Pending"
+msgstr "pending"
 
 msgid "beendet"
-msgstr "Complete"
+msgstr ""
+"c\n"
+"omplete"
 
 msgid "läuft noch nicht"
-msgstr "Not yet started"
+msgstr "not yet started"
 
 msgid "Kommilitone/in"
 msgstr "Fellow student"
@@ -64,10 +67,10 @@ msgid ""
 "Systemadministrator"
 msgstr ""
 "An error occured while creating the task.\n"
-"Please try again or contact a system administrator."
+"Please try again or contact a system administrator"
 
 msgid "Die Aufgabe wurde nicht gefunden!"
-msgstr "The task was not found."
+msgstr "The task was not found!"
 
 #, php-format
 msgid "Die Aufgabe %s wurde erfolgreich bearbeitet!"
@@ -79,7 +82,7 @@ msgid ""
 "Systemadministrator"
 msgstr ""
 "An error occured while editing the task.\n"
-"Please try again or contact a system administrator."
+"Please try again or contact a system administrator"
 
 msgid "Aufgabe bearbeiten"
 msgstr "Edit task"
@@ -106,19 +109,19 @@ msgid "Sie haben keine Rechte zum Bearbeiten dieser Aufgabe."
 msgstr "You are not authorized to edit this task."
 
 msgid "Sie dürfen diese Aufgabe nicht bearbeiten!"
-msgstr "You are not authorized to edit this task."
+msgstr "You are not authorized to edit this task!"
 
 msgid "Für diese Aufgabe dürfen keine Dateien hochgeladen werden."
 msgstr "File uploads are disabled for this task."
 
 msgid "Konnte Datei nicht erstellen!"
-msgstr "Could not create file."
+msgstr "Could not create file!"
 
 msgid "Sie dürfen sich nicht selbst für eine Berechtigung eintragen!"
-msgstr "You cannot assign permissions to yourself as user."
+msgstr "You cannot assign permissions to yourself as user!"
 
 msgid "Für diesen Nutzer existiert bereits eine andere Berechtigung!"
-msgstr "This user already has other permissions."
+msgstr "This user already has other permissions!"
 
 msgid "Abgaben der Studierenden"
 msgstr "Students? submissions"
@@ -137,7 +140,7 @@ msgid "Sie haben noch keine Aufgaben angelegt. %sNeue Aufgabe anlegen.%s"
 msgstr "You have not created any tasks yet. %sCreate new task.%s"
 
 msgid "Es sind noch keine Aufgaben sichtbar/vorhanden"
-msgstr "No tasks are available/visible."
+msgstr "No tasks are available/visible"
 
 msgid "Titel"
 msgstr "Title"
@@ -146,13 +149,13 @@ msgid "Aufgabenbeschreibung"
 msgstr "Task description"
 
 msgid "Sichtbar und bearbeitbar ab"
-msgstr "Can be viewed and edited from:"
+msgstr "Can be viewed and edited from"
 
 msgid "tt.mm.jjjj ss:mm"
 msgstr "dd.mm.yyyy ss:mm"
 
 msgid "Bearbeitbar bis"
-msgstr "Deadline:"
+msgstr "Deadline"
 
 msgid "Texteingabe erlauben"
 msgstr "Allow text entry"
@@ -199,7 +202,7 @@ msgid "Antworttext"
 msgstr "Response"
 
 msgid "Es wurde keine Antwort eingegeben"
-msgstr "A response has not been entered."
+msgstr "Noresponse has been entered"
 
 msgid "Feedback"
 msgstr "Feedback"
@@ -238,10 +241,10 @@ msgid "TeilnehmerIn"
 msgstr "Participant"
 
 msgid "in Arbeit"
-msgstr "In progress"
+msgstr "in progress"
 
 msgid "letzte Aktivität"
-msgstr "Last activity"
+msgstr "last activity"
 
 msgid "Hinweis"
 msgstr "Note"
@@ -250,7 +253,7 @@ msgid "Fertig?"
 msgstr "Complete?"
 
 msgid "Für diese Aufgabe wurden Hinweise für sie hinterlegt!"
-msgstr "Notes have been added to this task for your reference."
+msgstr "Notes have been added to this task for your reference!"
 
 msgid "Diese Aufgabe für diesen Nutzer bearbeiten"
 msgstr "Edit the task for this user"
@@ -262,7 +265,7 @@ msgid "Sie befinden sich hier:"
 msgstr "You are here:"
 
 msgid "Es wurde noch kein Text eingegeben"
-msgstr "No text has been entered yet."
+msgstr "No text has been entered yet"
 
 msgid "Bearbeiten"
 msgstr "Edit"
@@ -284,7 +287,7 @@ msgid "Noch kein Feedback vorhanden"
 msgstr "No feedback available yet"
 
 msgid "Datei zu groß!"
-msgstr "File too large"
+msgstr "File too large!"
 
 msgid "Ja"
 msgstr "Yes"
@@ -325,7 +328,7 @@ msgid "Datei hinzufügen"
 msgstr "Add file"
 
 msgid "Das Herunterladen dieser Datei ist nur eingeschränkt möglich."
-msgstr "Dowloading this file is restricted"
+msgstr "Dowloading this file is restricted."
 
 msgid "Weblink"
 msgstr "Weblink"
@@ -357,10 +360,10 @@ msgid "Bearbeitungszeitraum: <br>%s - %s Uhr"
 msgstr "Editing period: <br>%s - %s o'clock"
 
 msgid "Aufgabe kann momentan bearbeitet werden."
-msgstr "Task can be edited"
+msgstr "Task can be edited."
 
 msgid "Aufgabe kann momentan nicht bearbeitet werden!"
-msgstr "Task cannot be edited"
+msgstr "Task cannot be edited!"
 
 msgid "Abgabe"
 msgstr "Submission"
@@ -411,7 +414,7 @@ msgid "Fehler beim Entpacken der zip-Datei: Datei existiert nicht."
 msgstr "Error extracting the ZIP file: The file does not exist."
 
 msgid "Fehler beim Entpacken der zip-Datei: Ordner existiert nicht"
-msgstr "Error extracting the ZIP file: The folder does not exist."
+msgstr "Error extracting the ZIP file: The folder does not exist"
 
 msgid ""
 "Die Feedback-Datei wurde erfolgreich hochgeladen, entpackt und den Abgaben "
@@ -425,3 +428,6 @@ msgstr "Upload feedback ZIP file"
 
 msgid "Mein Computer"
 msgstr "My computer"
+
+msgid "Der Feedback-Ordner wurde nicht gefunden!"
+msgstr "The feedback folder could not be found!"
