@@ -74,11 +74,25 @@ class IndexController extends \EPP\Controller
             }
         }
 
+        $this->own_task_users = [];
         foreach ($this->tasks as $task) {
-            \EPP\Tasks::createMissingFolders($this->folder, $task);
+            $task_users = \EPP\Tasks::createMissingFolders($this->folder, $task);
+            if (!\EPP\Perm::has('new_task', $this->seminar_id)) {
+                $task_user = $task_users[$GLOBALS['user']->id] ?? null;
+                if (!$task_user) {
+                    $task_user = \EPP\Tasks::getOrCreateTaskUser($task, $GLOBALS['user']->id);
+                    \EPP\Tasks::ensureUserFolders($this->folder, $task, $task_user);
+                }
+                $this->own_task_users[$task->id] = $task_user;
+            }
         }
 
         $this->accessible_tasks = \EPP\Helper::getForeignTasksForUser($GLOBALS['user']->id);
+        foreach ($this->accessible_tasks as $task_user) {
+            if ($task_user && $task_user->task) {
+                \EPP\Tasks::ensureUserFolders($this->folder, $task_user->task, $task_user);
+            }
+        }
 
         if (\EPP\Perm::has('new_task', $this->seminar_id)) {
             $actions = new ActionsWidget();
@@ -209,6 +223,8 @@ class IndexController extends \EPP\Controller
         if ($this->task->seminar_id != $this->seminar_id) {
             throw new AccessDeniedException($this->_('Die Aufgabe wurde nicht gefunden!'));
         }
+
+        \EPP\Tasks::ensureUserFolders($this->folder, $this->task, $this->task_user);
 
         Sidebar::get()->addWidget(\EPP\Helper::getSidebarInfos($this->task, $this));
     }
@@ -342,12 +358,7 @@ class IndexController extends \EPP\Controller
         }
 
         if (!$this->task_user) {
-            $data = [
-                'ep_tasks_id' => $id,
-                'user_id'     => $GLOBALS['user']->id
-            ];
-
-            $this->task_user = \EPP\TaskUsers::create($data);
+            $this->task_user = \EPP\Tasks::getOrCreateTaskUser($this->task, $GLOBALS['user']->id);
         }
 
         $this->perms = \EPP\Perm::get($GLOBALS['user']->id, $this->task_user);
@@ -355,6 +366,8 @@ class IndexController extends \EPP\Controller
         if (!$this->perms['edit_answer']) {
             throw new AccessDeniedException($this->_('Sie haben keine Rechte zum Bearbeiten dieser Aufgabe.'));
         }
+
+        \EPP\Tasks::ensureUserFolders($this->folder, $this->task, $this->task_user);
 
         Sidebar::get()->addWidget(\EPP\Helper::getSidebarInfos($this->task, $this));
     }

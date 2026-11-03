@@ -50,20 +50,39 @@ class Tasks extends \SimpleORMap
         ) as $participant) {
             $task_user = $task_users[$participant->user_id] ?? null;
             if (!$task_user) {
-                $task_user = TaskUsers::create([
-                    'user_id'     => $participant->user_id,
-                    'chdate'      => 0,
-                    'mkdate'      => 0,
-                    'ep_tasks_id' => $task->id
-                ]);
+                $task_user = self::getOrCreateTaskUser($task, $participant->user_id);
                 $task_users[$participant->user_id] = $task_user;
             }
+        }
 
-            Helper::getTypedFolder($folder, $task, $task_user, 'answer');
-            Helper::getTypedFolder($folder, $task, $task_user, 'feedback');
+        foreach ($task_users as $task_user) {
+            self::ensureUserFolders($folder, $task, $task_user);
         }
 
         return $task_users;
+    }
+
+    /**
+     * Get a participant's task entry, creating an untouched entry if needed.
+     */
+    public static function getOrCreateTaskUser($task, $user_id)
+    {
+        return TaskUsers::findOneBySQL('ep_tasks_id = ? AND user_id = ?', [$task->id, $user_id])
+            ?: TaskUsers::create([
+                'ep_tasks_id' => $task->id,
+                'user_id'     => $user_id,
+                'chdate'      => 0,
+                'mkdate'      => 0
+            ]);
+    }
+
+    /**
+     * Initialize folders for one task entry, including shared or former members.
+     */
+    public static function ensureUserFolders($folder, $task, $task_user)
+    {
+        Helper::ensureTypedFolder($folder, $task, $task_user, 'answer');
+        Helper::ensureTypedFolder($folder, $task, $task_user, 'feedback');
     }
 
     /**
