@@ -35,8 +35,39 @@ class Helper
         return $task_users;
     }
 
+    /**
+     * Return the plugin's file storage in the specified course.
+     */
+    public static function getCourseFolder($course_id)
+    {
+        $root_folder = \Folder::findTopFolder($course_id)->getTypedFolder();
+        foreach ($root_folder->subfolders as $folder) {
+            if (!empty($folder['data_content']['aufgabenplugin'])) {
+                return $folder->getTypedFolder();
+            }
+        }
+
+        $folder = \Folder::create([
+            'parent_id'    => $root_folder->getId(),
+            'range_id'     => $course_id,
+            'range_type'   => $root_folder->range_type,
+            'description'  => 'Dateiablage des Aufgabenplugins',
+            'name'         => 'Aufgaben-Plugin',
+            'data_content' => ['aufgabenplugin' => '1'],
+            'folder_type'  => \TaskFolder::class,
+            'user_id'      => $course_id
+        ]);
+        $root_folder->subfolders[] = $folder;
+
+        return $folder->getTypedFolder();
+    }
+
     public static function getTypedFolder($folder, $task, $task_user, $type)
     {
+        if ($folder->range_id != $task->seminar_id) {
+            $folder = self::getCourseFolder($task->seminar_id);
+        }
+
         $task_folder = null;
 
         foreach ($folder->subfolders as $subfolder) {
@@ -48,13 +79,13 @@ class Helper
         if (!$task_folder) {
             $task_folder = \Folder::create([
                 'parent_id'    => $folder->getId(),
-                'range_id'     => \Context::getId(),
-                'range_type'   => \Context::getType(),
+                'range_id'     => $task->seminar_id,
+                'range_type'   => $folder->range_type,
                 'description'  => 'Aufgabenordner',
                 'name'         => 'Aufgabenordner: ' . $task->title,
                 'data_content' => ['task_id' => $task->id],
                 'folder_type'  => \TaskFolder::class,
-                'user_id'      => \Context::getId()
+                'user_id'      => $task->seminar_id
             ]);
 
             $folder->subfolders[] = $task_folder;
@@ -71,8 +102,8 @@ class Helper
         if (!$user_folder) {
             $user_folder = \Folder::create([
                 'parent_id'    => $task_folder->getId(),
-                'range_id'     => \Context::getId(),
-                'range_type'   => \Context::getType(),
+                'range_id'     => $task->seminar_id,
+                'range_type'   => $folder->range_type,
                 'description'  => 'Nutzerordner',
                 'name'         => get_fullname($task_user->user_id),
                 'data_content' => [
@@ -100,8 +131,8 @@ class Helper
         if (!$type_folder) {
             $type_folder = \Folder::create([
                 'parent_id'    => $user_folder->getId(),
-                'range_id'     => \Context::getId(),
-                'range_type'   => \Context::getType(),
+                'range_id'     => $task->seminar_id,
+                'range_type'   => $folder->range_type,
                 'description'  => '',
                 'name'         => ucfirst($type),
                 'data_content' => [
@@ -200,7 +231,7 @@ class Helper
         $tmp_folder = \Folder::create([
             'parent_id'    => $folder->getId(),
             'range_id'     => $course_id,
-            'range_type'   => \Context::getType(),
+            'range_type'   => $folder->range_type,
             'description'  => 'Temporärer Ordner für Feedback-Uploads',
             'name'         => 'Aufgaben-Plugin-Tmp-'. $user->id,
             'data_content' => '',

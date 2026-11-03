@@ -29,30 +29,7 @@ class IndexController extends \EPP\Controller
             'student' => $this->_('Kommilitone/in'),
         ];
 
-        // set up hidden folder for files to store (if not already present)
-        $aufgaben_folder = null;
-
-        $root_folder = \Folder::findTopFolder($this->seminar_id)->getTypedFolder();
-        foreach ($root_folder->subfolders as $folder) {
-            if ($folder['data_content']['aufgabenplugin']) {
-                $aufgaben_folder = $folder;
-            }
-        }
-
-        if (!$aufgaben_folder) {
-            $aufgaben_folder = \Folder::create([
-                'parent_id'    => $root_folder->getId(),
-                'range_id'     => $this->seminar_id,
-                'range_type'   => \Context::getType(),
-                'description'  => 'Dateiablage des Aufgabenplugins',
-                'name'         => 'Aufgaben-Plugin',
-                'data_content' => ['aufgabenplugin' => '1'],
-                'folder_type'  => TaskFolder::class,
-                'user_id'      => $this->seminar_id
-            ]);
-        }
-
-        $this->folder = $aufgaben_folder->getTypedFolder();
+        $this->folder = \EPP\Helper::getCourseFolder($this->seminar_id);
     }
 
     public function index_action()
