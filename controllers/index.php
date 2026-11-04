@@ -648,15 +648,26 @@ class IndexController extends \EPP\Controller
                     $tmp_folder->getTypedFolder()
                 );
                 $feedback = [];
+                $no_student_folder = [];
                 foreach ($archive as $file) {
+                    $feedback_dir = $file->getFolderType();
                     // extract only the feedback files from the archive
-                    if ($file->getFolderType()->name === 'Feedback') {
-                        $username = $file->getFolderType()->getParent()->name;
-                        // skip MacOS hidden files
-                        if (strpos($file->name, '._') !== 0) {
-                            $feedback[$username][] = $file;
-                        }
+                    if (mb_strtolower($feedback_dir->name) !== 'feedback') {
+                        continue;
                     }
+                    // skip MacOS hidden files
+                    if (strpos($file->name, '._') === 0) {
+                        continue;
+                    }
+                    $parent = $feedback_dir->getParent();
+                    if (!$parent || !$parent->name || $parent->getId() === $tmp_folder->getId()) {
+                        // "Feedback" lies directly in the root of the zip, so there is no student folder
+                        $no_student_folder[$file->name] = $file->name;
+                        continue;
+                    }
+                    $key = \EPP\Helper::getFolderNameKey($parent->name);
+                    $feedback[$key]['name'] = $parent->name;
+                    $feedback[$key]['files'][] = $file;
                 }
 
                 $task_folder = null;
@@ -666,36 +677,91 @@ class IndexController extends \EPP\Controller
                     }
                 }
 
+                if (!$task_folder) {
+                    throw new \RuntimeException($this->_('Der Aufgabenordner wurde nicht gefunden!'));
+                }
+
+                $folders_by_key = [];
                 foreach ($task_folder->subfolders as $userfolder) {
-                    // replace spaces with underscores to match zip-file syntax
-                    $username = preg_replace('/\s+/', '_', $userfolder->name);
+                    $folders_by_key[\EPP\Helper::getFolderNameKey($userfolder->name)][] = $userfolder;
+                }
 
-                    if (!empty($feedback[$username])) {
-                        $feedback_folder = \EPP\Helper::findTypeFolder($userfolder, 'feedback');
-                        if (!$feedback_folder) {
-                            throw new \RuntimeException($this->_('Der Feedback-Ordner wurde nicht gefunden!'));
-                        }
+                $assigned_students = 0;
+                $assigned_files = 0;
+                $failed_files = [];
+                $unassigned = [];
+                $ambiguous = [];
 
-                        foreach ($feedback[$username] as $feedback_file) {
-                            $old_feedbacks = $feedback_folder->getFiles();
-                            $old_feedback = null;
-                            foreach ($old_feedbacks as $old_file) {
-                                if ($old_file->name === $feedback_file->name) {
-                                    $old_feedback = $old_file;
-                                }
-                            }
+                foreach ($feedback as $key => $entry) {
+                    if (empty($folders_by_key[$key])) {
+                        $unassigned[] = $entry['name'];
+                        continue;
+                    }
+                    if (count($folders_by_key[$key]) > 1) {
+                        // several students share the same name, no safe assignment possible
+                        $ambiguous[] = $entry['name'];
+                        continue;
+                    }
 
-                            if ($old_feedback) {
+                    $userfolder = $folders_by_key[$key][0];
+                    $feedback_folder = \EPP\Helper::findTypeFolder($userfolder, 'feedback');
+                    if (!$feedback_folder) {
+                        throw new \RuntimeException($this->_('Der Feedback-Ordner wurde nicht gefunden!'));
+                    }
+
+                    foreach ($entry['files'] as $feedback_file) {
+                        foreach ($feedback_folder->getFiles() as $old_file) {
+                            if ($old_file->name === $feedback_file->name) {
                                 // delete old feedback to avoid duplicates
-                                $feedback_folder->deleteFile($old_feedback->id);
+                                $feedback_folder->deleteFile($old_file->id);
                             }
-                            $feedback_folder->addFile($feedback_file);
+                        }
+                        if ($feedback_folder->addFile($feedback_file)) {
+                            $assigned_files++;
+                        } else {
+                            $failed_files[] = $entry['name'] . '/' . $feedback_file->name;
                         }
                     }
+                    $assigned_students++;
                 }
-                \PageLayout::postSuccess(
-                    _('Die Feedback-Datei wurde erfolgreich hochgeladen, entpackt und den Abgaben zugeordnet!')
-                );
+
+                if ($assigned_files > 0) {
+                    \PageLayout::postSuccess(sprintf(
+                        $this->_('%d Feedback-Datei(en) wurden %d Abgabe(n) zugeordnet.'),
+                        $assigned_files,
+                        $assigned_students
+                    ));
+                } elseif (!$feedback && !$no_student_folder) {
+                    \PageLayout::postError(
+                        $this->_('Die zip-Datei enthält keine Feedback-Dateien. Erwartet wird die Struktur "Name/Feedback/Datei".')
+                    );
+                } else {
+                    \PageLayout::postError($this->_('Es konnte keine Feedback-Datei zugeordnet werden.'));
+                }
+                if ($unassigned) {
+                    \PageLayout::postWarning(
+                        $this->_('Zu folgenden Ordnern in der zip-Datei wurde keine Abgabe gefunden, ihre Feedback-Dateien wurden nicht zugeordnet:'),
+                        array_map('htmlReady', $unassigned)
+                    );
+                }
+                if ($no_student_folder) {
+                    \PageLayout::postWarning(
+                        $this->_('Diese Dateien liegen in einem Ordner "Feedback" direkt im Hauptverzeichnis der zip-Datei. Es fehlt der Ordner mit dem Namen der Studierenden (Struktur "Name/Feedback/Datei"), daher wurden sie nicht zugeordnet:'),
+                        array_map('htmlReady', array_values($no_student_folder))
+                    );
+                }
+                if ($ambiguous) {
+                    \PageLayout::postWarning(
+                        $this->_('Folgende Namen sind in dieser Aufgabe mehrfach vorhanden, die Feedback-Dateien wurden nicht zugeordnet:'),
+                        array_map('htmlReady', $ambiguous)
+                    );
+                }
+                if ($failed_files) {
+                    \PageLayout::postError(
+                        $this->_('Folgende Feedback-Dateien konnten nicht gespeichert werden:'),
+                        array_map('htmlReady', $failed_files)
+                    );
+                }
             } finally {
                 $tmp_folder->delete();
             }

@@ -77,6 +77,22 @@ class Helper
     }
 
     /**
+     * Builds a comparable key for a student folder name. Folder names inside
+     * a downloaded zip are sanitized by Stud.IP (spaces, quotes, brackets,
+     * ...) and may use decomposed umlauts (e.g. zipped on macOS), so both
+     * sides are sanitized and unicode-normalized before they are compared.
+     */
+    public static function getFolderNameKey($name)
+    {
+        $name = (string) $name;
+        if (class_exists('Normalizer')) {
+            $name = \Normalizer::normalize($name, \Normalizer::FORM_C) ?: $name;
+        }
+
+        return mb_strtolower(\FileManager::cleanFileName(trim($name)));
+    }
+
+    /**
      * Find an answer or feedback folder by its metadata, regardless of order.
      */
     public static function findTypeFolder($user_folder, $type)
